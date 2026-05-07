@@ -10,7 +10,7 @@ export default function Homepage(){
   <div class="card-img-overlay">
     <h5 class="card-title">Nome fumetto</h5>
     <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-    <h2 class="card-text"><small>COMPRA AD UN PREZZO STRACCIATO</small></h2>
+    <h2 class="card-text">COMPRA AD UN PREZZO STRACCIATO</h2>
   </div>
 </div>
       </div>
