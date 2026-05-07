@@ -15,7 +15,7 @@ const comicData = {
     price: 5.20,
     original_price: 5.20,
     stock_quantity: 150,
-    image_url: "https://via.placeholder.com/300x450"
+    image_url: "https://picsum.photos/400/600"
 };
 
 
