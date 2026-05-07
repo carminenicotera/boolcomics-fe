@@ -4,7 +4,7 @@ function App() {
 
   return (
     <>
-      <h1>BoolComics</h1>
+      <h1>BoolComics frontend</h1>
     </>
   )
 }
