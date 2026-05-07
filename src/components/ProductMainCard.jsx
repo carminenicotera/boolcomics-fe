@@ -41,8 +41,22 @@ export default function ProductMainCard({ comic }) {
                                         <span className="text-danger">Esaurito</span>}
                                 </p>
 
+                                <div className="col-auto">
+                                    <div className="input-group" style={{ width: '130px' }}>
+                                        <span className="input-group-text">Qtà</span>
+                                        <input
+                                            type="number"
+                                            className="form-control text-center"
+                                            defaultValue="1"
+                                            min="1"
+                                            max={comic.stock_quantity}
+                                        />
+                                    </div>
+                                </div>
+
                                 {/* Sezione Azioni: Carrello e Preferiti */}
                                 <div className="d-flex flex-column flex-sm-row gap-3 mt-4">
+
 
                                     {/* Bottone Carrello */}
                                     <button className="btn btn-primary btn-lg d-flex align-items-center justify-content-center gap-2">
