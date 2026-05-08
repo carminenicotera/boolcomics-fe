@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export default function Homepage(){
 
   const [comics] = useState([
