@@ -6,7 +6,7 @@ export default function AppHeader() {
 
     <header>
 
-      <nav className="navbar navbar-expand-lg bg-white border-bottom py-3">
+      <nav className="navbar navbar-expand-md bg-white border-bottom py-1">
 
         <div className="container">
 
@@ -20,16 +20,14 @@ export default function AppHeader() {
             <img
               src="/img/boolcomics-logo.png"
               alt="BoolComics"
-              className="img-fluid d-none d-md-block"
-              style={ { maxHeight: "45px" } }
+              className="desktop-logo"
             />
 
             {/* MOBILE */ }
             <img
               src="/img/boolcomics-icon.png"
               alt="BoolComics"
-              className="img-fluid d-block d-md-none"
-              style={ { maxHeight: "42px" } }
+              className="mobile-logo"
             />
 
           </Link>

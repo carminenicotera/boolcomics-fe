@@ -9,6 +9,10 @@
   z-index: 999;
 }
 
+.navbar-brand {
+  padding: 0;
+}
+
 /* LINKS */
 .custom-link {
   color: #111111;
@@ -52,18 +56,33 @@
   color: #e63946;
 }
 
-/* MOBILE MENU */
-@media screen and (max-width: 991px) {
+/* LOGOS */
+.desktop-logo {
+  height: 80px;
+  width: auto;
+  display: block;
+}
 
-  .navbar-collapse {
-    padding-top: 20px;
+.mobile-logo {
+  height: 58px;
+  width: auto;
+  display: none;
+}
+
+.desktop-logo,
+.mobile-logo {
+  transition: 0.2s;
+}
+
+/* MOBILE */
+@media screen and (max-width: 768px) {
+
+  .desktop-logo {
+    display: none;
   }
 
-  .navbar-nav {
-    gap: 10px;
+  .mobile-logo {
+    display: block;
   }
 
-  .cart-btn {
-    width: 100%;
-  }
 }
