@@ -33,6 +33,7 @@
   background: transparent;
   font-size: 1.2rem;
   color: #111111;
+  transition: 0.2s;
 }
 
 .icon-btn:hover {
@@ -83,6 +84,19 @@
 
   .mobile-logo {
     display: block;
+  }
+
+  .navbar-collapse {
+    padding-top: 20px;
+  }
+
+  .navbar-nav {
+    gap: 10px;
+    align-items: flex-start !important;
+  }
+
+  .cart-btn {
+    width: 100%;
   }
 
 }

@@ -6,7 +6,7 @@ export default function AppHeader() {
 
     <header>
 
-      <nav className="navbar navbar-expand-md bg-white border-bottom py-1">
+      <nav className="navbar navbar-expand-md border-bottom py-1">
 
         <div className="container">
 
@@ -16,7 +16,7 @@ export default function AppHeader() {
             to="/"
           >
 
-            {/* DESKTOP */ }
+            {/* DESKTOP / TABLET */ }
             <img
               src="/img/boolcomics-logo.png"
               alt="BoolComics"
@@ -48,32 +48,34 @@ export default function AppHeader() {
             id="navbarNav"
           >
 
-            <ul className="navbar-nav ms-auto align-items-lg-center gap-lg-3">
+            <ul className="navbar-nav ms-auto align-items-md-center gap-md-3">
 
               <li className="nav-item">
-                <Link className="nav-link custom-link" to="/">
+                <Link
+                  className="nav-link custom-link"
+                  to="/"
+                >
                   Home
                 </Link>
               </li>
 
               <li className="nav-item">
-                <Link className="nav-link custom-link" to="/comics">
-                  Comics
+                <Link
+                  className="nav-link custom-link"
+                  to="/catalog"
+                >
+                  Catalogo
                 </Link>
               </li>
 
-              <li className="nav-item">
-                <Link className="nav-link custom-link" to="/manga">
-                  Manga
-                </Link>
-              </li>
-
+              {/* SEARCH */ }
               <li className="nav-item">
                 <button className="btn icon-btn">
                   <i className="bi bi-search"></i>
                 </button>
               </li>
 
+              {/* CART */ }
               <li className="nav-item">
                 <button className="btn cart-btn">
                   <i className="bi bi-bag me-2"></i>
