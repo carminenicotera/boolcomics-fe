@@ -1,2 +1,2 @@
-@import url('bootstrap');
-@import url('bootstrap-icons');
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
