@@ -28,9 +28,6 @@ export default function ComicPage() {
 
         <>
 
-            <div >
-                <nav>Da sotituire dopo con il componente NavBar</nav>
-            </div>
 
 
             <div className='container'>
@@ -44,9 +41,6 @@ export default function ComicPage() {
             </div>
 
 
-            <div >
-                <footer>Da sotituire dopo con il componente Footer</footer>
-            </div>
 
         </>
 
