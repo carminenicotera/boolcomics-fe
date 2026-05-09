@@ -3,6 +3,7 @@ export default function ProductMainCard({ comic }) {
         return null;
     }
 
+    // Verifica se il prodotto è scontato
     const isDiscounted = comic.price < comic.original_price;
 
     return (
@@ -31,9 +32,9 @@ export default function ProductMainCard({ comic }) {
                                 <hr />
                                 <div className="d-flex align-items-baseline mb-3">
                                     {isDiscounted && (
-                                        <p className="text-muted text-decoration-line-through me-2 mb-0">€{comic.original_price.toFixed(2)}</p>
+                                        <p className="text-muted text-decoration-line-through me-2 mb-0">€{parseFloat(comic.original_price).toFixed(2)}</p>
                                     )}
-                                    <h3 className="text-danger mb-0">€{comic.price.toFixed(2)}</h3>
+                                    <h3 className="text-danger mb-0">€{parseFloat(comic.price).toFixed(2)}</h3>
                                 </div>
                                 <p className="mb-3">
                                     Disponibilità: {comic.stock_quantity > 0 ?
