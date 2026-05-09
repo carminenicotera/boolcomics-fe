@@ -1,16 +1,26 @@
 import { useState } from "react";
-
+import { useEffect } from "react";
+import { data } from "react-router-dom";
 export default function Homepage(){
 
-  const [comics] = useState([
-    { id: 1, titolo: "Spider-Man", vendite: 500, dataUscita: "2023-10-01", img: "https://placehold.co/200x300" },
-    { id: 2, titolo: "Batman", vendite: 850, dataUscita: "2024-01-15", img: "https://placehold.co/200x300" },
-    { id: 3, titolo: "X-Men", vendite: 300, dataUscita: "2024-02-10", img: "https://placehold.co/200x300" },
-    { id: 4, titolo: "Watchmen", vendite: 1200, dataUscita: "2023-05-20", img: "https://placehold.co/200x300" },
-  ]);
+  const API_URL = import.meta.env.VITE_API_URL;
 
-  const piuVenduti = [...comics].sort((a, b) => b.vendite - a.vendite);
-  const nuoviArrivi = [...comics].sort((a, b) => new Date(b.dataUscita) - new Date(a.dataUscita));
+  const [lastestProducts,setLatestProducts] = useState([])
+
+
+
+useEffect(() => {
+    fetch(`${API_URL}/products/`)
+        .then(res => res.json())
+        .then(data => {
+            const sorted = data.sort((a, b) => b.release_date.localeCompare(a.release_date));
+            
+            setLatestProducts(sorted.slice(0, 4));
+        })
+        .catch(err => console.error(err));
+}, []);
+   
+
 
    const carouselImgStyle = {
     height: '300px',
@@ -63,39 +73,39 @@ export default function Homepage(){
       </div>
 
 
-   <div className='container'>
-    <div className='row'>
-      <h2>ARTICOLI PIU' VENDUTI!</h2>
-        {piuVenduti.map(comic => (
-            <div className="col-md-3 mb-4" key={comic.id}>
-              <div className="card h-100 shadow-sm">
-                <img src={comic.img} className="card-img-top" alt={comic.titolo} />
-                <div className="card-body text-center">
-                  <h6 className="fw-bold">{comic.titolo}</h6>
-                  <p className="badge bg-danger mb-0">{comic.vendite} vendite</p>
-                </div>
-              </div>
-            </div>
-          ))}
-    </div>
-   </div>
+  
 
    <div className="container">
-    <div className="row">
-        <h2>NUOVI ARTICOLI!</h2>
-       {nuoviArrivi.map(comic => (
-            <div className="col-md-3 mb-4" key={comic.id}>
-              <div className="card h-100 shadow-sm">
-                <img src={comic.img} className="card-img-top" alt={comic.titolo} />
-                <div className="card-body text-center">
-                  <h6 className="fw-bold">{comic.titolo}</h6>
-                  <small className="text-muted">Data: {comic.dataUscita}</small>
-                </div>
-              </div>
-            </div>
-          ))}
-    </div>
-   </div>
+    <h2 className="text-center">ULTIME USCITE</h2>
+  <div className="row">
+    {lastestProducts.map(comic => (
+      <div className="col-md-3 mb-4" key={comic.id}>
+        <div className="card h-100 shadow-sm">
+          
+          <img 
+            src={comic.image_url} 
+            className="card-img-top" 
+            alt={comic.name} 
+            style={{ objectFit: 'cover', height: '300px'}} />
+          <div className="card-body text-center">
+            <h5 className="fw-bold">{comic.name}</h5>
+            <strong>Uscita:</strong> {comic.release_date.split('T')[0]}
+            <p className="fw-bold">€{comic.price}</p>
+            <span className="btn fw-bold" style={{background: '#E63946', color:'white'}}>ACQUISTA</span>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<div className="container">
+  <h1 className="text-center">i più venduti</h1>
+  <div className="row">
+    
+
+  </div>
+</div>
 
         
         </>
