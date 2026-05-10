@@ -63,7 +63,7 @@ useEffect(() => {
       {carosell.map((comic, index) => (
         <div key={comic.id} className={`carousel-item ${index === 0 ? "active" : ""}`}>
           <img 
-            src={comic.image_url} 
+            src="https://placehold.co/600x400"
             className="d-block w-100" 
             alt={comic.name} 
             style={{ height: '400px', objectFit: 'cover', filter: 'brightness(0.6)' }} 
