@@ -13,7 +13,7 @@ function App() {
           <Route element={ <DefaultLayout /> }>
             <Route index element={ <HomePage /> } />
             <Route path="/catalog" element={ <CatalogPage /> } />
-            <Route path="/comics/:comicId" element={ <ComicPage /> } />
+            <Route path="/products/:slug" element={<ComicPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

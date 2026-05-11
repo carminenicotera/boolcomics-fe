@@ -1,46 +1,57 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
 import ProductMainCard from '../components/ProductMainCard';
 import ProductDescriptionCard from '../components/ProductDescriptionCard';
 
 
-const comicData = {
-    id: 1,
-    name: "Naruto Vol. 1",
-    description: "L'inizio del cammino di Naruto Uzumaki per diventare Hokage.",
-    genre: "Manga",
-    author: "Masashi Kishimoto",
-    release_date: "1999-09-21",
-    publisher: "Planet Manga",
-    binding: "Brossurato",
-    ean: "9788863041934",
-    price: 5.20,
-    original_price: 5.20,
-    stock_quantity: 150,
-    image_url: "https://picsum.photos/400/600"
-};
+// URL base dall'API definita nelle variabili d'ambiente
+const API_URL = import.meta.env.VITE_API_URL;
 
 
 export default function ComicPage() {
+    const { slug } = useParams();
+    const [comic, setComic] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
+    // Fetch del prodotto in base allo slug
+    useEffect(() => {
+        fetch(`${API_URL}/products/${slug}`)
+            .then(res => {
+                if (!res.ok) throw new Error('Prodotto non trovato');
+                return res.json();
+            })
+            .then(data => {
+                setComic(data);
+                setLoading(false);
+            })
+            .catch(err => {
+                setError(err.message);
+                setLoading(false);
+            });
+    }, [slug]);
 
+    // Se è in caricamento, mostra un messaggio
+    if (loading) return <p>Caricamento...</p>;
+
+    // Se c'è un errore, mostra il messaggio
+    if (error) return <p>Errore: {error}</p>;
 
 
     return (
 
         <>
 
-
-
             <div className='container'>
 
                 {/* card dettails  */}
-                <ProductMainCard comic={comicData} />
+                <ProductMainCard comic={comic} />
 
                 {/* card description */}
-                <ProductDescriptionCard comic={comicData} />
+                <ProductDescriptionCard comic={comic} />
 
             </div>
-
-
 
         </>
 
