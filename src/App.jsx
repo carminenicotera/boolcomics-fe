@@ -8,17 +8,17 @@ import { useCartLogic } from "./components/useCartLogic";
 
 
 function App() {
-const { cart, addToCart, cartCount } = useCartLogic();
+const { cart, addToCart, removeFromCart, cartCount } = useCartLogic();
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route element={ <DefaultLayout cartCount={cartCount} /> }>
+          <Route element={ <DefaultLayout cartCount={cartCount}  /> }>
             <Route index element={ <HomePage addToCart={addToCart} /> } />
             <Route path="/catalog" element={ <CatalogPage addToCart={addToCart} /> } />
             <Route path="/products/:slug" element={<ComicPage addToCart={addToCart}/>} />
-            <Route path="/cart" element={<CartPage cart={cart}/>} />
+            <Route path="/cart" element={<CartPage cart={cart} removeFromCart={removeFromCart}/>} />
           </Route>
         </Routes>
       </BrowserRouter>

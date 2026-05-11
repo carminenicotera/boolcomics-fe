@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 
-export default function CartPage({ cart }) {
+export default function CartPage({ cart, removeFromCart }) {
   
-  // 1. Calcolo del totale: trasformiamo i prezzi in numeri e li sommiamo
-  // Usiamo il parseFloat per sicurezza se il prezzo arriva come stringa dal database
+ 
   const total = cart?.reduce((acc, item) => acc + parseFloat(item.price), 0) || 0;
 
   return (
@@ -46,6 +45,12 @@ export default function CartPage({ cart }) {
                   </div>
                   <div className="col-3 col-md-3 text-end pe-4">
                     <span className="h5 fw-bold text-danger">€{item.price}</span>
+                    <button 
+  className="btn btn-outline-danger btn-sm" 
+  onClick={() => removeFromCart(index)}
+>
+  <i className="bi bi-trash"></i> Elimina
+</button>
                   </div>
                 </div>
               </div>

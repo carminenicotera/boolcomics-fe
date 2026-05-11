@@ -5,10 +5,17 @@ export function useCartLogic() {
 
   const addToCart = (product) => {
     setCart((prev) => [...prev, product]);
+    console.log("Prodotto ricevuto dall'hook:")
   };
-  console.log("Prodotto ricevuto dall'hook:")
+  
 
+  const removeFromCart = (index) => {
+  const newCart = [...cart]; 
+  newCart.splice(index, 1);  
+  setCart(newCart);          
+  console.log("prodotto eliminato")
+};
   const cartCount = cart.length;
 
-  return { cart, addToCart, cartCount };
+  return { cart, addToCart, cartCount, removeFromCart };
 }
