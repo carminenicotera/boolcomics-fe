@@ -37,7 +37,7 @@ export default function CatalogPage() {
                 <div className="card h-100 border-0 shadow-sm">
 
                   {/* IMAGE */ }
-                  <Link to={ `/comics/${comic.id}` }>
+                  <Link to={ `/products/${comic.slug}` }>
                     <img src="/public/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover" />
                   </Link>
 
