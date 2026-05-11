@@ -111,8 +111,24 @@ export default function Homepage() {
       </div>
 
       <div className="container">
-        <h1 className="text-center">i più venduti</h1>
+        <h1 className="text-center">I PIÙ VENDUTI</h1>
         <div className="row">
+          { lastestProducts.map(comic => (
+            <div className="col-12 col-sm-6 col-lg-3 mb-4" key={ comic.id }>
+              <div className="card h-100 shadow-sm">
+
+                <Link to={ `/products/${comic.slug}` }>
+                  <img src="/public/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover" />
+                </Link>
+                <div className="card-body text-center">
+                  <h5 className="fw-bold">{ comic.name }</h5>
+                  <strong>Uscita:</strong> { comic.release_date.split('T')[0] }
+                  <p className="fw-bold">€{ comic.price }</p>
+                  <span className="btn fw-bold" style={ { background: '#E63946', color: 'white' } }>ACQUISTA</span>
+                </div>
+              </div>
+            </div>
+          )) }
 
 
         </div>
