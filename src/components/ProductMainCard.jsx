@@ -24,6 +24,7 @@ export default function ProductMainCard({ comic }) {
                                     alt={comic.name}
                                     className="img-fluid rounded"
                                     style={{ maxHeight: '450px', objectFit: 'cover' }}
+                                    onError={(e) => e.target.src = '/img/placeholdercomic.png'}
                                 />
                             </div>
 
