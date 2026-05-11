@@ -32,12 +32,7 @@ useEffect(() => {
    
 
 
-   const carouselImgStyle = {
-    height: '300px',
-    objectFit: 'cover',
-    filter: 'brightness(0.6)' 
-  };
-
+  
 
     return(
         <>
@@ -63,7 +58,7 @@ useEffect(() => {
       {carosell.map((comic, index) => (
         <div key={comic.id} className={`carousel-item ${index === 0 ? "active" : ""}`}>
           <img 
-            src="https://placehold.co/600x400"
+            src="public/img/placeholdercomic.png"
             className="d-block w-100" 
             alt={comic.name} 
             style={{ height: '400px', objectFit: 'cover', filter: 'brightness(0.6)' }} 
@@ -96,11 +91,11 @@ useEffect(() => {
     <h2 className="text-center">ULTIME USCITE</h2>
   <div className="row">
     {lastestProducts.map(comic => (
-      <div className="col-md-3 mb-4" key={comic.id}>
+      <div className="col-12 col-sm-6 col-lg-3 mb-4" key={comic.id}>
         <div className="card h-100 shadow-sm">
           
           <img 
-            src={comic.image_url} 
+            src="public/img/placeholdercomic.png" 
             className="card-img-top" 
             alt={comic.name} 
             style={{ objectFit: 'cover', height: '300px'}} />
