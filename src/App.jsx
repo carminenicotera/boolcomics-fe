@@ -4,18 +4,21 @@ import HomePage from "./pages/HomePage"
 import ComicPage from "./pages/ComicPage"
 import CatalogPage from "./pages/CatalogPage"
 import CartPage from "./pages/CartPage"
+import { useCartLogic } from "./components/useCartLogic";
+
 
 function App() {
+const { cart, addToCart, cartCount } = useCartLogic();
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route element={ <DefaultLayout /> }>
-            <Route index element={ <HomePage /> } />
-            <Route path="/catalog" element={ <CatalogPage /> } />
-            <Route path="/products/:slug" element={<ComicPage />} />
-            <Route path="/cart" element={<CartPage/>} />
+          <Route element={ <DefaultLayout cartCount={cartCount} /> }>
+            <Route index element={ <HomePage addToCart={addToCart} /> } />
+            <Route path="/catalog" element={ <CatalogPage addToCart={addToCart} /> } />
+            <Route path="/products/:slug" element={<ComicPage addToCart={addToCart}/>} />
+            <Route path="/cart" element={<CartPage cart={cart}/>} />
           </Route>
         </Routes>
       </BrowserRouter>
