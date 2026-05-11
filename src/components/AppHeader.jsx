@@ -76,12 +76,12 @@ export default function AppHeader() {
               </li>
 
               {/* CART */ }
-              <li className="nav-item">
-                <button className="btn cart-btn">
-                  <i className="bi bi-bag me-2"></i>
+              <Link
+                  className="nav-link custom-link cart-btn"
+                  to="/cart"
+                ><i className="bi bi-bag me-2"></i>
                   Cart
-                </button>
-              </li>
+                </Link>
 
             </ul>
 
