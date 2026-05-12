@@ -1,7 +1,7 @@
 export default function StepOrderSummary({ formData, handleBack, cart }) {
-    console.log(cart);
+
     // Calcolo del totale dell'ordine
-    const total = cart.reduce((acc, item) => acc + parseFloat(item.price) * (item.quantity || 1), 0);
+    const total = cart.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0);
 
 
     return (
@@ -37,8 +37,8 @@ export default function StepOrderSummary({ formData, handleBack, cart }) {
                         {
                             cart.map(item => (
                                 <li key={item.id} className="list-group-item d-flex justify-content-between px-0">
-                                    <span className="fw-semibold">{item.name} <span className="text-secondary">x{item.quantity || 1}</span></span>
-                                    <span>€{(parseFloat(item.price) * (item.quantity || 1)).toFixed(2)}</span>
+                                    <span className="fw-semibold">{item.name} <span className="text-secondary">x{item.quantity}</span></span>
+                                    <span>€{(parseFloat(item.price) * item.quantity).toFixed(2)}</span>
                                 </li>
                             ))
                         }

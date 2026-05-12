@@ -58,7 +58,7 @@ export default function StepPersonalData({ formData, handleChange, handleNext })
                         </div>
 
                         <div className="d-flex justify-content-end mt-4">
-                            <button type="submit" className="btn btn-primary">
+                            <button type="submit" className="btn btn-danger">
                                 Avanti →
                             </button>
                         </div>

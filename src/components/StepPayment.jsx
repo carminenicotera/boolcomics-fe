@@ -82,7 +82,7 @@ export default function StepPayment({ formData, handleChange, handleNext, handle
                             >
                                 ← Indietro
                             </button>
-                            <button type="submit" className="btn btn-primary">
+                            <button type="submit" className="btn btn-danger">
                                 Avanti →
                             </button>
                         </div>
