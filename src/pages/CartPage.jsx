@@ -46,13 +46,13 @@ export default function CartPage({ cart, removeFromCart }) {
                   <div className="col-6 col-md-7 ps-3">
                     <h5 className="mb-1 fw-bold">{item.name}</h5>
                     <div className="d-flex align-items-center mt-2">
-  <span className="text-muted small mb-0">
+  <span className="text-muted mb-0">
     Quantità: <span className="fw-bold text-dark">{item.quantity || 1}</span>
   </span>
   <span className="text-muted small">(€{item.price} l'uno)</span>
 </div>
                     <p className="text-muted small mb-0">Disponibilità immediata</p>
-                    <p className="text-muted small mb-0">Quantità: {item.quantity}</p>
+                    
                   </div>
                   <div className="col-3 col-md-3 text-end pe-4">
                     <span className="h5 fw-bold text-danger">
@@ -60,7 +60,7 @@ export default function CartPage({ cart, removeFromCart }) {
     €{(parseFloat(item.price) * (item.quantity || 1)).toFixed(2)}
   </span>
                     <button 
-  className="btn btn-outline-danger btn-sm" 
+  className="btn btn-outline-danger btn-sm m-3" 
   onClick={() => removeFromCart(item.slug)} 
 >
   <i className="bi bi-trash"></i>

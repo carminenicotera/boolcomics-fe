@@ -40,7 +40,7 @@ export function useCartLogic() {
   });
 };
   // 3. Conteggio totale (somma le quantità)
-  const cartCount = cart.reduce((acc, item) => acc + (item.quantity || 0), 0);
+ const cartCount = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
 
   
   return { 
