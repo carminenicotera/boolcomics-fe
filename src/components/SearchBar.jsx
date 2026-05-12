@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom"
 export default function SearchBar({ showSearch }) {
 
   const [searchTerm, setSearchTerm] = useState("")
-  const navigate = useNavigate
+  const navigate = useNavigate()
 
   // SUBMIT SEARCH
   const handleSearch = (e) => {

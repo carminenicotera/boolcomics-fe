@@ -78,6 +78,8 @@ export default function AppHeader() {
         </div>
 
       </nav>
+      {/* SEARCH BAR */ }
+      <SearchBar showSearch={ showSearch } />
 
     </header>
 
