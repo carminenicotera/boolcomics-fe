@@ -23,19 +23,19 @@ export function useCartLogic() {
   // 2. Funzione per rimuovere
   const removeFromCart = (slug) => {
   setCart((prevCart) => {
-    // 1. Troviamo il prodotto nel carrello
-    const existingItem = prevCart.find((item) => item.slug === slug);
+    // 1. Cerchiamo l'oggetto nel carrello
+    const itemInCart = prevCart.find((item) => item.slug === slug);
 
-    if (existingItem && existingItem.quantity > 1) {
-      // 2. Se la quantità è maggiore di 1, diminuiamo di uno
+    // 2. Se l'oggetto esiste e la quantità è maggiore di 1...
+    if (itemInCart && itemInCart.quantity > 1) {
       return prevCart.map((item) =>
         item.slug === slug 
-          ? { ...item, quantity: item.quantity - 1 } 
+          ? { ...item, quantity: Number(item.quantity) - 1 } 
           : item
       );
     }
-    
-    // 3. Se la quantità è 1 (o meno), rimuoviamo l'intera riga
+
+    // 3. Altrimenti (se è l'ultimo pezzo), lo rimuoviamo del tutto
     return prevCart.filter((item) => item.slug !== slug);
   });
 };

@@ -9,7 +9,6 @@ export default function CartPage({ cart, removeFromCart }) {
   const total = cart?.reduce((acc, item) => {
   return acc + (parseFloat(item.price) * (item.quantity || 1));
 }, 0) || 0;
-
   return (
     <div className="container py-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -47,14 +46,19 @@ export default function CartPage({ cart, removeFromCart }) {
                   <div className="col-6 col-md-7 ps-3">
                     <h5 className="mb-1 fw-bold">{item.name}</h5>
                     <div className="d-flex align-items-center mt-2">
-  <span className="badge bg-secondary me-2">Quantità: {item.quantity}</span>
+  <span className="text-muted small mb-0">
+    Quantità: <span className="fw-bold text-dark">{item.quantity || 1}</span>
+  </span>
   <span className="text-muted small">(€{item.price} l'uno)</span>
 </div>
                     <p className="text-muted small mb-0">Disponibilità immediata</p>
                     <p className="text-muted small mb-0">Quantità: {item.quantity}</p>
                   </div>
                   <div className="col-3 col-md-3 text-end pe-4">
-                    <span className="h5 fw-bold text-danger me-3">€{item.price}</span>
+                    <span className="h5 fw-bold text-danger">
+    {/* Prezzo totale per questa riga */}
+    €{(parseFloat(item.price) * (item.quantity || 1)).toFixed(2)}
+  </span>
                     <button 
   className="btn btn-outline-danger btn-sm" 
   onClick={() => removeFromCart(item.slug)} 
