@@ -4,7 +4,7 @@ import StepShippingAddress from '../components/StepShippingAddress';
 import StepPayment from '../components/StepPayment';
 import StepOrderSummary from '../components/StepOrderSummary';
 
-export default function CheckoutPage() {
+export default function CheckoutPage({ cart }) {
 
     // Stato per gestire il passo attivo
     const [currentStep, setCurrentStep] = useState(1);
@@ -104,6 +104,7 @@ export default function CheckoutPage() {
                     <StepOrderSummary
                         formData={formData}
                         handleBack={handleBack}
+                        cart={cart}
                     />
                 )}
 

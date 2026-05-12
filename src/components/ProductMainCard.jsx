@@ -1,4 +1,4 @@
-export default function ProductMainCard({ comic,addToCart  }) {
+export default function ProductMainCard({ comic, addToCart }) {
     if (!comic) {
         return null;
     }
@@ -62,10 +62,10 @@ export default function ProductMainCard({ comic,addToCart  }) {
 
                                     {/* Bottone Carrello */}
                                     <span className="btn fw-bold" onClick={() => {
-                        addToCart(comic);
-                        
-                        alert(`${comic.name} aggiunto al carrello!`);
-                      }} style={ { background: '#E63946', color: 'white' } }>ACQUISTA</span>
+                                        addToCart({ ...comic, quantity: 1 });
+
+                                        alert(`${comic.name} aggiunto al carrello!`);
+                                    }} style={{ background: '#E63946', color: 'white' }}>ACQUISTA</span>
                                     {/* Bottone Preferiti */}
                                     <button className="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center gap-2">
                                         <i className="bi bi-heart"></i>
