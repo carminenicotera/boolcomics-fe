@@ -9,7 +9,7 @@ import ProductDescriptionCard from '../components/ProductDescriptionCard';
 const API_URL = import.meta.env.VITE_API_URL;
 
 
-export default function ComicPage() {
+export default function ComicPage({ addToCart}) {
     const { slug } = useParams();
     const [comic, setComic] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -46,7 +46,7 @@ export default function ComicPage() {
             <div className='container'>
 
                 {/* card dettails  */}
-                <ProductMainCard comic={comic} />
+                <ProductMainCard comic={comic} addToCart={addToCart} />
 
                 {/* card description */}
                 <ProductDescriptionCard comic={comic} />
