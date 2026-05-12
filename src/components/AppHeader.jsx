@@ -79,7 +79,7 @@ export default function AppHeader() {
 
       </nav>
       {/* SEARCH BAR */ }
-      <SearchBar showSearch={ showSearch } />
+      <SearchBar showSearch={ showSearch } setShowSearch={setShowSearch}/>
 
     </header>
 
