@@ -38,7 +38,7 @@ export default function CatalogPage() {
   return (
     <>
       {/* PAGE HEADER */ }
-      <section className="catalog-header py-5">
+      {/* <section className="catalog-header py-5">
         <div className="container">
           <h1 className="catalog-title">
             Catalogo
@@ -48,7 +48,7 @@ export default function CatalogPage() {
             di fumetti e manga.
           </p>
         </div>
-      </section>
+      </section> */}
 
       {/* PRODUCTS */ }
       <section className="py-5">
@@ -60,7 +60,7 @@ export default function CatalogPage() {
             {/* RESULTS */ }
             <div className="col-12 col-md-auto">
               <p className="results-text mb-0">
-                { filteredComics.length } products found
+                { filteredComics.length } prodotti trovati
               </p>
             </div>
 

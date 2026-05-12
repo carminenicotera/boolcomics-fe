@@ -20,6 +20,10 @@ export default function SearchBar({ showSearch, setShowSearch }) {
 
     navigate(`/catalog?search=${searchTerm}`)
 
+    // RESET SEARCH
+    setSearchTerm("")
+
+    // CLOSE SEARCH BAR
     setShowSearch(false)
   }
 
