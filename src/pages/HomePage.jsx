@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { data } from "react-router-dom";
-export default function Homepage() {
+export default function Homepage({ addToCart }) {
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -59,7 +59,7 @@ export default function Homepage() {
             { carosell.map((comic, index) => (
               <div key={ comic.id } className={ `carousel-item ${index === 0 ? "active" : ""}` }>
                 <img
-                  src="public/img/placeholdercomic.png"
+                  src="/img/placeholdercomic.png"
                   className="d-block w-100"
                   alt={ comic.name }
                   style={ { height: '400px', objectFit: 'cover', filter: 'brightness(0.6)' } }
@@ -96,13 +96,19 @@ export default function Homepage() {
               <div className="card h-100 shadow-sm">
 
                 <Link to={ `/products/${comic.slug}` }>
-                  <img src="/public/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover" />
+                  <img src="/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover" />
                 </Link>
                 <div className="card-body text-center">
                   <h5 className="fw-bold">{ comic.name }</h5>
                   <strong>Uscita:</strong> { comic.release_date.split('T')[0] }
                   <p className="fw-bold">€{ comic.price }</p>
-                  <span className="btn fw-bold" style={ { background: '#E63946', color: 'white' } }>ACQUISTA</span>
+                  <button 
+                    className="btn fw-bold mt-auto" 
+                    style={{ background: '#E63946', color: 'white' }}
+                    onClick={() => addToCart(comic)}
+                  >
+                    ACQUISTA
+                  </button>
                 </div>
               </div>
             </div>

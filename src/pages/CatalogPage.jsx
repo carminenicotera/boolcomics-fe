@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 
-export default function CatalogPage() {
+export default function CatalogPage({ addToCart }) {
 
   const [comics, setComics] = useState([])
 
@@ -55,9 +55,12 @@ export default function CatalogPage() {
                     </p>
 
                     {/* BUTTON */ }
-                    <button className="btn btn-danger mt-auto text-white fw-bold text-uppercase">
-                      Acquista
-                    </button>
+                    <span className="btn fw-bold" onClick={() => {
+                        addToCart(comic);
+                        
+                        alert(`${comic.name} aggiunto al carrello!`);
+                      }} style={ { background: '#E63946', color: 'white' } }>ACQUISTA</span>
+                 
 
                   </div>
 
