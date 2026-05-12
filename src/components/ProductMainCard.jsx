@@ -3,14 +3,13 @@ import { useState } from 'react';
 
 export default function ProductMainCard({ comic, addToCart }) {
 
+    // Stato per gestire la quantità selezionata
+    const [quantity, setQuantity] = useState(1);
+
     // Se il prodotto non esiste, non renderizzare nulla
     if (!comic) {
         return null;
     }
-
-
-    // Stato per gestire la quantità selezionata
-    const [quantity, setQuantity] = useState(1);
 
     // Verifica se il prodotto è scontato
     const isDiscounted = comic.price < comic.original_price;
@@ -73,7 +72,6 @@ export default function ProductMainCard({ comic, addToCart }) {
                                     {/* Bottone Carrello */}
                                     <span className="btn fw-bold" onClick={() => {
                                         addToCart({ ...comic, quantity: quantity });
-
                                         alert(`${comic.name} aggiunto al carrello!`);
                                     }} style={{ background: '#E63946', color: 'white' }}>ACQUISTA</span>
                                     {/* Bottone Preferiti */}

@@ -6,13 +6,13 @@ export default function CartPage({ cart, removeFromCart }) {
 
   const navigate = useNavigate();
 
-  const total = cart?.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0) || 0;
+  const total = cart?.reduce((acc, item) => acc + parseFloat(item.price) * (item.quantity || 1), 0) || 0;
 
   return (
     <div className="container py-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="fw-bold m-0">Il tuo Carrello</h1>
-        <span className="badge bg-secondary fs-6">{cart?.reduce((acc, item) => acc + item.quantity, 0) || 0} Articoli</span>
+        <span className="badge bg-secondary fs-6">{cart?.reduce((acc, item) => acc + (item.quantity || 1), 0) || 0} Articoli</span>
       </div>
 
       {/* SE IL CARRELLO È VUOTO */}

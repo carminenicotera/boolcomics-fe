@@ -4,7 +4,7 @@ export function useCartLogic() {
   const [cart, setCart] = useState([]);
 
   const addToCart = (product) => {
-    setCart((prev) => [...prev, { ...product, quantity: 1 }]);
+    setCart((prev) => [...prev, product]);
     console.log("Prodotto ricevuto dall'hook:")
   };
 
@@ -15,7 +15,7 @@ export function useCartLogic() {
     setCart(newCart);
     console.log("prodotto eliminato")
   };
-  const cartCount = cart.length;
+  const cartCount = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
 
   return { cart, addToCart, cartCount, removeFromCart };
 }

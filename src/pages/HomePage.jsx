@@ -105,7 +105,7 @@ export default function Homepage({ addToCart }) {
                   <button 
                     className="btn fw-bold mt-auto" 
                     style={{ background: '#E63946', color: 'white' }}
-                    onClick={() => addToCart(comic)}
+                    onClick={() => addToCart({ ...comic, quantity: 1 })}
                   >
                     ACQUISTA
                   </button>

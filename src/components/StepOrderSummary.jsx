@@ -1,5 +1,5 @@
 export default function StepOrderSummary({ formData, handleBack, cart }) {
-
+    
     // Calcolo del totale dell'ordine
     const total = cart.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0);
 

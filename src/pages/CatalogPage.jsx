@@ -104,8 +104,7 @@ export default function CatalogPage({ addToCart }) {
 
                     {/* BUTTON */ }
                     <span className="btn fw-bold" onClick={() => {
-                        addToCart(comic);
-                        
+                        addToCart({ ...comic, quantity: 1 });
                         alert(`${comic.name} aggiunto al carrello!`);
                       }} style={ { background: '#E63946', color: 'white' } }>ACQUISTA</span>
                  
