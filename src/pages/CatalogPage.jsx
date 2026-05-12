@@ -55,6 +55,7 @@ export default function CatalogPage() {
         <div className="container">
 
           {/* TOP BAR */ }
+          {searchQuery && (
           <div className="row justify-content-between align-items-center mb-4 g-3">
 
             {/* RESULTS */ }
@@ -75,6 +76,7 @@ export default function CatalogPage() {
               </select>
             </div>
           </div>
+          ) }
 
           {/* PRODUCTS GRID */ }
           <div className="row g-4">
