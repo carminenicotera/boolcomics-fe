@@ -4,7 +4,7 @@ import StepShippingAddress from '../components/StepShippingAddress';
 import StepPayment from '../components/StepPayment';
 import StepOrderSummary from '../components/StepOrderSummary';
 
-export default function CheckoutPage() {
+export default function CheckoutPage({ cart }) {
 
     // Stato per gestire il passo attivo
     const [currentStep, setCurrentStep] = useState(1);
@@ -62,14 +62,14 @@ export default function CheckoutPage() {
                                 style={{
                                     width: '40px',
                                     height: '40px',
-                                    backgroundColor: currentStep >= step.number ? '#0d6efd' : '#dee2e6',
+                                    backgroundColor: currentStep >= step.number ? '#E63946' : '#dee2e6',
                                     color: currentStep >= step.number ? '#fff' : '#6c757d',
                                     fontWeight: '500'
                                 }}
                             >
                                 {step.number}
                             </div>
-                            <small style={{ color: currentStep >= step.number ? '#0d6efd' : '#6c757d' }}>
+                            <small style={{ color: currentStep >= step.number ? '#E63946' : '#6c757d' }}>
                                 {step.label}
                             </small>
                         </div>
@@ -104,6 +104,7 @@ export default function CheckoutPage() {
                     <StepOrderSummary
                         formData={formData}
                         handleBack={handleBack}
+                        cart={cart}
                     />
                 )}
 

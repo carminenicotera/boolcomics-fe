@@ -1,7 +1,16 @@
-export default function ProductMainCard({ comic,addToCart  }) {
+import { useState } from 'react';
+
+
+export default function ProductMainCard({ comic, addToCart }) {
+
+    // Se il prodotto non esiste, non renderizzare nulla
     if (!comic) {
         return null;
     }
+
+
+    // Stato per gestire la quantità selezionata
+    const [quantity, setQuantity] = useState(1);
 
     // Verifica se il prodotto è scontato
     const isDiscounted = comic.price < comic.original_price;
@@ -49,7 +58,8 @@ export default function ProductMainCard({ comic,addToCart  }) {
                                         <input
                                             type="number"
                                             className="form-control text-center"
-                                            defaultValue="1"
+                                            value={quantity}
+                                            onChange={(e) => setQuantity(parseInt(e.target.value))}
                                             min="1"
                                             max={comic.stock_quantity}
                                         />
@@ -62,10 +72,10 @@ export default function ProductMainCard({ comic,addToCart  }) {
 
                                     {/* Bottone Carrello */}
                                     <span className="btn fw-bold" onClick={() => {
-                        addToCart(comic);
-                        
-                        alert(`${comic.name} aggiunto al carrello!`);
-                      }} style={ { background: '#E63946', color: 'white' } }>ACQUISTA</span>
+                                        addToCart({ ...comic, quantity: quantity });
+
+                                        alert(`${comic.name} aggiunto al carrello!`);
+                                    }} style={{ background: '#E63946', color: 'white' }}>ACQUISTA</span>
                                     {/* Bottone Preferiti */}
                                     <button className="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center gap-2">
                                         <i className="bi bi-heart"></i>

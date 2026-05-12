@@ -6,13 +6,13 @@ export default function CartPage({ cart, removeFromCart }) {
 
   const navigate = useNavigate();
 
-  const total = cart?.reduce((acc, item) => acc + parseFloat(item.price), 0) || 0;
+  const total = cart?.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0) || 0;
 
   return (
     <div className="container py-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="fw-bold m-0">Il tuo Carrello</h1>
-        <span className="badge bg-secondary fs-6">{cart?.length || 0} Articoli</span>
+        <span className="badge bg-secondary fs-6">{cart?.reduce((acc, item) => acc + item.quantity, 0) || 0} Articoli</span>
       </div>
 
       {/* SE IL CARRELLO È VUOTO */}
@@ -45,9 +45,10 @@ export default function CartPage({ cart, removeFromCart }) {
                   <div className="col-6 col-md-7 ps-3">
                     <h5 className="mb-1 fw-bold">{item.name}</h5>
                     <p className="text-muted small mb-0">Disponibilità immediata</p>
+                    <p className="text-muted small mb-0">Quantità: {item.quantity}</p>
                   </div>
                   <div className="col-3 col-md-3 text-end pe-4">
-                    <span className="h5 fw-bold text-danger">€{item.price}</span>
+                    <span className="h5 fw-bold text-danger me-3">€{item.price}</span>
                     <button
                       className="btn btn-outline-danger btn-sm"
                       onClick={() => removeFromCart(index)}
