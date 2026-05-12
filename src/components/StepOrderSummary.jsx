@@ -34,6 +34,22 @@ export default function StepOrderSummary({ formData, handleBack, cart }) {
             const addressData = await addressRes.json();
             console.log('Indirizzo salvato con id:', addressData.id);
 
+            // Dati ordine pronti
+            const orderData = {
+                first_name: formData.first_name,
+                last_name: formData.last_name,
+                email: formData.email,
+                address: addressData.id,
+                status: 'pending',
+                total_price: total,
+                order_items:
+                    cart.map(item => ({
+                        slug: item.slug,
+                        quantity: item.quantity
+                    }))
+            };
+            console.log(orderData);
+
             // Mostra la modale e dopo 2 secondi vai alla home
             setShowModal(true);
             setTimeout(() => {
