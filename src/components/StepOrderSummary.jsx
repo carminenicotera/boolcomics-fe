@@ -1,8 +1,50 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+
 export default function StepOrderSummary({ formData, handleBack, cart }) {
-    
+
     // Calcolo del totale dell'ordine
     const total = cart.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0);
 
+    // Hook per la navigazione e stato per la modale di conferma
+    const navigate = useNavigate();
+    const [showModal, setShowModal] = useState(false);
+
+    // URL dell'API (definita nelle variabili d'ambiente)
+    const API_URL = import.meta.env.VITE_API_URL;
+
+    // Funzione per completare l'ordine
+    const handleCompleteOrder = async () => {
+        try {
+            const addressRes = await fetch(`${API_URL}/addresses`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    street: formData.street,
+                    city: formData.city,
+                    state: formData.state,
+                    zip_code: formData.zip_code,
+                    country: formData.country,
+                })
+            });
+
+            if (!addressRes.ok) throw new Error('Errore nel salvataggio indirizzo');
+
+            const addressData = await addressRes.json();
+            console.log('Indirizzo salvato con id:', addressData.id);
+
+            // Mostra la modale e dopo 2 secondi vai alla home
+            setShowModal(true);
+            setTimeout(() => {
+                setShowModal(false);
+                navigate('/');
+            }, 2000);
+
+        } catch (err) {
+            alert('Errore: ' + err.message);
+        }
+    };
 
     return (
 
@@ -61,11 +103,27 @@ export default function StepOrderSummary({ formData, handleBack, cart }) {
                         >
                             ← Indietro
                         </button>
-                        <button className="btn btn-success btn-lg">
+
+                        {/* Pulsante per completare l'ordine */}
+                        <button className="btn btn-success btn-lg" onClick={handleCompleteOrder}>
                             ✓ Completa acquisto
                         </button>
                     </div>
 
+                </div>
+
+                <div>
+                    {/* Modale di conferma ordine */}
+                    {showModal && (
+                        <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                            <div className="modal-dialog modal-dialog-centered">
+                                <div className="modal-content text-center p-4">
+                                    <h4 className="mb-2">🎉 Grazie per averci scelto!</h4>
+                                    <p className="text-muted">Verrai reindirizzato alla home...</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
             </div>
