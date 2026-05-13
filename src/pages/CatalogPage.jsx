@@ -35,37 +35,36 @@ export default function CatalogPage({ addToCart }) {
       return 0
     })
 
+  // Funzione centralizzata per gestire il click in sicurezza
+  const handlePurchaseClick = (comic) => {
+    const isOutOfStock = comic.stock_quantity <= 0;
+    if (isOutOfStock) {
+      alert("Spiacenti, il prodotto è esaurito!");
+      return;
+    }
+    // Usa la logica corretta passando i parametri separati (prodotto, quantità)
+    addToCart(comic, 1);
+    alert(`${comic.name} aggiunto al carrello!`);
+  };
+
   return (
     <>
-      {/* PAGE HEADER */ }
-      {/* <section className="catalog-header py-5">
-        <div className="container">
-          <h1 className="catalog-title">
-            Catalogo
-          </h1>
-          <p className="catalog-subtitle">
-            Qui potrai esplorare il nostro vasto catalogo
-            di fumetti e manga.
-          </p>
-        </div>
-      </section> */}
-
-      {/* PRODUCTS */ }
+      {/* PRODUCTS */}
       <section className="py-5">
         <div className="container">
 
-          {/* TOP BAR */ }
+          {/* TOP BAR */}
           {searchQuery && (
           <div className="row justify-content-between align-items-center mb-4 g-3">
 
-            {/* RESULTS */ }
+            {/* RESULTS */}
             <div className="col-12 col-md-auto">
               <p className="results-text mb-0">
                 { filteredComics.length } prodotti trovati
               </p>
             </div>
 
-            {/* SORT BY */ }
+            {/* SORT BY */}
             <div className="col-12 col-md-3">
               <select className="form-select catalog-select" value={ sortBy } onChange={ (e) => setSortBy(e.target.value) }>
                 <option value="">Ordina per</option>
@@ -78,44 +77,53 @@ export default function CatalogPage({ addToCart }) {
           </div>
           ) }
 
-          {/* PRODUCTS GRID */ }
+          {/* PRODUCTS GRID */}
           <div className="row g-4">
-            { filteredComics.map(comic => (
-              <div key={ comic.id } className="col-12 col-sm-6 col-lg-3">
-                <div className="card product-card h-100">
+            { filteredComics.map(comic => {
+              const isOutOfStock = comic.stock_quantity <= 0;
+              return (
+                <div key={ comic.id } className="col-12 col-sm-6 col-lg-3">
+                  <div className="card product-card h-100">
 
-                  {/* IMAGE */ }
-                  <Link to={ `/products/${comic.slug}` } className="product-image-wrapper">
-                    <img src="/public/img/placeholdercomic.png" alt={ comic.name } className="card-img-top product-image" />
-                  </Link>
+                    {/* IMAGE */}
+                    <Link to={ `/products/${comic.slug}` } className="product-image-wrapper">
+                      <img src="/img/placeholdercomic.png" alt={ comic.name } className="card-img-top product-image" />
+                    </Link>
 
-                  {/* BODY */ }
-                  <div className="card-body d-flex flex-column text-center">
+                    {/* BODY */}
+                    <div className="card-body d-flex flex-column text-center">
 
-                    {/* TITLE */ }
-                    <h5 className="product-title">
-                      { comic.name }
-                    </h5>
+                      {/* TITLE */}
+                      <h5 className="product-title">
+                        { comic.name }
+                      </h5>
 
-                    {/* PRICE */ }
-                    <p className="product-price">
-                      € { comic.price }
-                    </p>
+                      {/* PRICE */}
+                      <p className="product-price mt-auto">
+                        € { comic.price }
+                      </p>
 
-                    {/* BUTTON */ }
-                    <span className="btn fw-bold" onClick={() => {
-                        addToCart({ ...comic, quantity: 1 });
-                        alert(`${comic.name} aggiunto al carrello!`);
-                      }} style={ { background: '#E63946', color: 'white' } }>ACQUISTA</span>
-                 
+                      {/* BUTTON MODIFICATO CON BLOCCO DI SICUREZZA */}
+                      <button 
+                        className="btn fw-bold w-100" 
+                        onClick={() => handlePurchaseClick(comic)}
+                        disabled={isOutOfStock}
+                        style={{ 
+                          background: isOutOfStock ? '#6c757d' : '#E63946', 
+                          color: 'white',
+                          cursor: isOutOfStock ? 'not-allowed' : 'pointer' 
+                        }}
+                      >
+                        {isOutOfStock ? 'ESAURITO' : 'ACQUISTA'}
+                      </button>
+
+                    </div>
 
                   </div>
 
                 </div>
-
-              </div>
-
-            )) }
+              );
+            }) }
 
           </div>
 
