@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { data } from "react-router-dom";
+
 export default function Homepage({ addToCart }) {
 
   const API_URL = import.meta.env.VITE_API_URL;
@@ -11,7 +11,7 @@ export default function Homepage({ addToCart }) {
   const [mostPurchased, setMostPurchased] = useState([])
 
 
-//chiamata per le ultime uscite
+  // Chiamata per le ultime uscite
   useEffect(() => {
     fetch(`${API_URL}/products/last-arrived`)
       .then(res => res.json())
@@ -21,34 +21,41 @@ export default function Homepage({ addToCart }) {
       .catch(err => console.error(err));
   }, []);
 
-//carosello
+  // Carosello
   useEffect(() => {
     fetch(`${API_URL}/products/`)
       .then(res => res.json())
-      .then(data => setCarosell(data.slice(0, 3))
-      ).catch(err => console.error(err));
+      .then(data => setCarosell(data.slice(0, 3)))
+      .catch(err => console.error(err));
   }, [])
 
-  //chiamata più venduti
-  useEffect(() =>{
+  // Chiamata più venduti
+  useEffect(() => {
     fetch(`${API_URL}/products/most-purchased`)
-    .then(res => res.json())
-    .then(data =>{
-      setMostPurchased(data.slice(0 , 4))
-    })
-  } , [])
+      .then(res => res.json())
+      .then(data => {
+        setMostPurchased(data.slice(0, 4))
+      })
+      .catch(err => console.error(err));
+  }, [])
 
-
-
-
-
-
+  // Funzione centralizzata per gestire il click sul pulsante acquista in sicurezza
+  const handlePurchaseClick = (comic) => {
+    const isOutOfStock = comic.stock_quantity <= 0;
+    if (isOutOfStock) {
+      alert("Spiacenti, il prodotto è esaurito!");
+      return;
+    }
+    // Usa la nostra nuova logica passandogli il secondo argomento esplicito (1 copia)
+    addToCart(comic, 1);
+    alert(`${comic.name} aggiunto al carrello!`);
+  };
 
   return (
     <>
+      {/* CAROSELLO */}
       <div className="container mb-5 mt-5">
         <div id="carouselExampleCaptions" className="carousel slide shadow" data-bs-ride="carousel">
-
 
           <div className="carousel-indicators">
             { carosell.map((_, index) => (
@@ -62,7 +69,6 @@ export default function Homepage({ addToCart }) {
               ></button>
             )) }
           </div>
-
 
           <div className="carousel-inner rounded">
             { carosell.map((comic, index) => (
@@ -82,7 +88,6 @@ export default function Homepage({ addToCart }) {
             )) }
           </div>
 
-
           <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
             <span className="carousel-control-prev-icon" aria-hidden="true"></span>
             <span className="visually-hidden">Precedente</span>
@@ -94,61 +99,78 @@ export default function Homepage({ addToCart }) {
         </div>
       </div>
 
-
-
-
+      {/* ULTIME USCITE */}
       <div className="container">
         <h2 className="text-center">ULTIME USCITE</h2>
         <div className="row">
-          { lastestProducts.map(comic => (
-            <div className="col-12 col-sm-6 col-lg-3 mb-4" key={ comic.id }>
-              <div className="card product-card h-100 shadow-sm">
-
-                <Link to={ `/products/${comic.slug}` }>
-                  <img src="/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover product-image" />
-                </Link>
-                <div className="card-body text-center">
-                  <h5 className="fw-bold">{ comic.name }</h5>
-                  <strong>Uscita:</strong> { comic.release_date.split('T')[0] }
-                  <p className="fw-bold">€{ comic.price }</p>
-                  <button 
-                    className="btn fw-bold mt-auto" 
-                    style={{ background: '#E63946', color: 'white' }}
-                    onClick={() => addToCart({ ...comic, quantity: 1 })}
-                  >
-                    ACQUISTA
-                  </button>
+          { lastestProducts.map(comic => {
+            const isOutOfStock = comic.stock_quantity <= 0;
+            return (
+              <div className="col-12 col-sm-6 col-lg-3 mb-4" key={ comic.id }>
+                <div className="card product-card h-100 shadow-sm">
+                  <Link to={ `/products/${comic.slug}` }>
+                    <img src="/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover product-image" />
+                  </Link>
+                  <div className="card-body text-center d-flex flex-column">
+                    <h5 className="fw-bold">{ comic.name }</h5>
+                    <span className="mb-2"><strong>Uscita:</strong> { comic.release_date ? comic.release_date.split('T')[0] : 'N/A' }</span>
+                    <p className="fw-bold mt-auto">€{ comic.price }</p>
+                    
+                    <button 
+                      className="btn fw-bold w-100" 
+                      onClick={() => handlePurchaseClick(comic)}
+                      disabled={isOutOfStock}
+                      style={{ 
+                        background: isOutOfStock ? '#6c757d' : '#E63946', 
+                        color: 'white',
+                        cursor: isOutOfStock ? 'not-allowed' : 'pointer' 
+                      }}
+                    >
+                      {isOutOfStock ? 'ESAURITO' : 'ACQUISTA'}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )) }
+            );
+          }) }
         </div>
       </div>
 
+      {/* I PIÙ VENDUTI */}
       <div className="container">
         <h2 className="text-center">I PIÙ VENDUTI</h2>
         <div className="row">
-          { mostPurchased.map(comic => (
-            <div className="col-12 col-sm-6 col-lg-3 mb-4" key={ comic.id }>
-              <div className="card h-100 shadow-sm product-card">
-
-                <Link to={ `/products/${comic.slug}` }>
-                  <img src="/public/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover product-image" />
-                </Link>
-                <div className="card-body text-center">
-                  <h5 className="fw-bold">{ comic.name }</h5>
-                  <p className="fw-bold">€{ comic.price }</p>
-                  <span className="btn fw-bold" style={ { background: '#E63946', color: 'white' } }>ACQUISTA</span>
+          { mostPurchased.map(comic => {
+            const isOutOfStock = comic.stock_quantity <= 0;
+            return (
+              <div className="col-12 col-sm-6 col-lg-3 mb-4" key={ comic.id }>
+                <div className="card h-100 shadow-sm product-card">
+                  <Link to={ `/products/${comic.slug}` }>
+                    <img src="/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover product-image" />
+                  </Link>
+                  <div className="card-body text-center d-flex flex-column">
+                    <h5 className="fw-bold">{ comic.name }</h5>
+                    <p className="fw-bold mt-auto">€{ comic.price }</p>
+                    
+                    <button 
+                      className="btn fw-bold w-100" 
+                      onClick={() => handlePurchaseClick(comic)}
+                      disabled={isOutOfStock}
+                      style={{ 
+                        background: isOutOfStock ? '#6c757d' : '#E63946', 
+                        color: 'white',
+                        cursor: isOutOfStock ? 'not-allowed' : 'pointer' 
+                      }}
+                    >
+                      {isOutOfStock ? 'ESAURITO' : 'ACQUISTA'}
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          )) }
-
-
+            );
+          }) }
         </div>
       </div>
-
-
     </>
   )
 }
