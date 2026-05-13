@@ -49,7 +49,7 @@ export default function StepOrderSummary({ formData, handleBack, cart }) {
             };
             console.log('Invio dati ordine:', orderData);
 
-            // 3. Invio dell'ordine al backend Express
+            // Creazione dell'ordine
             const orderRes = await fetch(`${API_URL}/orders`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
