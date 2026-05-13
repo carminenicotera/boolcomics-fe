@@ -8,26 +8,35 @@ export default function Homepage({ addToCart }) {
 
   const [lastestProducts, setLatestProducts] = useState([])
   const [carosell, setCarosell] = useState([])
+  const [mostPurchased, setMostPurchased] = useState([])
 
 
-
+//chiamata per le ultime uscite
   useEffect(() => {
-    fetch(`${API_URL}/products/`)
+    fetch(`${API_URL}/products/last-arrived`)
       .then(res => res.json())
       .then(data => {
-        const sorted = data.sort((a, b) => b.release_date.localeCompare(a.release_date));
-
-        setLatestProducts(sorted.slice(0, 4));
+        setLatestProducts(data.slice(0, 4));
       })
       .catch(err => console.error(err));
   }, []);
 
+//carosello
   useEffect(() => {
     fetch(`${API_URL}/products/`)
       .then(res => res.json())
       .then(data => setCarosell(data.slice(0, 3))
       ).catch(err => console.error(err));
   }, [])
+
+  //chiamata più venduti
+  useEffect(() =>{
+    fetch(`${API_URL}/products/most-purchased`)
+    .then(res => res.json())
+    .then(data =>{
+      setMostPurchased(data.slice(0 , 4))
+    })
+  } , [])
 
 
 
@@ -93,10 +102,10 @@ export default function Homepage({ addToCart }) {
         <div className="row">
           { lastestProducts.map(comic => (
             <div className="col-12 col-sm-6 col-lg-3 mb-4" key={ comic.id }>
-              <div className="card h-100 shadow-sm">
+              <div className="card product-card h-100 shadow-sm">
 
                 <Link to={ `/products/${comic.slug}` }>
-                  <img src="/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover" />
+                  <img src="/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover product-image" />
                 </Link>
                 <div className="card-body text-center">
                   <h5 className="fw-bold">{ comic.name }</h5>
@@ -117,18 +126,17 @@ export default function Homepage({ addToCart }) {
       </div>
 
       <div className="container">
-        <h1 className="text-center">I PIÙ VENDUTI</h1>
+        <h2 className="text-center">I PIÙ VENDUTI</h2>
         <div className="row">
-          { lastestProducts.map(comic => (
+          { mostPurchased.map(comic => (
             <div className="col-12 col-sm-6 col-lg-3 mb-4" key={ comic.id }>
-              <div className="card h-100 shadow-sm">
+              <div className="card h-100 shadow-sm product-card">
 
                 <Link to={ `/products/${comic.slug}` }>
-                  <img src="/public/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover" />
+                  <img src="/public/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover product-image" />
                 </Link>
                 <div className="card-body text-center">
                   <h5 className="fw-bold">{ comic.name }</h5>
-                  <strong>Uscita:</strong> { comic.release_date.split('T')[0] }
                   <p className="fw-bold">€{ comic.price }</p>
                   <span className="btn fw-bold" style={ { background: '#E63946', color: 'white' } }>ACQUISTA</span>
                 </div>
