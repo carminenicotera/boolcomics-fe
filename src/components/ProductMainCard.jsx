@@ -2,241 +2,120 @@ import { useState } from 'react';
 
 export default function ProductMainCard({ comic, addToCart }) {
 
+    // Stato per gestire la quantità selezionata
     const [quantity, setQuantity] = useState(1);
-    const [showAlert, setShowAlert] = useState(false);
 
-    // Stato cuore preferiti
-    const [isFavorite, setIsFavorite] = useState(false);
+    // Se il prodotto non esiste, non renderizzare nulla
+    if (!comic) {
+        return null;
+    }
 
-    // Controllo disponibilità
+    // Verifica se il prodotto è scontato
+    const isDiscounted = comic.price < comic.original_price;
+
+    // Controlla se il prodotto è completamente esaurito
     const isOutOfStock = comic.stock_quantity <= 0;
 
-    // Controllo sconto
-    const isDiscounted =
-        comic.original_price &&
-        parseFloat(comic.original_price) > parseFloat(comic.price);
-
-    // Gestione quantità input
+    // Gestione sicura del cambio quantità dall'input
     const handleQuantityChange = (e) => {
-
-        let value = parseInt(e.target.value);
-
-        if (isNaN(value) || value < 1) {
-            value = 1;
+        const val = parseInt(e.target.value) || 1;
+        if (val > comic.stock_quantity) {
+            setQuantity(comic.stock_quantity);
+        } else if (val < 1) {
+            setQuantity(1);
+        } else {
+            setQuantity(val);
         }
-
-        if (value > comic.stock_quantity) {
-            value = comic.stock_quantity;
-        }
-
-        setQuantity(value);
     };
 
-    // Aggiungi al carrello
-    const handleAddToCart = () => {
+    // Funzione di aggiunta con controllo di sicurezza inserito
+    const handleAddToCartClick = () => {
+        if (isOutOfStock) {
+            alert("Spiacenti, il prodotto è esaurito!");
+            return;
+        }
+        if (quantity > comic.stock_quantity) {
+            alert(`Puoi aggiungere al massimo ${comic.stock_quantity} pezzi.`);
+            return;
+        }
 
-        if (isOutOfStock) return;
-
-        addToCart({
-            ...comic,
-            quantity
-        });
-
-        setShowAlert(true);
-
-        setTimeout(() => {
-            setShowAlert(false);
-        }, 2500);
+        addToCart({ ...comic, quantity: quantity });
+        alert(`${comic.name} aggiunto al carrello!`);
     };
 
     return (
+        <>
+            <div>
+                <div className="card shadow-sm my-4">
+                    <div className="card-body">
+                        <div className="row">
+                            <div className="col-md-4 text-center">
+                                <img
+                                    src={ comic.image_url }
+                                    alt={ comic.name }
+                                    className="img-fluid rounded"
+                                    style={ { maxHeight: '450px', objectFit: 'cover' } }
+                                    onError={ (e) => e.target.src = '/img/placeholdercomic.png' }
+                                />
+                            </div>
 
-        <div className="card border-0 shadow-sm p-4 my-4">
+                            <div className="col-md-8">
+                                <h2 className="card-title">{ comic.name }</h2>
+                                <hr />
+                                <div className="d-flex align-items-baseline mb-3">
+                                    { isDiscounted && (
+                                        <p className="text-muted text-decoration-line-through me-2 mb-0">€{ parseFloat(comic.original_price).toFixed(2) }</p>
+                                    ) }
+                                    <h3 className="text-danger mb-0">€{ parseFloat(comic.price).toFixed(2) }</h3>
+                                </div>
+                                <p className="mb-3">
+                                    Disponibilità: { comic.stock_quantity > 0 ?
+                                        <span className="text-success">In stock ({ comic.stock_quantity } pezzi)</span> :
+                                        <span className="text-danger">Esaurito</span> }
+                                </p>
 
-            {/* ALERT */ }
-            {
-                showAlert && (
-                    <div className="alert alert-success alert-dismissible fade show">
-                        <strong>{ comic.name }</strong> aggiunto al carrello!
-                    </div>
-                )
-            }
+                                <div className="col-auto">
+                                    <div className="input-group" style={ { width: '130px' } }>
+                                        <span className="input-group-text">Qtà</span>
+                                        <input
+                                            type="number"
+                                            className="form-control text-center"
+                                            value={ quantity }
+                                            onChange={ handleQuantityChange }
+                                            min="1"
+                                            max={ comic.stock_quantity }
+                                            disabled={ isOutOfStock }
+                                        />
+                                    </div>
+                                </div>
 
-            <div className="row g-4 align-items-start">
+                                {/* Sezione Azioni: Carrello e Preferiti */ }
+                                <div className="d-flex flex-column flex-sm-row gap-3 mt-4">
+                                    {/* Bottone Carrello condizionato dallo stock */ }
+                                    <button
+                                        className="btn fw-bold text-white btn-lg"
+                                        onClick={ handleAddToCartClick }
+                                        disabled={ isOutOfStock }
+                                        style={ {
+                                            background: isOutOfStock ? '#6c757d' : '#E63946',
+                                            cursor: isOutOfStock ? 'not-allowed' : 'pointer',
+                                            border: 'none'
+                                        } }
+                                    >
+                                        { isOutOfStock ? 'ESAURITO' : 'ACQUISTA' }
+                                    </button>
 
-                {/* IMMAGINE */ }
-                <div className="col-lg-5 text-center">
-
-                    <img
-                        src={ comic.image_url }
-                        alt={ comic.name }
-                        className="img-fluid rounded shadow-sm"
-                        style={ {
-                            maxHeight: '500px',
-                            objectFit: 'cover'
-                        } }
-                        onError={ (e) =>
-                            (e.target.src = '/img/placeholdercomic.png')
-                        }
-                    />
-
-                </div>
-
-                {/* DETTAGLI */ }
-                <div className="col-lg-7">
-
-                    {/* TITOLO + WISHLIST */ }
-                    <div className="d-flex justify-content-between align-items-start">
-
-                        <h1 className="fw-bold mb-3">
-                            { comic.name }
-                        </h1>
-
-                        {/* CUORE PREFERITI */ }
-                        <button
-                            className="btn border-0 p-0"
-                            onClick={ () => setIsFavorite(!isFavorite) }
-                            style={ {
-                                fontSize: '1.8rem',
-                                transition: '0.2s'
-                            } }
-                        >
-                            <i
-                                className={ `bi ${isFavorite
-                                        ? 'bi-heart-fill text-danger'
-                                        : 'bi-heart text-secondary'
-                                    }` }
-                            ></i>
-                        </button>
-
-                    </div>
-
-                    {/* PREZZI */ }
-                    <div className="d-flex align-items-center gap-3 mb-4">
-
-                        {
-                            isDiscounted && (
-                                <span className="text-muted text-decoration-line-through fs-5">
-                                    €{ parseFloat(comic.original_price).toFixed(2) }
-                                </span>
-                            )
-                        }
-
-                        <span className="text-danger fw-bold fs-2">
-                            €{ parseFloat(comic.price).toFixed(2) }
-                        </span>
-
-                    </div>
-
-                    <hr />
-
-                    {/* DISPONIBILITÀ */ }
-                    <div className="mb-4">
-
-                        <span className="fw-bold me-2">
-                            Disponibilità:
-                        </span>
-
-                        {
-                            isOutOfStock ? (
-                                <span className="text-danger fw-semibold">
-                                    Esaurito
-                                </span>
-                            ) : (
-                                <span className="text-success fw-semibold">
-                                    In stock ({ comic.stock_quantity } pezzi)
-                                </span>
-                            )
-                        }
-
-                    </div>
-
-                    {/* QUANTITÀ */ }
-                    <div className="mb-4">
-
-                        <label className="fw-bold text-uppercase small text-muted mb-2 d-block">
-                            Quantità
-                        </label>
-
-                        <div
-                            className="input-group"
-                            style={ { width: '160px' } }
-                        >
-
-                            {/* MENO */ }
-                            <button
-                                className="btn btn-outline-dark"
-                                disabled={ isOutOfStock }
-                                onClick={ () =>
-                                    setQuantity((q) =>
-                                        q > 1 ? q - 1 : 1
-                                    )
-                                }
-                            >
-                                -
-                            </button>
-
-                            {/* INPUT */ }
-                            <input
-                                type="number"
-                                className="form-control text-center fw-bold"
-                                value={ quantity }
-                                min="1"
-                                max={ comic.stock_quantity }
-                                onChange={ handleQuantityChange }
-                                disabled={ isOutOfStock }
-                            />
-
-                            {/* PIÙ */ }
-                            <button
-                                className="btn btn-outline-dark"
-                                disabled={ isOutOfStock }
-                                onClick={ () =>
-                                    setQuantity((q) =>
-                                        q < comic.stock_quantity
-                                            ? q + 1
-                                            : q
-                                    )
-                                }
-                            >
-                                +
-                            </button>
-
+                                    {/* Bottone Preferiti */ }
+                                    <button className="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center gap-2">
+                                        <i className="bi bi-heart"></i>
+                                        Preferiti
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-
                     </div>
-
-                    {/* BOTTONE CARRELLO */ }
-                    <div className="d-grid">
-
-                        <button
-                            className="btn btn-danger btn-lg fw-bold py-3"
-                            disabled={ isOutOfStock }
-                            onClick={ handleAddToCart }
-                            style={ {
-                                backgroundColor: isOutOfStock
-                                    ? '#6c757d'
-                                    : '#E63946',
-                                border: 'none'
-                            } }
-                        >
-
-                            <i className="bi bi-cart-plus me-2"></i>
-
-                            {
-                                isOutOfStock
-                                    ? 'PRODOTTO ESAURITO'
-                                    : 'AGGIUNGI AL CARRELLO'
-                            }
-
-                        </button>
-
-                    </div>
-
                 </div>
-
             </div>
-
-        </div>
+        </>
     );
 }
