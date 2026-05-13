@@ -42,13 +42,25 @@ export default function StepOrderSummary({ formData, handleBack, cart }) {
                 address: addressData.id,
                 status: 'pending',
                 total_price: total,
-                order_items:
+                items:
                     cart.map(item => ({
                         slug: item.slug,
                         quantity: item.quantity
                     }))
             };
             console.log(orderData);
+
+            // Creazione dell'ordine
+            const orderRes = await fetch(`${API_URL}/orders`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            });
+
+            if (!orderRes.ok) throw new Error('Errore nella creazione ordine');
+
+            const orderResult = await orderRes.json();
+            console.log('Ordine creato con id:', orderResult.orderId);
 
             // Mostra la modale e dopo 2 secondi vai alla home
             setShowModal(true);
