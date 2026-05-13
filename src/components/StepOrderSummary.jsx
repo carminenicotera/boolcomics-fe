@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function StepOrderSummary({ formData, handleBack, cart }) {
-
+export default function StepOrderSummary({ formData, handleBack, cart, clearCart }) {
+    console.log('clearCart:', clearCart);
     // Calcolo del totale dell'ordine
     const total = cart.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0);
 
@@ -69,6 +69,7 @@ export default function StepOrderSummary({ formData, handleBack, cart }) {
             setTimeout(() => {
                 setShowModal(false);
                 navigate('/');
+                clearCart();
             }, 2000);
 
         } catch (err) {
@@ -87,31 +88,31 @@ export default function StepOrderSummary({ formData, handleBack, cart }) {
                     <h4 className="mb-4">Riepilogo ordine</h4>
 
 
-                    {/* Dati personali */ }
+                    {/* Dati personali */}
                     <h6 className="text-muted mb-2">Dati personali</h6>
-                    <p className="mb-1"><strong>Nome:</strong> { formData.first_name } { formData.last_name }</p>
-                    <p className="mb-3"><strong>Email:</strong> { formData.email }</p>
+                    <p className="mb-1"><strong>Nome:</strong> {formData.first_name} {formData.last_name}</p>
+                    <p className="mb-3"><strong>Email:</strong> {formData.email}</p>
 
                     <hr />
 
-                    {/* Indirizzo di spedizione */ }
+                    {/* Indirizzo di spedizione */}
                     <h6 className="text-muted mb-2">Indirizzo di spedizione</h6>
-                    <p className="mb-1"><strong>Via:</strong> { formData.street }</p>
-                    <p className="mb-1"><strong>Città:</strong> { formData.city } ({ formData.state })</p>
-                    <p className="mb-3"><strong>CAP:</strong> { formData.zip_code } — { formData.country }</p>
+                    <p className="mb-1"><strong>Via:</strong> {formData.street}</p>
+                    <p className="mb-1"><strong>Città:</strong> {formData.city} ({formData.state})</p>
+                    <p className="mb-3"><strong>CAP:</strong> {formData.zip_code} — {formData.country}</p>
 
                     <hr />
 
-                    {/* Prodotti */ }
+                    {/* Prodotti */}
                     <h6 className="text-muted mb-2">Prodotti</h6>
                     <ul className="list-group list-group-flush mb-3">
 
-                        {/* Lista dei prodotti */ }
+                        {/* Lista dei prodotti */}
                         {
                             cart.map(item => (
-                                <li key={ item.id } className="list-group-item d-flex justify-content-between px-0">
-                                    <span className="fw-semibold">{ item.name } <span className="text-secondary">x{ item.quantity }</span></span>
-                                    <span>€{ (parseFloat(item.price) * item.quantity).toFixed(2) }</span>
+                                <li key={item.id} className="list-group-item d-flex justify-content-between px-0">
+                                    <span className="fw-semibold">{item.name} <span className="text-secondary">x{item.quantity}</span></span>
+                                    <span>€{(parseFloat(item.price) * item.quantity).toFixed(2)}</span>
                                 </li>
                             ))
                         }
@@ -120,23 +121,23 @@ export default function StepOrderSummary({ formData, handleBack, cart }) {
 
                     <hr />
 
-                    {/* Totale */ }
+                    {/* Totale */}
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h5 className="mb-0">Totale</h5>
-                        <h5 className="mb-0 text-danger">€{ total.toFixed(2) }</h5>
+                        <h5 className="mb-0 text-danger">€{total.toFixed(2)}</h5>
                     </div>
 
-                    {/* Pulsanti */ }
+                    {/* Pulsanti */}
                     <div className="d-flex justify-content-between mt-4">
                         <button
                             className="btn btn-outline-secondary"
-                            onClick={ handleBack }
+                            onClick={handleBack}
                         >
                             ← Indietro
                         </button>
 
-                        {/* Pulsante per completare l'ordine */ }
-                        <button className="btn btn-success btn-lg" onClick={ handleCompleteOrder }>
+                        {/* Pulsante per completare l'ordine */}
+                        <button className="btn btn-success btn-lg" onClick={handleCompleteOrder}>
                             ✓ Completa acquisto
                         </button>
                     </div>
@@ -144,9 +145,9 @@ export default function StepOrderSummary({ formData, handleBack, cart }) {
                 </div>
 
                 <div>
-                    {/* Modale di conferma ordine */ }
-                    { showModal && (
-                        <div className="modal d-block" style={ { backgroundColor: 'rgba(0,0,0,0.5)' } }>
+                    {/* Modale di conferma ordine */}
+                    {showModal && (
+                        <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
                             <div className="modal-dialog modal-dialog-centered">
                                 <div className="modal-content text-center p-4">
                                     <h4 className="mb-2">🎉 Grazie per averci scelto!</h4>
@@ -154,7 +155,7 @@ export default function StepOrderSummary({ formData, handleBack, cart }) {
                                 </div>
                             </div>
                         </div>
-                    ) }
+                    )}
                 </div>
 
             </div>
