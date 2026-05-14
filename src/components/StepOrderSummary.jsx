@@ -3,9 +3,15 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function StepOrderSummary({ formData, handleBack, cart, clearCart }) {
-    console.log('clearCart:', clearCart);
+
     // Calcolo del totale dell'ordine
     const total = cart.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0);
+
+    // Logica per il costo di spedizione
+    const SHIPPING_THRESHOLD = 50;
+    const SHIPPING_COST = 3.99;
+    const shippingCost = total >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+    const totalWithShipping = total + shippingCost;
 
     // Hook per la navigazione e stato per la modale di conferma
     const navigate = useNavigate();
@@ -41,7 +47,8 @@ export default function StepOrderSummary({ formData, handleBack, cart, clearCart
                 email: formData.email,
                 address: addressData.id,
                 status: 'pending',
-                total_price: total,
+                total_price: totalWithShipping,
+                shipping_cost: shippingCost,
                 items: cart.map(item => ({
                     slug: item.slug,
                     quantity: item.quantity
@@ -122,9 +129,20 @@ export default function StepOrderSummary({ formData, handleBack, cart, clearCart
                     <hr />
 
                     {/* Totale */}
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                        <span className='fw-semibold'>Subtotale</span>
+                        <span>€{total.toFixed(2)}</span>
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center mb-2">
+                        <span className='fw-semibold'>Spedizione</span>
+                        <span className={shippingCost === 0 ? 'text-success fw-bold' : ''}>
+                            {shippingCost === 0 ? 'GRATIS' : `€${shippingCost.toFixed(2)}`}
+                        </span>
+                    </div>
+                    <hr />
                     <div className="d-flex justify-content-between align-items-center mb-4">
-                        <h5 className="mb-0">Totale</h5>
-                        <h5 className="mb-0 text-danger">€{total.toFixed(2)}</h5>
+                        <h5 className="mb-0 fw-semibold">Totale</h5>
+                        <h5 className="mb-0 text-danger">€{totalWithShipping.toFixed(2)}</h5>
                     </div>
 
                     {/* Pulsanti */}
