@@ -20,7 +20,7 @@ function App() {
             <Route path="/catalog" element={ <CatalogPage addToCart={ addToCart } /> } />
             <Route path="/products/:slug" element={<ComicPage addToCart={addToCart}/>} />
             <Route path="/checkout" element={ <CheckoutPage cart={cart} clearCart={clearCart} /> } />
-            <Route path="/cart" element={<CartPage cart={cart} removeFromCart={removeFromCart}/>} />
+            <Route path="/cart" element={<CartPage cart={cart} removeFromCart={removeFromCart} addToCart={addToCart}/>} />
           </Route>
         </Routes>
       </BrowserRouter>
