@@ -1,8 +1,31 @@
+import { useState } from 'react';
+
 export default function StepPersonalData({ formData, handleChange, handleNext }) {
+
+    // Stato per gestire errori di validazione
+    const [error, setError] = useState('');
 
     // Funzione per gestire l'invio del form
     const handleSubmit = (e) => {
         e.preventDefault();
+        setError('');
+
+        if (formData.first_name.trim().length < 3) {
+            setError('Il nome deve contenere almeno 3 caratteri.');
+            return;
+        }
+
+        if (formData.last_name.trim().length < 3) {
+            setError('Il cognome deve contenere almeno 3 caratteri.');
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(formData.email)) {
+            setError('Inserisci un indirizzo email valido.');
+            return;
+        }
+
         handleNext();
     };
 
@@ -12,11 +35,18 @@ export default function StepPersonalData({ formData, handleChange, handleNext })
         <>
 
             <div className="card shadow-sm">
-                
+
                 <div className="card-body p-4">
                     <h4 className="mb-4">Dati personali</h4>
 
                     <form onSubmit={handleSubmit}>
+
+                        {/* Mostra messaggio di errore se presente */}
+                        {error && (
+                            <div className="alert alert-danger" role="alert">
+                                {error}
+                            </div>
+                        )}
 
                         <div className="mb-3">
                             <label className="form-label">Nome</label>
