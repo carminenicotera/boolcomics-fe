@@ -10,28 +10,28 @@ export default function StepShippingAddress({ formData, handleChange, handleNext
         e.preventDefault();
         setError('');
 
-        if (formData.street.trim().length < 2) {
-            setError('L\'indirizzo deve contenere almeno 2 caratteri.');
+        if (formData.street.trim().length < 5) {
+            setError('L\'indirizzo deve essere valido.');
             return;
         }
 
         if (formData.city.trim().length < 2) {
-            setError('La città deve contenere almeno 2 caratteri.');
+            setError('La città non è valida.');
             return;
         }
 
         if (!/^[A-Za-z]{2}$/.test(formData.state.trim())) {
-            setError('La provincia deve contenere esattamente 2 lettere (es. MI, RM).');
+            setError('La provincia non è valida (es. MI, RM).');
             return;
         }
 
         if (!/^\d{5}$/.test(formData.zip_code.trim())) {
-            setError('Il CAP deve contenere esattamente 5 numeri.');
+            setError('Il CAP non è valido (deve contenere esattamente 5 numeri).');
             return;
         }
 
         if (formData.country.trim().length < 3) {
-            setError('Il paese deve contenere almeno 3 caratteri.');
+            setError('Il paese non è valido.');
             return;
         }
 
