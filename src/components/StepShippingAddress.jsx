@@ -1,8 +1,40 @@
+import { useState } from 'react';
+
 export default function StepShippingAddress({ formData, handleChange, handleNext, handleBack }) {
+
+    // Stato per gestire errori di validazione
+    const [error, setError] = useState('');
 
     // Funzione per gestire l'invio del form
     const handleSubmit = (e) => {
         e.preventDefault();
+        setError('');
+
+        if (formData.street.trim().length < 2) {
+            setError('L\'indirizzo deve contenere almeno 2 caratteri.');
+            return;
+        }
+
+        if (formData.city.trim().length < 2) {
+            setError('La città deve contenere almeno 2 caratteri.');
+            return;
+        }
+
+        if (!/^[A-Za-z]{2}$/.test(formData.state.trim())) {
+            setError('La provincia deve contenere esattamente 2 lettere (es. MI, RM).');
+            return;
+        }
+
+        if (!/^\d{5}$/.test(formData.zip_code.trim())) {
+            setError('Il CAP deve contenere esattamente 5 numeri.');
+            return;
+        }
+
+        if (formData.country.trim().length < 3) {
+            setError('Il paese deve contenere almeno 3 caratteri.');
+            return;
+        }
+
         handleNext();
     };
 
@@ -17,6 +49,13 @@ export default function StepShippingAddress({ formData, handleChange, handleNext
                     <h4 className="mb-4">Indirizzo di spedizione</h4>
 
                     <form onSubmit={handleSubmit}>
+
+                        {/* Mostra messaggio di errore se presente */}
+                        {error && (
+                            <div className="alert alert-danger" role="alert">
+                                {error}
+                            </div>
+                        )}
 
                         <div className="mb-3">
                             <label className="form-label">Indirizzo</label>
@@ -39,7 +78,12 @@ export default function StepShippingAddress({ formData, handleChange, handleNext
                                     className="form-control"
                                     name="city"
                                     value={formData.city}
-                                    onChange={handleChange}
+                                    onChange={(e) => handleChange({
+                                        target: {
+                                            name: 'city',
+                                            value: e.target.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')
+                                        }
+                                    })}
                                     placeholder="Es. Milano"
                                     required
                                 />
@@ -51,7 +95,12 @@ export default function StepShippingAddress({ formData, handleChange, handleNext
                                     className="form-control"
                                     name="state"
                                     value={formData.state}
-                                    onChange={handleChange}
+                                    onChange={(e) => handleChange({
+                                        target: {
+                                            name: 'state',
+                                            value: e.target.value.replace(/[^a-zA-Z]/g, '').toUpperCase().slice(0, 2)
+                                        }
+                                    })}
                                     placeholder="Es. MI"
                                     required
                                 />
@@ -66,7 +115,12 @@ export default function StepShippingAddress({ formData, handleChange, handleNext
                                     className="form-control"
                                     name="zip_code"
                                     value={formData.zip_code}
-                                    onChange={handleChange}
+                                    onChange={(e) => handleChange({
+                                        target: {
+                                            name: 'zip_code',
+                                            value: e.target.value.replace(/\D/g, '').slice(0, 5)
+                                        }
+                                    })}
                                     placeholder="Es. 20100"
                                     required
                                 />
@@ -78,7 +132,12 @@ export default function StepShippingAddress({ formData, handleChange, handleNext
                                     className="form-control"
                                     name="country"
                                     value={formData.country}
-                                    onChange={handleChange}
+                                    onChange={(e) => handleChange({
+                                        target: {
+                                            name: 'country',
+                                            value: e.target.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')
+                                        }
+                                    })}
                                     placeholder="Es. Italia"
                                     required
                                 />
