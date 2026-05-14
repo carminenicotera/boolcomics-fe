@@ -1,8 +1,35 @@
+import { useState } from 'react';
+
 export default function StepPayment({ formData, handleChange, handleNext, handleBack }) {
+
+    // Stato per gestire eventuali errori di validazione
+    const [error, setError] = useState('');
 
     // Funzione per gestire l'invio del form
     const handleSubmit = (e) => {
         e.preventDefault();
+        setError('');
+
+        if (formData.card_name.trim().length < 3) {
+            setError('Il nome sulla carta deve contenere almeno 3 caratteri.');
+            return;
+        }
+
+        if (formData.card_number.length !== 16) {
+            setError('Il numero carta deve contenere esattamente 16 cifre.');
+            return;
+        }
+
+        if (!/^\d{2}\/\d{2}$/.test(formData.card_expiry)) {
+            setError('La scadenza deve essere nel formato MM/AA.');
+            return;
+        }
+
+        if (formData.card_cvv.length !== 3) {
+            setError('Il CVV deve contenere esattamente 3 cifre.');
+            return;
+        }
+
         handleNext();
     };
 
@@ -18,6 +45,13 @@ export default function StepPayment({ formData, handleChange, handleNext, handle
 
                     <form onSubmit={handleSubmit}>
 
+                        {/* Mostra messaggio di errore se presente */}
+                        {error && (
+                            <div className="alert alert-danger" role="alert">
+                                {error}
+                            </div>
+                        )}
+                        
                         <div className="mb-3">
                             <label className="form-label">Nome sulla carta</label>
                             <input
@@ -25,7 +59,12 @@ export default function StepPayment({ formData, handleChange, handleNext, handle
                                 className="form-control"
                                 name="card_name"
                                 value={formData.card_name}
-                                onChange={handleChange}
+                                onChange={(e) => handleChange({
+                                    target: {
+                                        name: 'card_name',
+                                        value: e.target.value.replace(/[^a-zA-ZÀ-ÿ\s]/g, '')
+                                    }
+                                })}
                                 placeholder="Es. Mario Rossi"
                                 required
                             />
@@ -38,7 +77,12 @@ export default function StepPayment({ formData, handleChange, handleNext, handle
                                 className="form-control"
                                 name="card_number"
                                 value={formData.card_number}
-                                onChange={handleChange}
+                                onChange={(e) => handleChange({
+                                    target: {
+                                        name: 'card_number',
+                                        value: e.target.value.replace(/\D/g, '').slice(0, 16)
+                                    }
+                                })}
                                 placeholder="Es. 1234567890123456"
                                 maxLength={16}
                                 required
@@ -53,7 +97,11 @@ export default function StepPayment({ formData, handleChange, handleNext, handle
                                     className="form-control"
                                     name="card_expiry"
                                     value={formData.card_expiry}
-                                    onChange={handleChange}
+                                    onChange={(e) => {
+                                        const value = e.target.value.replace(/\D/g, '').slice(0, 4);
+                                        const formatted = value.length >= 3 ? value.slice(0, 2) + '/' + value.slice(2) : value;
+                                        handleChange({ target: { name: 'card_expiry', value: formatted } });
+                                    }}
                                     placeholder="MM/AA"
                                     maxLength={5}
                                     required
@@ -66,7 +114,12 @@ export default function StepPayment({ formData, handleChange, handleNext, handle
                                     className="form-control"
                                     name="card_cvv"
                                     value={formData.card_cvv}
-                                    onChange={handleChange}
+                                    onChange={(e) => handleChange({
+                                        target: {
+                                            name: 'card_cvv',
+                                            value: e.target.value.replace(/\D/g, '').slice(0, 3)
+                                        }
+                                    })}
                                     placeholder="Es. 123"
                                     maxLength={3}
                                     required
