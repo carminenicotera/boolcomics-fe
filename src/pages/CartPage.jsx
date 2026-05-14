@@ -92,7 +92,7 @@ export default function CartPage({ cart, removeFromCart, addToCart }) {
         <span className="badge bg-secondary fs-6">{cart?.reduce((acc, item) => acc + (item.quantity || 1), 0) || 0} Articoli</span>
       </div>
 
-      {!cart || cart.length === 0 ? (
+      {!cart ? (
         <div className="text-center py-5 border rounded bg-light shadow-sm">
           <i className="bi bi-cart-x fs-1 text-muted"></i>
           <p className="fs-4 mt-3 text-dark">Il tuo carrello è vuoto!</p>
@@ -114,12 +114,12 @@ export default function CartPage({ cart, removeFromCart, addToCart }) {
               <div key={index} className="card mb-3 border-0 shadow-sm overflow-hidden">
                 <div className="row g-0 align-items-center">
                   <div className="col-3 col-md-2">
-                    <img src={item.image_url || "/img/placeholdercomic.png"} className="img-fluid" alt={item.name} style={{ objectFit: 'cover', height: '100px', width: '100%' }} />
+                    <img src={ "/img/placeholdercomic.png"} className="img-fluid" alt={item.name} style={{ objectFit: 'cover', height: '100px', width: '100%' }} />
                   </div>
                   <div className="col-6 col-md-6 ps-3">
                     <h5 className="mb-1 fw-bold">{item.name}</h5>
                     <div className="d-flex align-items-center mt-2">
-                      {/* NUOVO: SELETTORE QUANTITÀ NEL CARRELLO */}
+                      {/* SELETTORE QUANTITÀ NEL CARRELLO */}
                       <button className="btn btn-sm btn-outline-secondary py-0 px-2" onClick={() => removeFromCart(item.slug)}>-</button>
                       <span className="mx-3 fw-bold">{item.quantity || 1}</span>
                       <button className="btn btn-sm btn-outline-secondary py-0 px-2" onClick={() => addToCart(item, 1)}>+</button>
