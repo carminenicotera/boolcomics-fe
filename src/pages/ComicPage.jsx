@@ -3,19 +3,25 @@ import { useParams } from 'react-router-dom';
 
 import ProductMainCard from '../components/ProductMainCard';
 import ProductDescriptionCard from '../components/ProductDescriptionCard';
+import RelatedProducts from '../components/RelatedProducts';
 
-
-// URL base dall'API definita nelle variabili d'ambiente
 const API_URL = import.meta.env.VITE_API_URL;
 
-
-export default function ComicPage({ addToCart}) {
+export default function ComicPage({ addToCart }) {
     const { slug } = useParams();
     const [comic, setComic] = useState(null);
+    const [related, setRelated] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Fetch del prodotto in base allo slug
+    if (comic && comic.slug !== slug && !loading) {
+        setLoading(true);
+        setComic(null);
+        setRelated([]);
+        setError(null);
+    }
+
+    // 1. Recupera il prodotto principale in base allo slug
     useEffect(() => {
         fetch(`${API_URL}/products/${slug}`)
             .then(res => {
@@ -24,7 +30,6 @@ export default function ComicPage({ addToCart}) {
             })
             .then(data => {
                 setComic(data);
-                setLoading(false);
             })
             .catch(err => {
                 setError(err.message);
@@ -32,29 +37,43 @@ export default function ComicPage({ addToCart}) {
             });
     }, [slug]);
 
-    // Se è in caricamento, mostra un messaggio
-    if (loading) return <p>Caricamento...</p>;
+    // 2. Trova i correlati analizzando le categorie del prodotto principale
+    useEffect(() => {
+        if (!comic) return;
 
-    // Se c'è un errore, mostra il messaggio
-    if (error) return <p>Errore: {error}</p>;
+        fetch(`${API_URL}/products`)
+            .then(res => res.json())
+            .then(allProducts => {
+                const currentCategoriesSlugs = comic.categories?.map(c => c.slug) || [];
 
+                const filtered = allProducts.filter(item => {
+                    if (item.slug === comic.slug) return false;
+
+                    const hasCommonCategory = item.categories?.some(cat => 
+                        currentCategoriesSlugs.includes(cat.slug)
+                    );
+                    return hasCommonCategory;
+                });
+
+                setRelated(filtered.slice(0, 4));
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("Errore nel recupero dei correlati:", err);
+                setLoading(false);
+            });
+    }, [comic]);
+
+    if (loading) return <p className="container py-5">Caricamento...</p>;
+    if (error) return <p className="container py-5 text-danger">Errore: {error}</p>;
 
     return (
-
         <>
-
-            <div className='container'>
-
-                {/* card dettails  */}
+            <div className='container py-4'>
                 <ProductMainCard comic={comic} addToCart={addToCart} />
-
-                {/* card description */}
                 <ProductDescriptionCard comic={comic} />
-
+                <RelatedProducts products={related} addToCart={addToCart} />
             </div>
-
         </>
-
-    )
-
+    );
 }
