@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "../components/CartProvider";
 
-export default function Homepage({ addToCart }) {
+export default function Homepage() {
+
+  const { addToCart } = useCart(); 
 
   const API_URL = import.meta.env.VITE_API_URL;
 
