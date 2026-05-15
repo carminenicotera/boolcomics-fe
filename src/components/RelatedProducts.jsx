@@ -31,10 +31,10 @@ export default function RelatedProducts({ products, addToCart }) {
                 {/* Il link cambia lo slug nell'URL e attiva il rinfresco automatico della pagina */}
                 <Link to={`/products/${comic.slug}`}>
                   <img 
-                    src="/img/placeholdercomic.png" 
+                    src={`${import.meta.env.VITE_API_URL}${comic.image_url}`}
                     alt={comic.name} 
                     className="card-img-top object-fit-cover product-image" 
-                    style={{ height: '250px' }}
+                    style={{ maxHeight: '450px', objectFit: 'cover' }}
                   />
                 </Link>
 

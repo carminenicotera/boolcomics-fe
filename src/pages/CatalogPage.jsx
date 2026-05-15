@@ -87,7 +87,7 @@ export default function CatalogPage({ addToCart }) {
 
                     {/* IMAGE */}
                     <Link to={ `/products/${comic.slug}` } className="product-image-wrapper">
-                      <img src="/img/placeholdercomic.png" alt={ comic.name } className="card-img-top product-image" />
+                      <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top product-image" />
                     </Link>
 
                     {/* BODY */}
