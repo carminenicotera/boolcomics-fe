@@ -55,39 +55,48 @@ export default function CatalogPage({ addToCart }) {
 
           {/* TOP BAR */}
           {searchQuery && (
-          <div className="row justify-content-between align-items-center mb-4 g-3">
+            <div className="row justify-content-between align-items-center mb-4 g-3">
 
-            {/* RESULTS */}
-            <div className="col-12 col-md-auto">
-              <p className="results-text mb-0">
-                { filteredComics.length } prodotti trovati
-              </p>
-            </div>
+              {/* RESULTS */}
+              <div className="col-12 col-md-auto text-center">
+                <div class="search-empty-state">
+                  <div class="empty-badge">OPS!</div>
 
-            {/* SORT BY */}
-            <div className="col-12 col-md-3">
-              <select className="form-select catalog-select" value={ sortBy } onChange={ (e) => setSortBy(e.target.value) }>
-                <option value="">Ordina per</option>
-                <option value="name">Nome</option>
-                <option value="low-price">Prezzo: dal più basso</option>
-                <option value="high-price">Prezzo: dal più alto</option>
-                <option value="recent">Più recenti</option>
-              </select>
+                  <h2 class="empty-title">Nessun risultato trovato</h2>
+
+                  <p class="empty-message">
+                    La ricerca per "<span class="highlight">[Parola Cercata]</span>" non ha portato alla luce nessun volume.
+                    Prova a controllare i filtri o digita una nuova parola chiave.
+                  </p>
+
+                  <a href="/catalogo" class="btn-reset-search">Mostra tutto il catalogo</a>
+                </div>
+              </div>
+
+              {/* SORT BY */}
+              <div className="col-12 col-md-3">
+                <select className="form-select catalog-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                  <option value="">Ordina per</option>
+                  <option value="name">Nome</option>
+                  <option value="low-price">Prezzo: dal più basso</option>
+                  <option value="high-price">Prezzo: dal più alto</option>
+                  <option value="recent">Più recenti</option>
+                </select>
+              </div>
             </div>
-          </div>
-          ) }
+          )}
 
           {/* PRODUCTS GRID */}
           <div className="row g-4">
-            { filteredComics.map(comic => {
+            {filteredComics.map(comic => {
               const isOutOfStock = comic.stock_quantity <= 0;
               return (
-                <div key={ comic.id } className="col-12 col-sm-6 col-lg-3">
+                <div key={comic.id} className="col-12 col-sm-6 col-lg-3">
                   <div className="card product-card h-100">
 
                     {/* IMAGE */}
-                    <Link to={ `/products/${comic.slug}` } className="product-image-wrapper">
-                      <img src="/img/placeholdercomic.png" alt={ comic.name } className="card-img-top product-image" />
+                    <Link to={`/products/${comic.slug}`} className="product-image-wrapper">
+                      <img src="/img/placeholdercomic.png" alt={comic.name} className="card-img-top product-image" />
                     </Link>
 
                     {/* BODY */}
@@ -95,23 +104,23 @@ export default function CatalogPage({ addToCart }) {
 
                       {/* TITLE */}
                       <h5 className="product-title">
-                        { comic.name }
+                        {comic.name}
                       </h5>
 
                       {/* PRICE */}
                       <p className="product-price mt-auto">
-                        € { comic.price }
+                        € {comic.price}
                       </p>
 
                       {/* BUTTON MODIFICATO CON BLOCCO DI SICUREZZA */}
-                      <button 
-                        className="btn fw-bold w-100" 
+                      <button
+                        className="btn fw-bold w-100"
                         onClick={() => handlePurchaseClick(comic)}
                         disabled={isOutOfStock}
-                        style={{ 
-                          background: isOutOfStock ? '#6c757d' : '#E63946', 
+                        style={{
+                          background: isOutOfStock ? '#6c757d' : '#E63946',
                           color: 'white',
-                          cursor: isOutOfStock ? 'not-allowed' : 'pointer' 
+                          cursor: isOutOfStock ? 'not-allowed' : 'pointer'
                         }}
                       >
                         {isOutOfStock ? 'ESAURITO' : 'ACQUISTA'}
@@ -123,7 +132,7 @@ export default function CatalogPage({ addToCart }) {
 
                 </div>
               );
-            }) }
+            })}
 
           </div>
 
