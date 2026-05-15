@@ -167,6 +167,52 @@ body {
 }
 
 /* =========================
+   PAGE 4O4 NOT FOUND
+========================= */
+.header-404 {
+  width: 100%;
+  padding: 20px 50px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+
+.error-404 {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+
+.error-badge {
+  font-size: 120px;
+  font-weight: 900;
+  color: #de3e4b;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 10px;
+  text-shadow: 4px 4px 0px #2b2b2b;
+  letter-spacing: -2px;
+}
+
+.error-title {
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  color: #111111;
+}
+
+.error-message {
+  font-size: 16px;
+  color: #666666;
+  line-height: 1.6;
+  margin-bottom: 35px;
+}
+
+
+
+/* =========================
    SEARCHBAR ANIMATION
 ========================= */
 
