@@ -10,22 +10,25 @@ export const CartProvider = ({ children }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [lastAdded, setLastAdded] = useState("");
 
-  // Funzione che avvolge addToCart e aggiunge il popup
+  
   const handleAddToCart = (product, quantity = 1) => {
-    console.log("CONTESTO: Sto provando ad aggiungere", product.name); // <--- AGGIUNGI QUESTO
+  
+ 
   addToCart(product, quantity);
-    setLastAdded(product.name);
-    setShowPopup(true);
+  const displayLabel = quantity > 1 ? `${product.name} x ${quantity}` : product.name;
+  setLastAdded(displayLabel);
+  setShowPopup(true);
 
-    setTimeout(() => {
-      setShowPopup(false);
-    }, 3000);
-  };
+
+  setTimeout(() => {
+    setShowPopup(false);
+  }, 3000);
+};
 
   const value = {
     cart,
     cartCount,
-    addToCart: handleAddToCart, // Sovrascriviamo con quella che ha il popup
+    addToCart: handleAddToCart, 
     removeFromCart,
     clearCart,
     showPopup,

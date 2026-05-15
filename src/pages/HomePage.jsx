@@ -51,7 +51,6 @@ export default function Homepage() {
     }
     // Usa la nostra nuova logica passandogli il secondo argomento esplicito (1 copia)
     addToCart(comic, 1);
-    alert(`${comic.name} aggiunto al carrello!`);
   };
 
   return (

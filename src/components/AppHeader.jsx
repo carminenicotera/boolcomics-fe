@@ -66,17 +66,21 @@ export default function AppHeader() {
               </li>
 
               {/* CART CON POPUP */}
-              <li className="nav-item position-relative">
-                <Link className="nav-link custom-link cart-btn" to="/cart">
-                  <i className="bi bi-bag me-2"></i>
-                  Cart
-                  {cartCount > 0 && (
-                    <span className="badge rounded-pill bg-danger ms-1">
-                      {cartCount}
-                    </span>
-                  )}
-                </Link>
-
+             <li className="nav-item position-relative">
+  <Link 
+    className="nav-link custom-link cart-btn" 
+    to="#" 
+    data-bs-toggle="offcanvas" 
+    data-bs-target="#miniCart"
+  >
+    <i className="bi bi-bag me-2"></i>
+    Cart
+    {cartCount > 0 && (
+      <span className="badge rounded-pill bg-danger ms-1">
+        {cartCount}
+      </span>
+    )}
+  </Link>
                 {/* POPUP DI CONFERMA AGGIUNGIMENTO */}
                 {showPopup && (
                   <div
