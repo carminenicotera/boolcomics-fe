@@ -1,6 +1,10 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function StepPersonalData({ formData, handleChange, handleNext }) {
+
+    // Hook per la navigazione
+    const navigate = useNavigate();
 
     // Stato per gestire errori di validazione
     const [error, setError] = useState('');
@@ -87,7 +91,14 @@ export default function StepPersonalData({ formData, handleChange, handleNext })
                             />
                         </div>
 
-                        <div className="d-flex justify-content-end mt-4">
+                        <div className="d-flex justify-content-between mt-4">
+                            <button
+                                type="button"
+                                className="btn btn-dark"
+                                onClick={() => navigate('/cart')}
+                            >
+                                ← Carrello
+                            </button>
                             <button type="submit" className="btn btn-danger">
                                 Avanti →
                             </button>
