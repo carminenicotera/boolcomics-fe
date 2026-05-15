@@ -14,17 +14,17 @@ export default function AppHeader() {
 
         <div className="container">
 
-          {/* NAVBAR  */ }
+          {/* NAVBAR  */}
           <Link className="navbar-brand d-flex align-items-center" to="/">
 
-            {/* LOGO */ }
+            {/* LOGO */}
             <img
               src="/img/boolcomics-logo.png"
               alt="BoolComics"
               className="desktop-logo"
             />
 
-            {/* ICON */ }
+            {/* ICON */}
             <img
               src="/img/boolcomics-icon.png"
               alt="BoolComics"
@@ -33,43 +33,50 @@ export default function AppHeader() {
 
           </Link>
 
-          {/* TOGGLER */ }
+          {/* TOGGLER */}
           <button className="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          {/* MENU */ }
+          {/* MENU */}
           <div className="collapse navbar-collapse" id="navbarNav">
             <ul className="navbar-nav ms-auto align-items-md-center gap-md-3">
 
-              {/* HOME */ }
+              {/* HOME */}
               <li className="nav-item">
                 <Link className="nav-link custom-link" to="/">
                   Home
                 </Link>
               </li>
 
-              {/* CATALOG */ }
+              {/* CATALOG */}
               <li className="nav-item">
                 <Link className="nav-link custom-link" to="/catalog">
                   Catalogo
                 </Link>
               </li>
 
-              {/* SEARCH */ }
+              {/* Whishlist */}
               <li className="nav-item">
-                <button className="btn icon-btn" onClick={ () => setShowSearch(!showSearch) }>
+                <Link className="nav-link custom-link" to="/whishlist">
+                  Whishlist
+                </Link>
+              </li>
+
+              {/* SEARCH */}
+              <li className="nav-item">
+                <button className="btn icon-btn" onClick={() => setShowSearch(!showSearch)}>
                   <i className="bi bi-search"></i>
                 </button>
               </li>
 
-              {/* CART */ }
+              {/* CART */}
               <Link
-                  className="nav-link custom-link cart-btn"
-                  to="/cart"
-                ><i className="bi bi-bag me-2"></i>
-                  Cart
-                </Link>
+                className="nav-link custom-link cart-btn"
+                to="/cart"
+              ><i className="bi bi-bag me-2"></i>
+                Cart
+              </Link>
 
             </ul>
 
@@ -78,8 +85,8 @@ export default function AppHeader() {
         </div>
 
       </nav>
-      {/* SEARCH BAR */ }
-      <SearchBar showSearch={ showSearch } setShowSearch={setShowSearch}/>
+      {/* SEARCH BAR */}
+      <SearchBar showSearch={showSearch} setShowSearch={setShowSearch} />
 
     </header>
 
