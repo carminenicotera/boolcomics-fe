@@ -55,9 +55,9 @@ export default function StepOrderSummary({ formData, handleBack, cart, clearCart
                 address: addressData.id,
                 status: 'pending',
                 total_price: totalWithShipping,
-                shipping_cost: shippingCost,
-                discount_percentage: discount,
-                discount_amount: discountAmount,  
+                shipping_cost: String(shippingCost),
+                discount_percentage: String(discount),
+                discount_amount: String(discountAmount),
                 items: cart.map(item => ({
                     slug: item.slug,
                     quantity: item.quantity
