@@ -4,132 +4,205 @@ import { Link, useSearchParams } from "react-router-dom"
 export default function CatalogPage({ addToCart }) {
 
   const [comics, setComics] = useState([])
-  const [sortBy, setSortBy] = useState("")
-  const [searchParams] = useSearchParams("")
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const searchQuery = searchParams.get("search") || ""
+  const sortBy = searchParams.get("sort") || ""
 
+  // RESET QUERY AL REFRESH
+  useEffect(() => {
+    setSearchParams({}, { replace: true });
+  }, []);
+
+
+  // FETCH PRODUCTS
   useEffect(() => {
     const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000"
-    fetch(`${api_url}/products`)
-      .then(res => res.json())
-      .then(data => setComics(data))
-      .catch(err => console.error("Errore nel recupero dei prodotti:", err))
-  }, [])
+    let url = `${api_url}/products`
+    const queryParams = []
 
-  const filteredComics = [...comics]
-    .filter(comic => comic.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    .sort((a, b) => {
+    // SEARCH QUERY
+    if (searchQuery) {
+      queryParams.push(`search=${searchQuery}`)
+    }
+
+    // SORT QUERY
+    if (sortBy) {
+      let backendSort = ""
       if (sortBy === "name") {
-        return a.name.localeCompare(b.name)
+        backendSort = "name_asc"
       }
       if (sortBy === "low-price") {
-        return a.price - b.price
+        backendSort = "price_asc"
       }
       if (sortBy === "high-price") {
-        return b.price - a.price
+        backendSort = "price_desc"
       }
       if (sortBy === "recent") {
-        return new Date(b.createdAt) - new Date(a.createdAt)
+        backendSort = "date_desc"
       }
-      return 0
-    })
-
-  // Funzione centralizzata per gestire il click in sicurezza
-  const handlePurchaseClick = (comic) => {
-    const isOutOfStock = comic.stock_quantity <= 0;
-    if (isOutOfStock) {
-      alert("Spiacenti, il prodotto è esaurito!");
-      return;
+      if (backendSort) {
+        queryParams.push(`sort=${backendSort}`)
+      }
     }
-    // Usa la logica corretta passando i parametri separati (prodotto, quantità)
-    addToCart(comic, 1);
-    alert(`${comic.name} aggiunto al carrello!`);
-  };
+
+    // AGGIUNGO QUERY ALL'URL
+    if (queryParams.length > 0) {
+      url += `?${queryParams.join("&")}`
+    }
+
+    // FETCH
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+
+        // SE IL BACKEND RESTITUISCE ERRORE
+        if (!Array.isArray(data)) {
+          setComics([])
+          return
+        }
+        setComics(data)
+      })
+      .catch(err => {
+        console.error("Errore nel recupero dei prodotti:", err)
+      })
+  }, [searchQuery, sortBy])
+
+  // FUNZIONE ACQUISTO
+  const handlePurchaseClick = (comic) => {
+    const isOutOfStock = comic.stock_quantity <= 0
+    if (isOutOfStock) {
+      alert("Spiacenti, il prodotto è esaurito!")
+      return
+    }
+    addToCart(comic, 1)
+    alert(`${comic.name} aggiunto al carrello!`)
+  }
 
   return (
     <>
-      {/* PRODUCTS */}
+      {/* PRODUCTS */ }
       <section className="py-5">
         <div className="container">
 
-          {/* TOP BAR */}
-          {searchQuery && (
-          <div className="row justify-content-between align-items-center mb-4 g-3">
+          {/* TOP BAR */ }
+          { searchQuery && (
+            <div className="row justify-content-between align-items-center mb-4 g-3">
 
-            {/* RESULTS */}
-            <div className="col-12 col-md-auto">
-              <p className="results-text mb-0">
-                { filteredComics.length } prodotti trovati
-              </p>
+              {/* RESULTS */ }
+              <div className="col-12 col-md-auto">
+                <p className="results-text mb-0">
+                  { comics.length } prodotti trovati
+                </p>
+              </div>
+
+              {/* SORT BY */ }
+              <div className="col-12 col-md-3">
+                <select
+                  className="form-select catalog-select"
+                  value={ sortBy }
+                  onChange={ (e) => {
+                    const newParams = new URLSearchParams(searchParams)
+                    if (e.target.value) {
+                      newParams.set("sort", e.target.value)
+                    } else {
+                      newParams.delete("sort")
+                    }
+                    setSearchParams(newParams)
+                  } }
+                >
+
+                  <option value="">
+                    Ordina per
+                  </option>
+
+                  <option value="name">
+                    Nome
+                  </option>
+
+                  <option value="low-price">
+                    Prezzo: dal più basso
+                  </option>
+
+                  <option value="high-price">
+                    Prezzo: dal più alto
+                  </option>
+
+                  <option value="recent">
+                    Più recenti
+                  </option>
+
+                </select>
+
+              </div>
+
             </div>
 
-            {/* SORT BY */}
-            <div className="col-12 col-md-3">
-              <select className="form-select catalog-select" value={ sortBy } onChange={ (e) => setSortBy(e.target.value) }>
-                <option value="">Ordina per</option>
-                <option value="name">Nome</option>
-                <option value="low-price">Prezzo: dal più basso</option>
-                <option value="high-price">Prezzo: dal più alto</option>
-                <option value="recent">Più recenti</option>
-              </select>
-            </div>
-          </div>
           ) }
 
-          {/* PRODUCTS GRID */}
+          {/* PRODUCTS GRID */ }
           <div className="row g-4">
-            { filteredComics.map(comic => {
-              const isOutOfStock = comic.stock_quantity <= 0;
+
+            { comics.map(comic => {
+
+              const isOutOfStock = comic.stock_quantity <= 0
+
               return (
+
                 <div key={ comic.id } className="col-12 col-sm-6 col-lg-3">
+
                   <div className="card product-card h-100">
 
-                    {/* IMAGE */}
-                    <Link to={ `/products/${comic.slug}` } className="product-image-wrapper">
-                      <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top product-image" />
+                    {/* IMAGE */ }
+                    <Link
+                      to={ `/products/${comic.slug}` }
+                      className="product-image-wrapper"
+                    >
+
+                      <img
+                        src={ `${import.meta.env.VITE_API_URL}${comic.image_url}` }
+                        alt={ comic.name }
+                        className="card-img-top product-image"
+                      />
+
                     </Link>
 
-                    {/* BODY */}
+                    {/* BODY */ }
                     <div className="card-body d-flex flex-column text-center">
 
-                      {/* TITLE */}
+                      {/* TITLE */ }
                       <h5 className="product-title">
                         { comic.name }
                       </h5>
 
-                      {/* PRICE */}
+                      {/* PRICE */ }
                       <p className="product-price mt-auto">
                         € { comic.price }
                       </p>
 
-                      {/* BUTTON MODIFICATO CON BLOCCO DI SICUREZZA */}
-                      <button 
-                        className="btn fw-bold w-100" 
-                        onClick={() => handlePurchaseClick(comic)}
-                        disabled={isOutOfStock}
-                        style={{ 
-                          background: isOutOfStock ? '#6c757d' : '#E63946', 
-                          color: 'white',
-                          cursor: isOutOfStock ? 'not-allowed' : 'pointer' 
-                        }}
+                      {/* BUTTON */ }
+                      <button
+                        className="btn fw-bold w-100"
+                        onClick={ () => handlePurchaseClick(comic) }
+                        disabled={ isOutOfStock }
+                        style={ {
+                          background: isOutOfStock ? "#6c757d" : "#E63946",
+                          color: "white",
+                          cursor: isOutOfStock ? "not-allowed" : "pointer"
+                        } }
                       >
-                        {isOutOfStock ? 'ESAURITO' : 'ACQUISTA'}
+                        { isOutOfStock ? "ESAURITO" : "ACQUISTA" }
+
                       </button>
-
                     </div>
-
                   </div>
-
                 </div>
-              );
+              )
             }) }
-
           </div>
-
         </div>
-
       </section>
     </>
   )
+
 }
