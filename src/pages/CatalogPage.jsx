@@ -6,19 +6,22 @@ export default function CatalogPage({ addToCart }) {
   const [comics, setComics] = useState([])
   const [searchParams, setSearchParams] = useSearchParams()
 
+  // QUERY PARAMS
   const searchQuery = searchParams.get("search") || ""
   const sortBy = searchParams.get("sort") || ""
 
   // RESET QUERY AL REFRESH
   useEffect(() => {
-    setSearchParams({}, { replace: true });
-  }, []);
-
+    setSearchParams({}, { replace: true })
+  }, [])
 
   // FETCH PRODUCTS
   useEffect(() => {
+
     const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000"
+
     let url = `${api_url}/products`
+
     const queryParams = []
 
     // SEARCH QUERY
@@ -28,22 +31,29 @@ export default function CatalogPage({ addToCart }) {
 
     // SORT QUERY
     if (sortBy) {
+
       let backendSort = ""
+
       if (sortBy === "name") {
         backendSort = "name_asc"
       }
+
       if (sortBy === "low-price") {
         backendSort = "price_asc"
       }
+
       if (sortBy === "high-price") {
         backendSort = "price_desc"
       }
+
       if (sortBy === "recent") {
         backendSort = "date_desc"
       }
+
       if (backendSort) {
         queryParams.push(`sort=${backendSort}`)
       }
+
     }
 
     // AGGIUNGO QUERY ALL'URL
@@ -61,146 +71,215 @@ export default function CatalogPage({ addToCart }) {
           setComics([])
           return
         }
+
         setComics(data)
+
       })
       .catch(err => {
         console.error("Errore nel recupero dei prodotti:", err)
       })
+
   }, [searchQuery, sortBy])
+
+  // FILTERED COMICS
+  const filteredComics = comics
 
   // FUNZIONE ACQUISTO
   const handlePurchaseClick = (comic) => {
+
     const isOutOfStock = comic.stock_quantity <= 0
+
     if (isOutOfStock) {
       alert("Spiacenti, il prodotto è esaurito!")
       return
     }
+
     addToCart(comic, 1)
+
     alert(`${comic.name} aggiunto al carrello!`)
+
   }
 
   return (
     <>
-      {/* PRODUCTS */ }
+      {/* PRODUCTS */}
       <section className="py-5">
+
         <div className="container">
 
-          {/* TOP BAR */ }
-          { searchQuery && (
-            <div className="row justify-content-between align-items-center mb-4 g-3">
+          {/* TOP BAR */}
+          {searchQuery && (
 
-              {/* RESULTS */ }
+            <div
+              className={`row justify-content-${filteredComics.length === 0 ? "center" : "between"} align-items-center mb-4 g-3`}
+            >
+
+              {/* RESULTS */}
               <div className="col-12 col-md-auto">
-                <p className="results-text mb-0">
-                  { comics.length } prodotti trovati
-                </p>
-              </div>
 
-              {/* SORT BY */ }
-              <div className="col-12 col-md-3">
-                <select
-                  className="form-select catalog-select"
-                  value={ sortBy }
-                  onChange={ (e) => {
-                    const newParams = new URLSearchParams(searchParams)
-                    if (e.target.value) {
-                      newParams.set("sort", e.target.value)
-                    } else {
-                      newParams.delete("sort")
-                    }
-                    setSearchParams(newParams)
-                  } }
-                >
+                {filteredComics.length === 0 ? (
 
-                  <option value="">
-                    Ordina per
-                  </option>
+                  <div className="search-empty-state">
 
-                  <option value="name">
-                    Nome
-                  </option>
+                    <div className="empty-badge">
+                      OPS!
+                    </div>
 
-                  <option value="low-price">
-                    Prezzo: dal più basso
-                  </option>
+                    <h2 className="empty-title">
+                      Nessun risultato trovato
+                    </h2>
 
-                  <option value="high-price">
-                    Prezzo: dal più alto
-                  </option>
+                    <p className="empty-message">
+                      La ricerca per <strong>{searchQuery}</strong> non ha portato alla luce nessun volume.
+                      <br />
+                      Prova a digitare una nuova parola chiave.
+                    </p>
 
-                  <option value="recent">
-                    Più recenti
-                  </option>
+                    <Link
+                      to="/catalog"
+                      className="btn btn-outline-danger"
+                    >
+                      Mostra tutto il catalogo
+                    </Link>
 
-                </select>
+                  </div>
+
+                ) : (
+
+                  <p className="results-text mb-0">
+                    {filteredComics.length} prodotti trovati
+                  </p>
+
+                )}
 
               </div>
+
+              {/* SORT BY */}
+              {filteredComics.length !== 0 && (
+
+                <div className="col-12 col-md-3">
+
+                  <select
+                    className="form-select catalog-select"
+                    value={sortBy}
+                    onChange={(e) => {
+
+                      const newParams = new URLSearchParams(searchParams)
+
+                      if (e.target.value) {
+                        newParams.set("sort", e.target.value)
+                      } else {
+                        newParams.delete("sort")
+                      }
+
+                      setSearchParams(newParams)
+
+                    }}
+                  >
+
+                    <option value="">
+                      Ordina per
+                    </option>
+
+                    <option value="name">
+                      Nome
+                    </option>
+
+                    <option value="low-price">
+                      Prezzo: dal più basso
+                    </option>
+
+                    <option value="high-price">
+                      Prezzo: dal più alto
+                    </option>
+
+                    <option value="recent">
+                      Più recenti
+                    </option>
+
+                  </select>
+
+                </div>
+
+              )}
 
             </div>
 
-          ) }
+          )}
 
-          {/* PRODUCTS GRID */ }
+          {/* PRODUCTS GRID */}
           <div className="row g-4">
 
-            { comics.map(comic => {
+            {filteredComics.map(comic => {
 
               const isOutOfStock = comic.stock_quantity <= 0
 
               return (
 
-                <div key={ comic.id } className="col-12 col-sm-6 col-lg-3">
+                <div
+                  key={comic.id}
+                  className="col-12 col-sm-6 col-lg-3"
+                >
 
                   <div className="card product-card h-100">
 
-                    {/* IMAGE */ }
+                    {/* IMAGE */}
                     <Link
-                      to={ `/products/${comic.slug}` }
+                      to={`/products/${comic.slug}`}
                       className="product-image-wrapper"
                     >
 
                       <img
-                        src={ `${import.meta.env.VITE_API_URL}${comic.image_url}` }
-                        alt={ comic.name }
+                        src={`${import.meta.env.VITE_API_URL}${comic.image_url}`}
+                        alt={comic.name}
                         className="card-img-top product-image"
                       />
 
                     </Link>
 
-                    {/* BODY */ }
+                    {/* BODY */}
                     <div className="card-body d-flex flex-column text-center">
 
-                      {/* TITLE */ }
+                      {/* TITLE */}
                       <h5 className="product-title">
-                        { comic.name }
+                        {comic.name}
                       </h5>
 
-                      {/* PRICE */ }
+                      {/* PRICE */}
                       <p className="product-price mt-auto">
-                        € { comic.price }
+                        € {comic.price}
                       </p>
 
-                      {/* BUTTON */ }
+                      {/* BUTTON */}
                       <button
                         className="btn fw-bold w-100"
-                        onClick={ () => handlePurchaseClick(comic) }
-                        disabled={ isOutOfStock }
-                        style={ {
+                        onClick={() => handlePurchaseClick(comic)}
+                        disabled={isOutOfStock}
+                        style={{
                           background: isOutOfStock ? "#6c757d" : "#E63946",
                           color: "white",
                           cursor: isOutOfStock ? "not-allowed" : "pointer"
-                        } }
+                        }}
                       >
-                        { isOutOfStock ? "ESAURITO" : "ACQUISTA" }
+
+                        {isOutOfStock ? "ESAURITO" : "ACQUISTA"}
 
                       </button>
+
                     </div>
+
                   </div>
+
                 </div>
+
               )
-            }) }
+
+            })}
+
           </div>
+
         </div>
+
       </section>
     </>
   )
