@@ -147,7 +147,7 @@ export default function StepShippingAddress({ formData, handleChange, handleNext
                         <div className="d-flex justify-content-between mt-4">
                             <button
                                 type="button"
-                                className="btn btn-outline-secondary"
+                                className="btn btn-outline-dark"
                                 onClick={handleBack}
                             >
                                 ← Indietro
