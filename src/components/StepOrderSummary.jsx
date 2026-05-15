@@ -165,7 +165,7 @@ export default function StepOrderSummary({ formData, handleBack, cart, clearCart
                     {/* Pulsanti */}
                     <div className="d-flex justify-content-between mt-4">
                         <button
-                            className="btn btn-outline-secondary"
+                            className="btn btn-outline-dark"
                             onClick={handleBack}
                         >
                             ← Indietro
