@@ -34,7 +34,7 @@ function App() {
         <Routes>
           <Route element={<DefaultLayout cartCount={cartCount} />}>
             <Route index element={<HomePage addToCart={addToCart} whishlist={whishlist} handleWhishlist={handleWhishlist} />} />
-            <Route path="/catalog" element={<CatalogPage addToCart={addToCart} />} />
+            <Route path="/catalog" element={<CatalogPage whishlist={whishlist} handleWhishlist={handleWhishlist} addToCart={addToCart} />} />
             <Route path="/products/:slug" element={<ComicPage addToCart={addToCart} />} />
             <Route path="/checkout" element={<CheckoutPage cart={cart} clearCart={clearCart} />} />
             <Route path="/whishlist" element={<Whishlist whishlist={whishlist} handleWhishlist={handleWhishlist} addToCart={addToCart} />} />

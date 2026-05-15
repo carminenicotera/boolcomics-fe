@@ -15,9 +15,17 @@ export default function Whishlist({ whishlist, handleWhishlist, addToCart }) {
 
     return (<>
         <div className="container mb-5 mt-5">
+
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <h1 className="fw-bold m-0">La tua Whishlist</h1>
+                <span className="badge bg-secondary fs-6">{whishlist?.reduce((acc, item) => acc + (item.quantity || 1), 0) || 0} Articoli</span>
+            </div>
+
             <div className="row g-4">
                 {whishlist.map(comic => {
                     const isOutOfStock = comic.stock_quantity <= 0;
+                    const isInWhishlist = whishlist.some(item => item.slug === comic.slug);
+
                     return (
                         <div key={comic.id} className="col-12 col-sm-6 col-lg-3">
                             <div className="card product-card h-100">
@@ -58,14 +66,13 @@ export default function Whishlist({ whishlist, handleWhishlist, addToCart }) {
                                     <button
                                         className="btn fw-bold w-100"
                                         onClick={() => handleWhishlist(comic)}
-                                        disabled={isOutOfStock}
                                         style={{
                                             background: '#1e1e1e',
                                             color: 'white',
                                             cursor: 'pointer'
                                         }}
                                     >
-                                        Rimuovi dalla Wishlist
+                                        {isInWhishlist ? 'Rimuovi dalla Whishlist' : 'Aggiungi alla Whishlist'}
                                     </button>
 
                                 </div>

@@ -105,6 +105,7 @@ export default function Homepage({ addToCart, whishlist, handleWhishlist }) {
         <div className="row">
           {lastestProducts.map(comic => {
             const isOutOfStock = comic.stock_quantity <= 0;
+            const isInWhishlist = whishlist.some(item => item.slug === comic.slug);
             return (
               <div className="col-12 col-sm-6 col-lg-3 mb-4" key={comic.id}>
                 <div className="card product-card h-100 shadow-sm">
@@ -139,7 +140,7 @@ export default function Homepage({ addToCart, whishlist, handleWhishlist }) {
                         cursor: 'pointer'
                       }}
                     >
-                      Aggiungi alla Whishlist
+                      {isInWhishlist ? 'Rimuovi dalla Whishlist' : 'Aggiungi alla Whishlist'}
                     </button>
                   </div>
                 </div>
@@ -155,6 +156,7 @@ export default function Homepage({ addToCart, whishlist, handleWhishlist }) {
         <div className="row">
           {mostPurchased.map(comic => {
             const isOutOfStock = comic.stock_quantity <= 0;
+            const isInWhishlist = whishlist.some(item => item.slug === comic.slug);
             return (
               <div className="col-12 col-sm-6 col-lg-3 mb-4" key={comic.id}>
                 <div className="card h-100 shadow-sm product-card">
@@ -188,7 +190,7 @@ export default function Homepage({ addToCart, whishlist, handleWhishlist }) {
                         cursor: 'pointer'
                       }}
                     >
-                      Aggiungi alla Whishlist
+                      {isInWhishlist ? 'Rimuovi dalla Whishlist' : 'Aggiungi alla Whishlist'}
                     </button>
                   </div>
                 </div>
