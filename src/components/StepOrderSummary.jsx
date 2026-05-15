@@ -2,16 +2,20 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function StepOrderSummary({ formData, handleBack, cart, clearCart }) {
+export default function StepOrderSummary({ formData, handleBack, cart, clearCart, discount, couponCode }) {
 
     // Calcolo del totale dell'ordine
     const total = cart.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0);
 
+    // Calcolo dello sconto e del totale dopo sconto
+    const discountAmount = (total * discount) / 100;
+    const totalAfterDiscount = total - discountAmount;
+
     // Logica per il costo di spedizione
     const SHIPPING_THRESHOLD = 50;
     const SHIPPING_COST = 3.99;
-    const shippingCost = total >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
-    const totalWithShipping = total + shippingCost;
+    const shippingCost = totalAfterDiscount >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+    const totalWithShipping = totalAfterDiscount + shippingCost;
 
     // Hook per la navigazione e stato per la modale di conferma
     const navigate = useNavigate();
@@ -52,6 +56,8 @@ export default function StepOrderSummary({ formData, handleBack, cart, clearCart
                 status: 'pending',
                 total_price: totalWithShipping,
                 shipping_cost: shippingCost,
+                discount_percentage: discount,
+                discount_amount: discountAmount,  
                 items: cart.map(item => ({
                     slug: item.slug,
                     quantity: item.quantity
@@ -136,6 +142,14 @@ export default function StepOrderSummary({ formData, handleBack, cart, clearCart
                         <span className='fw-semibold'>Subtotale</span>
                         <span>€{total.toFixed(2)}</span>
                     </div>
+
+                    {discount > 0 && (
+                        <div className="d-flex justify-content-between align-items-center mb-2 text-success">
+                            <span className='fw-semibold'>Sconto ({discount}%) - {couponCode}</span>
+                            <span>- €{discountAmount.toFixed(2)}</span>
+                        </div>
+                    )}
+
                     <div className="d-flex justify-content-between align-items-center mb-2">
                         <span className='fw-semibold'>Spedizione</span>
                         <span className={shippingCost === 0 ? 'text-success fw-bold' : ''}>

@@ -2,13 +2,11 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 
-export default function CartPage({ cart, removeFromCart, addToCart }) {
+export default function CartPage({ cart, removeFromCart, addToCart, discount, couponCode, setDiscount, setCouponCode }) {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
   
   // --- NUOVI STATI PER IL COUPON ---
-  const [couponCode, setCouponCode] = useState("");
-  const [discount, setDiscount] = useState(0); 
   const [couponError, setCouponError] = useState("");
   const [isApplied, setIsApplied] = useState(false);
   const [isLoadingCoupon, setIsLoadingCoupon] = useState(false);
