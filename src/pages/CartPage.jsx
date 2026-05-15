@@ -91,8 +91,8 @@ export default function CartPage({ cart, removeFromCart, addToCart }) {
         <h1 className="fw-bold m-0">Il tuo Carrello</h1>
         <span className="badge bg-secondary fs-6">{ cart?.reduce((acc, item) => acc + (item.quantity || 1), 0) || 0 } Articoli</span>
       </div>
-
-      { !cart ? (
+      
+      {!cart || cart.length === 0 ? (
         <div className="text-center py-5 border rounded bg-light shadow-sm">
           <i className="bi bi-cart-x fs-1 text-muted"></i>
           <p className="fs-4 mt-3 text-dark">Il tuo carrello è vuoto!</p>
