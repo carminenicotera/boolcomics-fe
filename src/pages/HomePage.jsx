@@ -74,7 +74,7 @@ export default function Homepage({ addToCart }) {
             { carosell.map((comic, index) => (
               <div key={ comic.id } className={ `carousel-item ${index === 0 ? "active" : ""}` }>
                 <img
-                  src="/img/placeholdercomic.png"
+                  src={`${import.meta.env.VITE_API_URL}${comic.image_url}`}
                   className="d-block w-100"
                   alt={ comic.name }
                   style={ { height: '400px', objectFit: 'cover', filter: 'brightness(0.6)' } }
@@ -109,7 +109,7 @@ export default function Homepage({ addToCart }) {
               <div className="col-12 col-sm-6 col-lg-3 mb-4" key={ comic.id }>
                 <div className="card product-card h-100 shadow-sm">
                   <Link to={ `/products/${comic.slug}` }>
-                    <img src="/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover product-image" />
+                    <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top object-fit-cover product-image" />
                   </Link>
                   <div className="card-body text-center d-flex flex-column">
                     <h5 className="fw-bold">{ comic.name }</h5>
@@ -146,7 +146,7 @@ export default function Homepage({ addToCart }) {
               <div className="col-12 col-sm-6 col-lg-3 mb-4" key={ comic.id }>
                 <div className="card h-100 shadow-sm product-card">
                   <Link to={ `/products/${comic.slug}` }>
-                    <img src="/img/placeholdercomic.png" alt={ comic.name } className="card-img-top object-fit-cover product-image" />
+                    <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top object-fit-cover product-image" />
                   </Link>
                   <div className="card-body text-center d-flex flex-column">
                     <h5 className="fw-bold">{ comic.name }</h5>

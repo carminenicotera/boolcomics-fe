@@ -48,7 +48,7 @@ export default function ProductMainCard({ comic, addToCart }) {
                         <div className="row">
                             <div className="col-md-4 text-center">
                                 <img
-                                    src={comic.image_url}
+                                    src={`${import.meta.env.VITE_API_URL}${comic.image_url}`}
                                     alt={comic.name}
                                     className="img-fluid rounded"
                                     style={{ maxHeight: '450px', objectFit: 'cover' }}
