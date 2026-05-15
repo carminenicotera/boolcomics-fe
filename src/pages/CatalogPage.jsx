@@ -58,22 +58,39 @@ export default function CatalogPage({ addToCart }) {
             <div className="row justify-content-between align-items-center mb-4 g-3">
 
               {/* RESULTS */}
-              <div className="col-12 col-md-auto text-center">
-                <div class="search-empty-state">
-                  <div class="empty-badge">OPS!</div>
+              <div className="col-12 col-md-auto">
+                {filteredComics.length === 0 && (
 
-                  <h2 class="empty-title">Nessun risultato trovato</h2>
+                  <div class="search-empty-state">
+                    <div class="empty-badge">OPS!</div>
 
-                  <p class="empty-message">
-                    La ricerca per "<span class="highlight">[Parola Cercata]</span>" non ha portato alla luce nessun volume.
-                    Prova a controllare i filtri o digita una nuova parola chiave.
+                    <h2 class="empty-title">Nessun risultato trovato</h2>
+
+                    <p class="empty-message">
+                      La ricerca per  non ha portato alla luce nessun volume.
+                      
+                      Prova a digitare una nuova parola chiave.
+                    </p>
+
+                    <Link to="/catalog" class="btn btn-outline-danger">Mostra tutto il catalogo</Link>
+                  </div>
+
+                )}
+                {filteredComics.length !== 0 && (
+
+                  <p className="results-text mb-0">
+                    {filteredComics.length} prodotti trovati
                   </p>
 
-                  <a href="/catalogo" class="btn-reset-search">Mostra tutto il catalogo</a>
-                </div>
+                )}
               </div>
 
+
+
+
+
               {/* SORT BY */}
+              
               <div className="col-12 col-md-3">
                 <select className="form-select catalog-select" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                   <option value="">Ordina per</option>
@@ -96,7 +113,7 @@ export default function CatalogPage({ addToCart }) {
 
                     {/* IMAGE */}
                     <Link to={`/products/${comic.slug}`} className="product-image-wrapper">
-                      <img src="/img/placeholdercomic.png" alt={comic.name} className="card-img-top product-image" />
+                      <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top product-image" />
                     </Link>
 
                     {/* BODY */}

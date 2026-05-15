@@ -213,6 +213,65 @@ body {
   color: #666;
 }
 
+
+/* =========================
+   RESULTS === 0
+========================= */
+
+
+.search-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 20px;
+    width: 100%;
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.empty-badge {
+    background-color: #de3e4b; /* Il tuo rosso */
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 900;
+    padding: 10px 30px;
+    border-radius: 4px;
+    transform: rotate(-3deg); /* Leggera inclinazione stile fumetto */
+    box-shadow: 4px 4px 0px #111111; /* Ombra netta stile pop-art */
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+
+.empty-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111111;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+
+.empty-message {
+    font-size: 15px;
+    color: #555555;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+
+.empty-message .highlight {
+    color: #de3e4b;
+    font-weight: 700;
+}
+
+
+
+
+
+
 /* =========================
    SORT SELECT
 ========================= */
