@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react"
 import { Link, useSearchParams } from "react-router-dom"
+import { useCart } from "../components/CartProvider" 
 
-export default function CatalogPage({ addToCart }) {
+export default function CatalogPage() { // 
 
+  const { addToCart } = useCart(); // 
+  
   const [comics, setComics] = useState([])
   const [sortBy, setSortBy] = useState("")
   const [searchParams] = useSearchParams("")
@@ -20,62 +23,50 @@ export default function CatalogPage({ addToCart }) {
   const filteredComics = [...comics]
     .filter(comic => comic.name.toLowerCase().includes(searchQuery.toLowerCase()))
     .sort((a, b) => {
-      if (sortBy === "name") {
-        return a.name.localeCompare(b.name)
-      }
-      if (sortBy === "low-price") {
-        return a.price - b.price
-      }
-      if (sortBy === "high-price") {
-        return b.price - a.price
-      }
-      if (sortBy === "recent") {
-        return new Date(b.createdAt) - new Date(a.createdAt)
-      }
+      if (sortBy === "name") return a.name.localeCompare(b.name)
+      if (sortBy === "low-price") return a.price - b.price
+      if (sortBy === "high-price") return b.price - a.price
+      if (sortBy === "recent") return new Date(b.createdAt) - new Date(a.createdAt)
       return 0
     })
 
-  // Funzione centralizzata per gestire il click in sicurezza
   const handlePurchaseClick = (comic) => {
     const isOutOfStock = comic.stock_quantity <= 0;
     if (isOutOfStock) {
       alert("Spiacenti, il prodotto è esaurito!");
       return;
     }
-    // Usa la logica corretta passando i parametri separati (prodotto, quantità)
-    addToCart(comic, 1);
-    alert(`${comic.name} aggiunto al carrello!`);
+    
+    // USA IL CONTEXT: Questo attiverà automaticamente il popup nell'header
+    addToCart(comic, 1); 
+    
+    // NOTA: Ho tolto l'alert() perché bloccava l'apparizione del popup
   };
 
   return (
     <>
-      {/* PRODUCTS */}
       <section className="py-5">
         <div className="container">
 
           {/* TOP BAR */}
           {searchQuery && (
-          <div className="row justify-content-between align-items-center mb-4 g-3">
-
-            {/* RESULTS */}
-            <div className="col-12 col-md-auto">
-              <p className="results-text mb-0">
-                { filteredComics.length } prodotti trovati
-              </p>
+            <div className="row justify-content-between align-items-center mb-4 g-3">
+              <div className="col-12 col-md-auto">
+                <p className="results-text mb-0">
+                  { filteredComics.length } prodotti trovati
+                </p>
+              </div>
+              <div className="col-12 col-md-3">
+                <select className="form-select catalog-select" value={ sortBy } onChange={ (e) => setSortBy(e.target.value) }>
+                  <option value="">Ordina per</option>
+                  <option value="name">Nome</option>
+                  <option value="low-price">Prezzo: dal più basso</option>
+                  <option value="high-price">Prezzo: dal più alto</option>
+                  <option value="recent">Più recenti</option>
+                </select>
+              </div>
             </div>
-
-            {/* SORT BY */}
-            <div className="col-12 col-md-3">
-              <select className="form-select catalog-select" value={ sortBy } onChange={ (e) => setSortBy(e.target.value) }>
-                <option value="">Ordina per</option>
-                <option value="name">Nome</option>
-                <option value="low-price">Prezzo: dal più basso</option>
-                <option value="high-price">Prezzo: dal più alto</option>
-                <option value="recent">Più recenti</option>
-              </select>
-            </div>
-          </div>
-          ) }
+          )}
 
           {/* PRODUCTS GRID */}
           <div className="row g-4">
@@ -84,26 +75,12 @@ export default function CatalogPage({ addToCart }) {
               return (
                 <div key={ comic.id } className="col-12 col-sm-6 col-lg-3">
                   <div className="card product-card h-100">
-
-                    {/* IMAGE */}
                     <Link to={ `/products/${comic.slug}` } className="product-image-wrapper">
                       <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top product-image" />
                     </Link>
-
-                    {/* BODY */}
                     <div className="card-body d-flex flex-column text-center">
-
-                      {/* TITLE */}
-                      <h5 className="product-title">
-                        { comic.name }
-                      </h5>
-
-                      {/* PRICE */}
-                      <p className="product-price mt-auto">
-                        € { comic.price }
-                      </p>
-
-                      {/* BUTTON MODIFICATO CON BLOCCO DI SICUREZZA */}
+                      <h5 className="product-title">{ comic.name }</h5>
+                      <p className="product-price mt-auto">€ { comic.price }</p>
                       <button 
                         className="btn fw-bold w-100" 
                         onClick={() => handlePurchaseClick(comic)}
@@ -116,19 +93,13 @@ export default function CatalogPage({ addToCart }) {
                       >
                         {isOutOfStock ? 'ESAURITO' : 'ACQUISTA'}
                       </button>
-
                     </div>
-
                   </div>
-
                 </div>
               );
-            }) }
-
+            })}
           </div>
-
         </div>
-
       </section>
     </>
   )

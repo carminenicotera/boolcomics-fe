@@ -5,15 +5,23 @@ import ProductMainCard from '../components/ProductMainCard';
 import ProductDescriptionCard from '../components/ProductDescriptionCard';
 import RelatedProducts from '../components/RelatedProducts';
 
+// 1. Importa l'hook del carrello
+import { useCart } from "../components/CartProvider"; 
+
 const API_URL = import.meta.env.VITE_API_URL;
 
-export default function ComicPage({ addToCart }) {
+export default function ComicPage() { 
     const { slug } = useParams();
+    
+    // 3. Recupera la funzione addToCart globale
+    const { addToCart } = useCart(); 
+    
     const [comic, setComic] = useState(null);
     const [related, setRelated] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Reset dello stato quando cambia lo slug (navigazione tra correlati)
     if (comic && comic.slug !== slug && !loading) {
         setLoading(true);
         setComic(null);
@@ -21,23 +29,21 @@ export default function ComicPage({ addToCart }) {
         setError(null);
     }
 
-    // 1. Recupera il prodotto principale in base allo slug
+    // Recupera il prodotto principale
     useEffect(() => {
         fetch(`${API_URL}/products/${slug}`)
             .then(res => {
                 if (!res.ok) throw new Error('Prodotto non trovato');
                 return res.json();
             })
-            .then(data => {
-                setComic(data);
-            })
+            .then(data => setComic(data))
             .catch(err => {
                 setError(err.message);
                 setLoading(false);
             });
     }, [slug]);
 
-    // 2. Trova i correlati analizzando le categorie del prodotto principale
+    // Recupera i prodotti correlati
     useEffect(() => {
         if (!comic) return;
 
@@ -45,21 +51,15 @@ export default function ComicPage({ addToCart }) {
             .then(res => res.json())
             .then(allProducts => {
                 const currentCategoriesSlugs = comic.categories?.map(c => c.slug) || [];
-
                 const filtered = allProducts.filter(item => {
                     if (item.slug === comic.slug) return false;
-
-                    const hasCommonCategory = item.categories?.some(cat => 
-                        currentCategoriesSlugs.includes(cat.slug)
-                    );
-                    return hasCommonCategory;
+                    return item.categories?.some(cat => currentCategoriesSlugs.includes(cat.slug));
                 });
-
                 setRelated(filtered.slice(0, 4));
                 setLoading(false);
             })
             .catch(err => {
-                console.error("Errore nel recupero dei correlati:", err);
+                console.error("Errore correlati:", err);
                 setLoading(false);
             });
     }, [comic]);
@@ -70,6 +70,7 @@ export default function ComicPage({ addToCart }) {
     return (
         <>
             <div className='container py-4'>
+                {/* 4. Passiamo la funzione addToCart del Context ai figli */}
                 <ProductMainCard comic={comic} addToCart={addToCart} />
                 <ProductDescriptionCard comic={comic} />
                 <RelatedProducts products={related} addToCart={addToCart} />
