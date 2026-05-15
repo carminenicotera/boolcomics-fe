@@ -5,6 +5,7 @@ import ComicPage from "./pages/ComicPage"
 import CatalogPage from "./pages/CatalogPage"
 import CheckoutPage from "./pages/CheckoutPage"
 import CartPage from "./pages/CartPage"
+import NotFoundPage from "./pages/notFoundPage"
 import { useCartLogic } from "./components/useCartLogic";
 
 
@@ -15,13 +16,14 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route element={ <DefaultLayout cartCount={cartCount} /> }>
-            <Route index element={ <HomePage addToCart={addToCart} /> } />
-            <Route path="/catalog" element={ <CatalogPage addToCart={ addToCart } /> } />
-            <Route path="/products/:slug" element={<ComicPage addToCart={addToCart}/>} />
-            <Route path="/checkout" element={ <CheckoutPage cart={cart} clearCart={clearCart} /> } />
-            <Route path="/cart" element={<CartPage cart={cart} removeFromCart={removeFromCart} addToCart={addToCart}/>} />
+          <Route element={<DefaultLayout cartCount={cartCount} />}>
+            <Route index element={<HomePage addToCart={addToCart} />} />
+            <Route path="/catalog" element={<CatalogPage addToCart={addToCart} />} />
+            <Route path="/products/:slug" element={<ComicPage addToCart={addToCart} />} />
+            <Route path="/checkout" element={<CheckoutPage cart={cart} clearCart={clearCart} />} />
+            <Route path="/cart" element={<CartPage cart={cart} removeFromCart={removeFromCart} addToCart={addToCart} />} />
           </Route>
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </>
