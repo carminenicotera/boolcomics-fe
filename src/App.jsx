@@ -21,9 +21,12 @@ function App() {
 
     if (isAdded) {
       //Remove
+      alert("Prodotto rimosso dalla Whishlist: " + product.name)
       setWhishlist(whishlist.filter(item => item.slug !== product.slug));
       return;
     }
+
+    alert("Prodotto aggiunto alla Whishlist: " + product.name)
 
     setWhishlist([...whishlist, product]);
   }
