@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function RelatedProducts({ products, addToCart }) {
   
-  // Se non ci sono prodotti correlati con categorie in comune, nascondi la sezione
+ 
   if (!products || products.length === 0) {
     return null;
   }

@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import { useCart } from "../components/CartProvider"; 
 
-export default function CartPage({ cart, removeFromCart, addToCart }) {
+export default function CartPage() { 
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Recupero dati globali dal Context
+  const { cart, removeFromCart, addToCart } = useCart();
 
   // --- NUOVI STATI PER IL COUPON ---
   const [couponCode, setCouponCode] = useState("");
@@ -102,7 +106,7 @@ export default function CartPage({ cart, removeFromCart, addToCart }) {
         </div>
       ) : (
         <div className="row g-4">
-          {/* LISTA PRODOTTI */ }
+          {/* LISTA PRODOTTI */}
           <div className="col-lg-8">
             { errorMessage && (
               <div className="alert alert-danger fw-bold border-0 shadow-sm mb-3">
@@ -126,7 +130,7 @@ export default function CartPage({ cart, removeFromCart, addToCart }) {
                   <div className="col-6 col-md-6 ps-3">
                     <h5 className="mb-1 fw-bold">{ item.name }</h5>
                     <div className="d-flex align-items-center mt-2">
-                      {/* SELETTORE QUANTITÀ NEL CARRELLO */ }
+                      {/* SELETTORE QUANTITÀ NEL CARRELLO */}
                       <button className="btn btn-sm btn-outline-secondary py-0 px-2" onClick={ () => removeFromCart(item.slug) }>-</button>
                       <span className="mx-3 fw-bold">{ item.quantity || 1 }</span>
                       <button className="btn btn-sm btn-outline-secondary py-0 px-2" onClick={ () => addToCart(item, 1) }>+</button>
@@ -143,12 +147,12 @@ export default function CartPage({ cart, removeFromCart, addToCart }) {
             )) }
           </div>
 
-          {/* RIEPILOGO */ }
+          {/* RIEPILOGO */}
           <div className="col-lg-4">
             <div className="card p-4 border-0 shadow-sm bg-dark text-white">
               <h3 className="fw-bold mb-4">Riepilogo</h3>
 
-              {/* SEZIONE COUPON */ }
+              {/* SEZIONE COUPON */}
               <div className="mb-4">
                 <label className="small mb-1 text-muted">Codice Coupon</label>
                 <div className="input-group">

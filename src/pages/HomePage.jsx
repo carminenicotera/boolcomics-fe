@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "../components/CartProvider";
 
-export default function Homepage({ addToCart }) {
+export default function Homepage() {
+
+  const { addToCart } = useCart(); 
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -48,7 +51,6 @@ export default function Homepage({ addToCart }) {
     }
     // Usa la nostra nuova logica passandogli il secondo argomento esplicito (1 copia)
     addToCart(comic, 1);
-    alert(`${comic.name} aggiunto al carrello!`);
   };
 
   return (

@@ -1,8 +1,13 @@
 import { useState } from 'react';
+import { useCart } from "../components/CartProvider"; // <--- 1. IMPORTA IL CONTEXT
 
-export default function ProductMainCard({ comic, addToCart }) {
+// 2. RIMOSSO addToCart dalle props (non serve più passarle a mano)
+export default function ProductMainCard({ comic }) {
 
     const [quantity, setQuantity] = useState(1);
+    
+    // 3. RECUPERA LA FUNZIONE DAL CONTEXT
+    const { addToCart } = useCart();
 
     if (!comic) {
         return null;
@@ -22,23 +27,20 @@ export default function ProductMainCard({ comic, addToCart }) {
         }
     };
 
-    const handleAddToCartClick = () => {
-        if (isOutOfStock) {
-            alert("Spiacenti, il prodotto è esaurito!");
-            return;
-        }
-        
-        const finalQuantity = Number(quantity);
+    const handleAddToCartClick = (e) => {
+    
+    e.preventDefault();
+    e.stopPropagation(); 
 
-        if (finalQuantity > comic.stock_quantity) {
-            alert(`Puoi aggiungere al massimo ${comic.stock_quantity} pezzi.`);
-            return;
-        }
-        
-        // PASSO DUE PARAMETRI: il fumetto e il numero inserito nell'input
-        addToCart(comic, finalQuantity);
-        alert(`${comic.name} aggiunto al carrello! Quantità: ${finalQuantity}`);
-    };
+    if (isOutOfStock) return;
+    
+    const finalQuantity = Number(quantity);
+    
+    
+    console.log("Eseguo addToCart per:", comic.name); 
+
+    addToCart(comic, finalQuantity);
+};
 
     return (
         <>
