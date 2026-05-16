@@ -3,18 +3,14 @@ import { Link } from "react-router-dom";
 import { useCart } from "../components/CartProvider";
 
 export default function Homepage() {
-  const { handleAddToCart } = useCart();
+  // Estratto whishlist e handleWhishlist dal Context globale
+  const { handleAddToCart, whishlist, handleWhishlist } = useCart();
 
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [lastestProducts, setLatestProducts] = useState([]);
   const [carosell, setCarosell] = useState([]);
   const [mostPurchased, setMostPurchased] = useState([]);
-
-  const [whishlist, setWishlist] = useState([]);
-  const handleWhishlist = (comic) => {
-    console.log("Wishlist:", comic.name);
-  };
 
   useEffect(() => {
     fetch(`${API_URL}/products/last-arrived`)
@@ -101,7 +97,9 @@ export default function Homepage() {
         <div className="row">
           {lastestProducts.map(comic => {
             const isOutOfStock = comic.stock_quantity <= 0;
-            const isInWhishlist = whishlist.some(item => item.slug === comic.slug);
+            // Controllo sicuro basato sull'array del context globale
+            const isInWhishlist = whishlist ? whishlist.some(item => item.slug === comic.slug) : false;
+            
             return (
               <div className="col-12 col-sm-6 col-lg-3 mb-4" key={comic.id}>
                 <div className="card product-card h-100 shadow-sm">
@@ -151,7 +149,9 @@ export default function Homepage() {
         <div className="row">
           {mostPurchased.map(comic => {
             const isOutOfStock = comic.stock_quantity <= 0;
-            const isInWhishlist = whishlist.some(item => item.slug === comic.slug);
+            // Controllo sicuro basato sull'array del context globale
+            const isInWhishlist = whishlist ? whishlist.some(item => item.slug === comic.slug) : false;
+            
             return (
               <div className="col-12 col-sm-6 col-lg-3 mb-4" key={comic.id}>
                 <div className="card h-100 shadow-sm product-card">

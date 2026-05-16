@@ -5,7 +5,7 @@ import { useCart } from "../components/CartProvider";
 
 export default function AppHeader() {
   const [showSearch, setShowSearch] = useState(false);
-  const { cartCount, showPopup, setShowPopup, lastAdded } = useCart();
+  const { cartCount, showPopup, setShowPopup, lastAdded, whishlist } = useCart();
 
   return (
     <header className="sticky-top bg-white">
@@ -48,6 +48,18 @@ export default function AppHeader() {
                 <button className="btn icon-btn" onClick={ () => setShowSearch(!showSearch) }>
                   <i className="bi bi-search"></i>
                 </button>
+              </li>
+
+              <li className="nav-item">
+                <Link className="nav-link custom-link" to="/wishlist">
+                  <i className="bi bi-heart me-1"></i>
+                  Wishlist
+                  {whishlist && whishlist.length > 0 && (
+                    <span className="badge rounded-pill bg-danger text-white ms-1">
+                      {whishlist.length}
+                    </span>
+                  )}
+                </Link>
               </li>
 
               <li className="nav-item position-relative">
