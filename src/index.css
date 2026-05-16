@@ -167,6 +167,52 @@ body {
 }
 
 /* =========================
+   PAGE 4O4 NOT FOUND
+========================= */
+.header-404 {
+  width: 100%;
+  padding: 20px 50px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+
+.error-404 {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+
+.error-badge {
+  font-size: 120px;
+  font-weight: 900;
+  color: #de3e4b;
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 10px;
+  text-shadow: 4px 4px 0px #2b2b2b;
+  letter-spacing: -2px;
+}
+
+.error-title {
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+  color: #111111;
+}
+
+.error-message {
+  font-size: 16px;
+  color: #666666;
+  line-height: 1.6;
+  margin-bottom: 35px;
+}
+
+
+
+/* =========================
    SEARCHBAR ANIMATION
 ========================= */
 
@@ -212,6 +258,65 @@ body {
   font-weight: 600;
   color: #666;
 }
+
+
+/* =========================
+   RESULTS === 0
+========================= */
+
+
+.search-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 80px 20px;
+    width: 100%;
+    max-width: 550px;
+    margin: 0 auto;
+}
+
+.empty-badge {
+    background-color: #de3e4b; /* Il tuo rosso */
+    color: #ffffff;
+    font-size: 32px;
+    font-weight: 900;
+    padding: 10px 30px;
+    border-radius: 4px;
+    transform: rotate(-3deg); /* Leggera inclinazione stile fumetto */
+    box-shadow: 4px 4px 0px #111111; /* Ombra netta stile pop-art */
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+
+.empty-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111111;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+
+.empty-message {
+    font-size: 15px;
+    color: #555555;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+
+.empty-message .highlight {
+    color: #de3e4b;
+    font-weight: 700;
+}
+
+
+
+
+
 
 /* =========================
    SORT SELECT

@@ -2,20 +2,27 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function StepOrderSummary({ formData, handleBack, cart, clearCart }) {
+export default function StepOrderSummary({ formData, handleBack, cart, clearCart, discount, couponCode }) {
 
     // Calcolo del totale dell'ordine
     const total = cart.reduce((acc, item) => acc + parseFloat(item.price) * item.quantity, 0);
 
+    // Calcolo dello sconto e del totale dopo sconto
+    const discountAmount = (total * discount) / 100;
+    const totalAfterDiscount = total - discountAmount;
+
     // Logica per il costo di spedizione
     const SHIPPING_THRESHOLD = 50;
     const SHIPPING_COST = 3.99;
-    const shippingCost = total >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
-    const totalWithShipping = total + shippingCost;
+    const shippingCost = totalAfterDiscount >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+    const totalWithShipping = totalAfterDiscount + shippingCost;
 
     // Hook per la navigazione e stato per la modale di conferma
     const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+
+    // Stato per eventuali errori durante l'acquisto
+    const [errorModal, setErrorModal] = useState('');
 
     const API_URL = import.meta.env.VITE_API_URL;
 
@@ -48,7 +55,9 @@ export default function StepOrderSummary({ formData, handleBack, cart, clearCart
                 address: addressData.id,
                 status: 'pending',
                 total_price: totalWithShipping,
-                shipping_cost: shippingCost,
+                shipping_cost: String(shippingCost),
+                discount_percentage: String(discount),
+                discount_amount: String(discountAmount),
                 items: cart.map(item => ({
                     slug: item.slug,
                     quantity: item.quantity
@@ -80,7 +89,7 @@ export default function StepOrderSummary({ formData, handleBack, cart, clearCart
             }, 2000);
 
         } catch (err) {
-            alert('Errore durante l\'acquisto: ' + err.message);
+            setErrorModal(err.message);
         }
     };
 
@@ -133,6 +142,14 @@ export default function StepOrderSummary({ formData, handleBack, cart, clearCart
                         <span className='fw-semibold'>Subtotale</span>
                         <span>€{total.toFixed(2)}</span>
                     </div>
+
+                    {discount > 0 && (
+                        <div className="d-flex justify-content-between align-items-center mb-2 text-success">
+                            <span className='fw-semibold'>Sconto ({discount}%) - {couponCode}</span>
+                            <span>- €{discountAmount.toFixed(2)}</span>
+                        </div>
+                    )}
+
                     <div className="d-flex justify-content-between align-items-center mb-2">
                         <span className='fw-semibold'>Spedizione</span>
                         <span className={shippingCost === 0 ? 'text-success fw-bold' : ''}>
@@ -148,7 +165,7 @@ export default function StepOrderSummary({ formData, handleBack, cart, clearCart
                     {/* Pulsanti */}
                     <div className="d-flex justify-content-between mt-4">
                         <button
-                            className="btn btn-outline-secondary"
+                            className="btn btn-outline-dark"
                             onClick={handleBack}
                         >
                             ← Indietro
@@ -175,6 +192,24 @@ export default function StepOrderSummary({ formData, handleBack, cart, clearCart
                         </div>
                     )}
                 </div>
+
+                {/* Modale di errore */}
+                {errorModal && (
+                    <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                        <div className="modal-dialog modal-dialog-centered">
+                            <div className="modal-content text-center p-4">
+                                <h4 className="mb-2 text-danger">❌ Errore</h4>
+                                <p className="text-muted">{errorModal}</p>
+                                <button
+                                    className="btn btn-danger mt-2"
+                                    onClick={() => setErrorModal('')}
+                                >
+                                    Chiudi
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
             </div>
 
