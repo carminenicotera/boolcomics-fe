@@ -1,10 +1,17 @@
 import { useState } from 'react';
+
+import { useCart } from '../components/CartProvider'; 
+
 import StepPersonalData from '../components/StepPersonalData';
 import StepShippingAddress from '../components/StepShippingAddress';
 import StepPayment from '../components/StepPayment';
 import StepOrderSummary from '../components/StepOrderSummary';
 
-export default function CheckoutPage({ cart, clearCart, discount, couponCode }) {
+
+export default function CheckoutPage({ discount = 0, couponCode = "" }) {
+
+   
+    const { cart, clearCart } = useCart();
 
     // Stato per gestire il passo attivo
     const [currentStep, setCurrentStep] = useState(1);
@@ -40,17 +47,14 @@ export default function CheckoutPage({ cart, clearCart, discount, couponCode }) 
     const handleNext = () => setCurrentStep(prev => prev + 1);
     const handleBack = () => setCurrentStep(prev => prev - 1);
 
-    // Funzine per aggiornare i dati del form 
+    // Funzione per aggiornare i dati del form 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-
     return (
-
         <>
-
             <div className="container my-5">
 
                 {/* Barra di progressione */}
@@ -104,17 +108,14 @@ export default function CheckoutPage({ cart, clearCart, discount, couponCode }) 
                     <StepOrderSummary
                         formData={formData}
                         handleBack={handleBack}
-                        cart={cart}
-                        clearCart={clearCart}
+                        cart={cart} 
+                        clearCart={clearCart} 
                         discount={discount}
                         couponCode={couponCode}
                     />
                 )}
 
             </div>
-
         </>
-
     );
-
 }

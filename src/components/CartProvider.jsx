@@ -6,7 +6,7 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const { 
     cart, 
-    addToCart, 
+    addToCart, // Questa è la funzione pura di useCartLogic (NON mostra il popup)
     removeFromCart, 
     cartCount, 
     clearCart
@@ -27,8 +27,9 @@ export const CartProvider = ({ children }) => {
     });
   };
 
-  const handleAddToCart = (product, quantity = 1) => {
-    addToCart(product, quantity);
+  // Questa gestisce l'acquisto da Catalogo/Home e ATTIVA il popup + Offcanvas
+  const handleAddToCartWithPopup = (product, quantity = 1) => {
+    addToCart(product, quantity); // Esegue l'aggiunta reale
     const displayLabel = quantity > 1 ? `${product.name} x ${quantity}` : product.name;
     setLastAdded(displayLabel);
     setShowPopup(true);
@@ -47,8 +48,8 @@ export const CartProvider = ({ children }) => {
   const value = {
     cart,
     cartCount,
-    addToCart: handleAddToCart, 
-    handleAddToCart,
+    addToCart: addToCart, 
+    handleAddToCart: handleAddToCartWithPopup, 
     removeFromCart,
     clearCart,
     showPopup,
