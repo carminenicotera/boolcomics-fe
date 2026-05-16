@@ -1,20 +1,21 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../components/CartProvider";
 
 export default function Homepage() {
-
-export default function Homepage({ addToCart }) {
+  const { handleAddToCart } = useCart();
 
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const [lastestProducts, setLatestProducts] = useState([])
-  const [carosell, setCarosell] = useState([])
-  const [mostPurchased, setMostPurchased] = useState([])
+  const [lastestProducts, setLatestProducts] = useState([]);
+  const [carosell, setCarosell] = useState([]);
+  const [mostPurchased, setMostPurchased] = useState([]);
 
+  const [whishlist, setWishlist] = useState([]);
+  const handleWhishlist = (comic) => {
+    console.log("Wishlist:", comic.name);
+  };
 
-  // Chiamata per le ultime uscite
   useEffect(() => {
     fetch(`${API_URL}/products/last-arrived`)
       .then(res => res.json())
@@ -22,43 +23,37 @@ export default function Homepage({ addToCart }) {
         setLatestProducts(data.slice(0, 4));
       })
       .catch(err => console.error(err));
-  }, []);
+  }, [API_URL]);
 
-  // Carosello
   useEffect(() => {
     fetch(`${API_URL}/products/`)
       .then(res => res.json())
       .then(data => setCarosell(data.slice(0, 3)))
       .catch(err => console.error(err));
-  }, [])
+  }, [API_URL]);
 
-  // Chiamata più venduti
   useEffect(() => {
     fetch(`${API_URL}/products/most-purchased`)
       .then(res => res.json())
       .then(data => {
-        setMostPurchased(data.slice(0, 4))
+        setMostPurchased(data.slice(0, 4));
       })
       .catch(err => console.error(err));
-  }, [])
+  }, [API_URL]);
 
-  // Funzione centralizzata per gestire il click sul pulsante acquista in sicurezza
   const handlePurchaseClick = (comic) => {
     const isOutOfStock = comic.stock_quantity <= 0;
     if (isOutOfStock) {
       alert("Spiacenti, il prodotto è esaurito!");
       return;
     }
-    // Usa la nostra nuova logica passandogli il secondo argomento esplicito (1 copia)
-    addToCart(comic, 1);
+    handleAddToCart(comic, 1);
   };
 
   return (
     <>
-      {/* CAROSELLO */}
       <div className="container mb-5 mt-5">
         <div id="carouselExampleCaptions" className="carousel slide shadow" data-bs-ride="carousel">
-
           <div className="carousel-indicators">
             {carosell.map((_, index) => (
               <button
@@ -101,7 +96,6 @@ export default function Homepage({ addToCart }) {
         </div>
       </div>
 
-      {/* ULTIME USCITE */}
       <div className="container">
         <h2 className="text-center">ULTIME USCITE</h2>
         <div className="row">
@@ -112,7 +106,7 @@ export default function Homepage({ addToCart }) {
               <div className="col-12 col-sm-6 col-lg-3 mb-4" key={comic.id}>
                 <div className="card product-card h-100 shadow-sm">
                   <Link to={ `/products/${comic.slug}` }>
-                    <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top object-fit-cover product-image" />
+                    <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top object-fit-cover product-image" alt={comic.name} />
                   </Link>
                   <div className="card-body text-center d-flex flex-column">
                     <h5 className="fw-bold">{comic.name}</h5>
@@ -152,7 +146,6 @@ export default function Homepage({ addToCart }) {
         </div>
       </div>
 
-      {/* I PIÙ VENDUTI */}
       <div className="container">
         <h2 className="text-center">I PIÙ VENDUTI</h2>
         <div className="row">
@@ -163,7 +156,7 @@ export default function Homepage({ addToCart }) {
               <div className="col-12 col-sm-6 col-lg-3 mb-4" key={comic.id}>
                 <div className="card h-100 shadow-sm product-card">
                   <Link to={ `/products/${comic.slug}` }>
-                    <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top object-fit-cover product-image" />
+                    <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top object-fit-cover product-image" alt={comic.name} />
                   </Link>
                   <div className="card-body text-center d-flex flex-column">
                     <h5 className="fw-bold">{comic.name}</h5>
@@ -202,5 +195,5 @@ export default function Homepage({ addToCart }) {
         </div>
       </div>
     </>
-  )
+  );
 }

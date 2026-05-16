@@ -6,6 +6,17 @@ export function useCartLogic() {
   // Per la gestione degli sconti e dei coupon
   const [discount, setDiscount] = useState(0);
   const [couponCode, setCouponCode] = useState('');
+  
+  // Wishlist state
+  const [whishlist, setWhishlist] = useState([]); 
+
+  // Gestione Wishlist Toggle
+  const handleWhishlist = (comic) => {
+    setWhishlist((prev) => {
+      const exists = prev.some((item) => item.slug === comic.slug);
+      return exists ? prev.filter((item) => item.slug !== comic.slug) : [...prev, comic];
+    });
+  };
 
   // 1. Funzione per aggiungere o sommare
   const addToCart = (product, amount = 1) => {
@@ -27,9 +38,7 @@ export function useCartLogic() {
   // 2. Funzione per rimuovere
   const removeFromCart = (slug) => {
     setCart((prevCart) => {
-
       const itemInCart = prevCart.find((item) => item.slug === slug);
-
 
       if (itemInCart && itemInCart.quantity > 1) {
         return prevCart.map((item) =>
@@ -38,7 +47,6 @@ export function useCartLogic() {
             : item
         );
       }
-
 
       return prevCart.filter((item) => item.slug !== slug);
     });
@@ -51,7 +59,6 @@ export function useCartLogic() {
 
   const cartCount = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
 
-
   return { 
     cart, 
     addToCart, 
@@ -61,6 +68,8 @@ export function useCartLogic() {
     discount,
     couponCode,
     setDiscount,
-    setCouponCode
-};
-} 
+    setCouponCode, 
+    whishlist,       
+    handleWhishlist
+  };
+}

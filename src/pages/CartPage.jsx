@@ -3,14 +3,16 @@ import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { useCart } from "../components/CartProvider"; 
 
-export default function CartPage({ cart, removeFromCart, addToCart }) {
+export default function CartPage() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
 
   // Recupero dati globali dal Context
   const { cart, removeFromCart, addToCart } = useCart();
 
-  // --- NUOVI STATI PER IL COUPON ---
+  // --- STATI PER IL COUPON (AGGIUNTI discount E couponCode) ---
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState(0);
   const [couponError, setCouponError] = useState("");
   const [isApplied, setIsApplied] = useState(false);
   const [isLoadingCoupon, setIsLoadingCoupon] = useState(false);
@@ -19,7 +21,6 @@ export default function CartPage({ cart, removeFromCart, addToCart }) {
   const subtotal = cart?.reduce((acc, item) => {
     return acc + (parseFloat(item.price) * (item.quantity || 1));
   }, 0) || 0;
-
 
   const handleApplyCoupon = async () => {
     if (!couponCode) return;
@@ -39,7 +40,7 @@ export default function CartPage({ cart, removeFromCart, addToCart }) {
         setDiscount(data.discount_percentage);
         setIsApplied(true);
       } else {
-        setCouponError(data.message);
+        setCouponError(data.message || "Codice non valido.");
         setDiscount(0);
         setIsApplied(false);
       }
@@ -60,7 +61,7 @@ export default function CartPage({ cart, removeFromCart, addToCart }) {
   const amountLeft = SHIPPING_THRESHOLD - totalAfterDiscount;
   const finalTotal = totalAfterDiscount + shippingCost;
 
-  // Logica controllo stock (Mantenuta dal tuo collega)
+  // Logica controllo stock
   const handleProceedToCheckout = async () => {
     setErrorMessage("");
     const API_URL = import.meta.env.VITE_API_URL;
@@ -124,11 +125,9 @@ export default function CartPage({ cart, removeFromCart, addToCart }) {
                     />
                   </div>
 
-
                   <div className="col-6 col-md-6 ps-3">
                     <h5 className="mb-1 fw-bold">{item.name}</h5>
                     <div className="d-flex align-items-center mt-2">
-                      {/* SELETTORE QUANTITÀ NEL CARRELLO */ }
                       <button className="btn btn-sm btn-outline-secondary py-0 px-2" onClick={ () => removeFromCart(item.slug) }>-</button>
                       <span className="mx-3 fw-bold">{ item.quantity || 1 }</span>
                       <button className="btn btn-sm btn-outline-secondary py-0 px-2" onClick={ () => addToCart(item, 1) }>+</button>
@@ -172,7 +171,6 @@ export default function CartPage({ cart, removeFromCart, addToCart }) {
                 </div>
                 {couponError && <small className="text-danger mt-1 d-block">{couponError}</small>}
 
-                {/* logica per applicare il coupon e per rimuoverlo */}
                 {isApplied && (
                   <div className="d-flex justify-content-between align-items-center mt-1">
                     <small className="text-success">Sconto {discount}% applicato!</small>
@@ -188,7 +186,6 @@ export default function CartPage({ cart, removeFromCart, addToCart }) {
                     </button>
                   </div>
                 )}
-                
               </div>
 
               <div className="d-flex justify-content-between mb-2">

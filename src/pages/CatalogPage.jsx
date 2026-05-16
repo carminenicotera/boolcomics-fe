@@ -2,33 +2,31 @@ import { useEffect, useState } from "react"
 import { Link, useSearchParams } from "react-router-dom"
 import { useCart } from "../components/CartProvider" 
 
-export default function CatalogPage() { // 
-
-export default function CatalogPage({ addToCart }) {
+export default function CatalogPage() { 
+  
+  // Estraiamo tutto il necessario dal Context globale
+  const { handleAddToCart, whishlist, handleWhishlist } = useCart();
 
   const [comics, setComics] = useState([])
   const [searchParams, setSearchParams] = useSearchParams()
+  const [sortBy, setSortBy] = useState("")
 
-  // QUERY PARAMS
   const searchQuery = searchParams.get("search") || ""
-  const sortBy = searchParams.get("sort") || ""
 
-  // RESET QUERY AL REFRESH
   useEffect(() => {
     setSearchParams({}, { replace: true })
   }, [])
 
-  // FETCH PRODUCTS
   useEffect(() => {
-
     const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000"
-    let url = `${api_url}/products`
-    const queryParams = []
-
-    // SEARCH QUERY
-    if (searchQuery) {
-      queryParams.push(`search=${searchQuery}`)
-    }
+    
+    fetch(`${api_url}/products`)
+      .then(res => res.json())
+      .then(data => {
+        setComics(data);
+      })
+      .catch(err => console.error("Errore nel caricamento dei prodotti:", err));
+  }, []);
 
   const filteredComics = [...comics]
     .filter(comic => comic.name.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -48,36 +46,28 @@ export default function CatalogPage({ addToCart }) {
       return 0
     })
 
-  // Funzione centralizzata per gestire il click in sicurezza
   const handlePurchaseClick = (comic) => {
     const isOutOfStock = comic.stock_quantity <= 0
     if (isOutOfStock) {
       alert("Spiacenti, il prodotto è esaurito!")
       return
     }
-    // Usa la logica corretta passando i parametri separati (prodotto, quantità)
-    addToCart(comic, 1);
-    alert(`${comic.name} aggiunto al carrello!`);
+    
+    handleAddToCart(comic, 1);
   };
 
   return (
     <>
-      {/* PRODUCTS */}
       <section className="py-5">
         <div className="container">
 
-          {/* TOP BAR */}
-          {searchQuery && (
           <div className="row justify-content-between align-items-center mb-4 g-3">
-
-            {/* RESULTS */}
             <div className="col-12 col-md-auto">
               <p className="results-text mb-0">
                 { filteredComics.length } prodotti trovati
               </p>
             </div>
 
-            {/* SORT BY */}
             <div className="col-12 col-md-3">
               <select className="form-select catalog-select" value={ sortBy } onChange={ (e) => setSortBy(e.target.value) }>
                 <option value="">Ordina per</option>
@@ -88,42 +78,27 @@ export default function CatalogPage({ addToCart }) {
               </select>
             </div>
           </div>
-          ) }
 
-          {/* PRODUCTS GRID */ }
           <div className="row g-4">
             { filteredComics.map(comic => {
               const isOutOfStock = comic.stock_quantity <= 0
-              const isInWhishlist = whishlist.some(
-                item => item.slug === comic.slug
-              )
+              // Ora controlla l'array globale del Context correttamente
+              const isInWhishlist = whishlist ? whishlist.some(item => item.slug === comic.slug) : false;
 
               return (
-                <div
-                  key={ comic.id }
-                  className="col-12 col-sm-6 col-lg-3"
-                >
+                <div key={ comic.id } className="col-12 col-sm-6 col-lg-3">
                   <div className="card product-card h-100">
 
-                    {/* IMAGE */}
                     <Link to={ `/products/${comic.slug}` } className="product-image-wrapper">
-                      <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top product-image" />
+                      <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top product-image" alt={comic.name} />
                     </Link>
 
-                    {/* BODY */}
                     <div className="card-body d-flex flex-column text-center">
 
-                      {/* TITLE */}
-                      <h5 className="product-title">
-                        { comic.name }
-                      </h5>
+                      <h5 className="product-title">{ comic.name }</h5>
 
-                      {/* PRICE */}
-                      <p className="product-price mt-auto">
-                        € { comic.price }
-                      </p>
+                      <p className="product-price mt-auto">€ { comic.price }</p>
 
-                      {/* BUTTON MODIFICATO CON BLOCCO DI SICUREZZA */}
                       <button 
                         className="btn fw-bold w-100" 
                         onClick={() => handlePurchaseClick(comic)}
@@ -133,21 +108,19 @@ export default function CatalogPage({ addToCart }) {
                           color: 'white',
                           cursor: isOutOfStock ? 'not-allowed' : 'pointer',
                           marginBottom: '1rem'
-                        } }
+                        }}
                       >
-
                         { isOutOfStock ? "ESAURITO" : "ACQUISTA" }
-
                       </button>
 
                       <button
                         className="btn fw-bold w-100"
                         onClick={ () => handleWhishlist(comic) }
-                        style={ {
+                        style={{
                           background: '#1e1e1e',
                           color: 'white',
                           cursor: 'pointer',
-                        } }
+                        }}
                       >
                         { isInWhishlist ? 'Rimuovi dalla Whishlist' : 'Aggiungi alla Whishlist' }
                       </button>
@@ -155,8 +128,7 @@ export default function CatalogPage({ addToCart }) {
                   </div>
                 </div>
               );
-            }) }
-
+            })}
           </div>
         </div>
       </section>
