@@ -58,32 +58,46 @@ export default function CatalogPage() {
       <section className="py-5">
         <div className="container">
 
-          {/* TOP BAR: Mostra i risultati se c'è una ricerca o la select di ordinamento */ }
-          <div className="row justify-content-between align-items-center mb-4 g-3">
+          {/* TOP BAR COMPATTA A RIGA UNICA (Senza linea centrale) */ }
+          <div className="row align-items-center mb-5 g-3">
 
-            {/* RESULTS TEXT */ }
-            <div className="col-12 col-md-auto">
-              { searchQuery ? (
+            {/* COLONNA SINISTRA: TITOLO POP O RISULTATI DI RICERCA */ }
+            <div className="col-12 col-md pb-2 pb-md-0">
+              { !searchQuery ? (
+                /* Il titolo pop-art a fianco dei filtri, inclinato e con ombra solida */
+                <div className="d-inline-block" style={ { transform: 'rotate(-1.5deg)' } }>
+                  <h2
+                    className="bg-dark text-white px-4 py-2 m-0 text-uppercase fs-3 fw-bold"
+                    style={ {
+                      fontFamily: '"Impact", "Arial Black", sans-serif',
+                      border: '3px solid #111111',
+                      boxShadow: '4px 4px 0px #E63946', // Ombra solida rossa coordinata
+                      letterSpacing: '1px'
+                    } }
+                  >
+                    📚 Catalogo Prodotti
+                  </h2>
+                </div>
+              ) : (
+                /* Se c'è una ricerca, mostra il testo dei risultati trovati */
                 filteredComics.length > 0 && (
-                  <p className="results-text mb-0">
+                  <p className="results-text mb-0 fs-5">
                     { filteredComics.length } prodotti trovati per <strong>{ searchQuery }</strong>
                   </p>
                 )
-              ) : (
-                <h2 className="catalog-title mb-0 fs-3 fw-bold text-uppercase">Catalogo Prodotti</h2>
               ) }
             </div>
 
-            {/* SORT BY SELECT (Sempre visibile se ci sono volumi) */ }
+            {/* COLONNA DESTRA: SELECT DI ORDINAMENTO */ }
             { filteredComics.length !== 0 && (
-              <div className="col-12 col-md-3">
+              <div className="col-12 col-md-3 text-md-end">
                 <select
                   className="form-select catalog-select"
-                  value={ sortBy } // Legge direttamente l'ordinamento dall'URL
+                  value={ sortBy }
                   onChange={ (e) => {
                     const newParams = new URLSearchParams(searchParams)
                     if (e.target.value) {
-                      newParams.set("sort", e.target.value) // Scrive nell'URL
+                      newParams.set("sort", e.target.value)
                     } else {
                       newParams.delete("sort")
                     }
@@ -98,7 +112,11 @@ export default function CatalogPage() {
                 </select>
               </div>
             ) }
+
           </div>
+
+          {/* EMPTY STATE (Se la ricerca non produce risultati) ... qui sotto continua il tuo codice */ }
+
 
           {/* EMPTY STATE (Se la ricerca non produce risultati) */ }
           { searchQuery && filteredComics.length === 0 && (
@@ -152,7 +170,7 @@ export default function CatalogPage() {
                         € { comic.price }
                       </p>
 
-                      {/* BUY BUTTON (Stile Originale Ripristinato) */ }
+                      {/* BUY BUTTON */ }
                       <button
                         className="btn fw-bold w-100"
                         onClick={ () => handlePurchaseClick(comic) }
@@ -167,7 +185,7 @@ export default function CatalogPage() {
                         { isOutOfStock ? "ESAURITO" : "ACQUISTA" }
                       </button>
 
-                      {/* WISHLIST BUTTON (Stile Originale Ripristinato) */ }
+                      {/* WISHLIST BUTTON */ }
                       <button
                         className="btn fw-bold w-100"
                         onClick={ () => handleWhishlist(comic) }
