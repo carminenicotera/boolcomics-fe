@@ -13,6 +13,7 @@ export default function CatalogPage() {
 
   const searchQuery = searchParams.get("search") || ""
 
+  // FETCH PRODUCTS CON NUOVA LOGICA
   useEffect(() => {
     setSearchParams({}, { replace: true })
   }, [])
