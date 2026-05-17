@@ -9,6 +9,7 @@ import CartPage from "./pages/CartPage"
 import NotFoundPage from "./pages/notFoundPage"
 import { useCartLogic } from "./components/useCartLogic";
 import Whishlist from "./pages/Whishlist"
+import ScrollToTop from "./components/ScrollToTop"
 
 function App() {
   const { cart, addToCart, removeFromCart, cartCount, clearCart } = useCartLogic();
@@ -17,6 +18,7 @@ function App() {
     <>
     <CartProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route element={ <DefaultLayout cartCount={cartCount} /> }>
             <Route index element={ <HomePage addToCart={addToCart} /> } />
