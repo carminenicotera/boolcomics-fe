@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../components/CartProvider";
+import ValuesSection from "../components/ValuesSection";
 
 const PROMO_BANNERS = [
   {
@@ -180,7 +181,6 @@ export default function Homepage() {
               style={ {
                 fontFamily: '"Impact", "Arial Black", sans-serif',
                 border: '3px solid #E63946',
-                boxShadow: '5px 5px 0px #E63946',
                 letterSpacing: '2px'
               } }
             >
@@ -252,8 +252,7 @@ export default function Homepage() {
               className="bg-dark text-white px-4 py-2 m-0 text-uppercase fs-3 fw-bold"
               style={ {
                 fontFamily: '"Impact", "Arial Black", sans-serif',
-                border: '3px solid #FFC107',
-                boxShadow: '5px 5px 0px #FFC107',
+                border: '3px solid #E63946',
                 letterSpacing: '2px'
               } }
             >
@@ -313,6 +312,9 @@ export default function Homepage() {
           }) }
         </div>
       </div>
+
+      {/* SEZIONE VALORI */ }
+      <ValuesSection />
     </>
   );
 }
