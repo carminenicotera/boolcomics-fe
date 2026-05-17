@@ -10,6 +10,8 @@ export default function SearchBar({ showSearch, setShowSearch }) {
   useEffect(() => {
     // Reset search term when navigating to a different page
     setShowSearch(false)
+    
+    
   }, [location])
 
   // SUBMIT SEARCH
@@ -20,11 +22,14 @@ export default function SearchBar({ showSearch, setShowSearch }) {
 
     navigate(`/catalog?search=${searchTerm}`)
 
-    // RESET SEARCH
-    setSearchTerm("")
 
+    
+    // RESET SEARCH BAR VALUE
+    setSearchTerm("")
     // CLOSE SEARCH BAR
     setShowSearch(false)
+
+    
   }
 
 
