@@ -10,7 +10,7 @@ export default function CatalogPage({ whishlist, handleWhishlist, addToCart }) {
   const searchQuery = searchParams.get("search") || ""
   const sortBy = searchParams.get("sort") || ""
 
-  // FETCH PRODUCTS
+  // FETCH PRODUCTS CON NUOVA LOGICA
   useEffect(() => {
 
     
