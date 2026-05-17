@@ -3,18 +3,16 @@ import { Link, useSearchParams } from "react-router-dom"
 import { useCart } from "../components/CartProvider"
 
 export default function CatalogPage() {
-
-  // Estraiamo tutto il necessario dal Context globale
+  // Estratto tutto il necessario dal Context globale
   const { handleAddToCart, whishlist, handleWhishlist } = useCart();
 
   const [comics, setComics] = useState([])
   const [searchParams, setSearchParams] = useSearchParams()
-  const [sortBy, setSortBy] = useState("")
 
   const searchQuery = searchParams.get("search") || ""
+  const sortBy = searchParams.get("sort") || ""
 
   // FETCH PRODUCTS CON NUOVA LOGICA
-
   useEffect(() => {
     const api_url = import.meta.env.VITE_API_URL || "http://localhost:3000"
 
@@ -26,6 +24,7 @@ export default function CatalogPage() {
       .catch(err => console.error("Errore nel caricamento dei prodotti:", err));
   }, []);
 
+  // FILTRAGGIO E ORDINAMENTO REAL-TIME
   const filteredComics = [...comics]
     .filter(comic => comic.name.toLowerCase().includes(searchQuery.toLowerCase()))
     .sort((a, b) => {
@@ -50,161 +49,144 @@ export default function CatalogPage() {
       alert("Spiacenti, il prodotto è esaurito!")
       return
     }
-
     handleAddToCart(comic, 1);
   };
 
   return (
     <>
-      {/* PRODUCTS */}
+      {/* PRODUCTS */ }
       <section className="py-5">
         <div className="container">
 
-          {/* TOP BAR */}
+          {/* TOP BAR: Mostra i risultati se c'è una ricerca o la select di ordinamento */ }
+          <div className="row justify-content-between align-items-center mb-4 g-3">
 
-          {searchQuery && (
-            <div className={`row justify-content-${filteredComics.length === 0 ? "center" : "between"} align-items-center mb-4 g-3`}>
-
-              {/* RESULTS */}
-              <div className="col-12 col-md-auto">
-                {filteredComics.length === 0 ? (
-                  <div className="search-empty-state">
-                    <div className="empty-badge"> OPS! </div>
-                    <h2 className="empty-title">Nessun risultato trovato</h2>
-                    <p className="empty-message">
-                      La ricerca per <strong>{searchQuery}</strong> non ha portato alla luce nessun volume.
-                      <br />
-                      Prova a digitare una nuova parola chiave.
-                    </p>
-                    <Link to="/catalog" className="btn btn-outline-danger">
-                      Mostra tutto il catalogo
-                    </Link>
-                  </div>
-                ) : (
+            {/* RESULTS TEXT */ }
+            <div className="col-12 col-md-auto">
+              { searchQuery ? (
+                filteredComics.length > 0 && (
                   <p className="results-text mb-0">
-                    {filteredComics.length} prodotti trovati
+                    { filteredComics.length } prodotti trovati per <strong>{ searchQuery }</strong>
                   </p>
-                )}
-              </div>
-
-              {/* SORT BY */}
-
-              {filteredComics.length !== 0 && (
-                <div className="col-12 col-md-3">
-                  <select
-                    className="form-select catalog-select"
-                    value={sortBy}
-                    onChange={(e) => {
-                      const newParams = new URLSearchParams(searchParams)
-                      if (e.target.value) {
-                        newParams.set("sort", e.target.value)
-                      } else {
-                        newParams.delete("sort")
-                      }
-                      setSearchParams(newParams)
-                    }}
-                  >
-
-                    <option value="">
-                      Ordina per
-                    </option>
-
-                    <option value="name">
-                      Nome
-                    </option>
-
-                    <option value="low-price">
-                      Prezzo: dal più basso
-                    </option>
-
-                    <option value="high-price">
-                      Prezzo: dal più alto
-                    </option>
-
-                    <option value="recent">
-                      Più recenti
-                    </option>
-
-                  </select>
-                </div>
-              )}
+                )
+              ) : (
+                <h2 className="catalog-title mb-0 fs-3 fw-bold text-uppercase">Catalogo Prodotti</h2>
+              ) }
             </div>
-          )}
 
-          {/* PRODUCTS GRID */}
+            {/* SORT BY SELECT (Sempre visibile se ci sono volumi) */ }
+            { filteredComics.length !== 0 && (
+              <div className="col-12 col-md-3">
+                <select
+                  className="form-select catalog-select"
+                  value={ sortBy } // Legge direttamente l'ordinamento dall'URL
+                  onChange={ (e) => {
+                    const newParams = new URLSearchParams(searchParams)
+                    if (e.target.value) {
+                      newParams.set("sort", e.target.value) // Scrive nell'URL
+                    } else {
+                      newParams.delete("sort")
+                    }
+                    setSearchParams(newParams)
+                  } }
+                >
+                  <option value="">Ordina per</option>
+                  <option value="name">Nome</option>
+                  <option value="low-price">Prezzo: dal più basso</option>
+                  <option value="high-price">Prezzo: dal più alto</option>
+                  <option value="recent">Più recenti</option>
+                </select>
+              </div>
+            ) }
+          </div>
+
+          {/* EMPTY STATE (Se la ricerca non produce risultati) */ }
+          { searchQuery && filteredComics.length === 0 && (
+            <div className="row justify-content-center mb-4">
+              <div className="col-12 col-md-auto text-center">
+                <div className="search-empty-state">
+                  <div className="empty-badge"> OPS! </div>
+                  <h2 className="empty-title">Nessun risultato trovato</h2>
+                  <p className="empty-message">
+                    La ricerca per <strong>{ searchQuery }</strong> non ha portato alla luce nessun volume.
+                    <br />
+                    Prova a digitare una nuova parola chiave.
+                  </p>
+                  <Link to="/catalog" className="btn btn-outline-danger">
+                    Mostra tutto il catalogo
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ) }
+
+          {/* PRODUCTS GRID */ }
           <div className="row g-4">
-            {filteredComics.map(comic => {
+            { filteredComics.map(comic => {
               const isOutOfStock = comic.stock_quantity <= 0
-              const isInWhishlist = whishlist.some(
-                item => item.slug === comic.slug
-              )
+              const isInWhishlist = whishlist ? whishlist.some(item => item.slug === comic.slug) : false
 
               return (
-                <div
-                  key={comic.id}
-                  className="col-12 col-sm-6 col-lg-3"
-                >
+                <div key={ comic.id } className="col-12 col-sm-6 col-lg-3">
                   <div className="card product-card h-100">
-                    {/* IMAGE */}
-                    <Link
-                      to={`/products/${comic.slug}`}
-                      className="product-image-wrapper"
-                    >
+
+                    {/* IMAGE */ }
+                    <Link to={ `/products/${comic.slug}` } className="product-image-wrapper">
                       <img
-                        src={`${import.meta.env.VITE_API_URL}${comic.image_url}`}
-                        alt={comic.name}
+                        src={ `${import.meta.env.VITE_API_URL}${comic.image_url}` }
+                        alt={ comic.name }
                         className="card-img-top product-image"
                       />
                     </Link>
 
-                    {/* BODY */}
+                    {/* BODY */ }
                     <div className="card-body d-flex flex-column text-center">
 
-                      {/* TITLE */}
+                      {/* TITLE */ }
                       <h5 className="product-title">
-                        {comic.name}
+                        { comic.name }
                       </h5>
 
-                      {/* PRICE */}
+                      {/* PRICE */ }
                       <p className="product-price mt-auto">
-                        € {comic.price}
+                        € { comic.price }
                       </p>
 
-                      {/* BUTTON MODIFICATO CON BLOCCO DI SICUREZZA */}
+                      {/* BUY BUTTON (Stile Originale Ripristinato) */ }
                       <button
                         className="btn fw-bold w-100"
-                        onClick={() => handlePurchaseClick(comic)}
-                        disabled={isOutOfStock}
-                        style={{
+                        onClick={ () => handlePurchaseClick(comic) }
+                        disabled={ isOutOfStock }
+                        style={ {
                           background: isOutOfStock ? '#6c757d' : '#E63946',
                           color: 'white',
                           cursor: isOutOfStock ? 'not-allowed' : 'pointer',
                           marginBottom: '1rem'
-                        }}
+                        } }
                       >
-
-                        {isOutOfStock ? "ESAURITO" : "ACQUISTA"}
-
+                        { isOutOfStock ? "ESAURITO" : "ACQUISTA" }
                       </button>
 
+                      {/* WISHLIST BUTTON (Stile Originale Ripristinato) */ }
                       <button
                         className="btn fw-bold w-100"
-                        onClick={() => handleWhishlist(comic)}
-                        style={{
+                        onClick={ () => handleWhishlist(comic) }
+                        style={ {
                           background: '#1e1e1e',
                           color: 'white',
                           cursor: 'pointer',
-                        }}
+                        } }
                       >
-                        {isInWhishlist ? 'Rimuovi dalla Whishlist' : 'Aggiungi alla Whishlist'}
+                        { isInWhishlist ? 'Rimuovi dalla Whishlist' : 'Aggiungi alla Whishlist' }
                       </button>
 
                     </div>
                   </div>
                 </div>
               )
-            })}
+            }) }
           </div>
+
         </div>
       </section>
     </>

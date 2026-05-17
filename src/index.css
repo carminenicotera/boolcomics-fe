@@ -4,50 +4,111 @@
 /* =========================
    GLOBAL
 ========================= */
-
 body {
   font-family: Arial, Helvetica, sans-serif;
   background-color: #ffffff;
   color: #111111;
 }
 
-/* =========================
-   NAVBAR
-========================= */
+/* ==========================================================================
+   CYBER-COMIC HEADER & NAVBAR
+   ========================================================================== */
 
-.navbar {
-  background-color: #ffffff;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  transition: 0.2s;
+/* Link testuali con sottolineatura spessa pop-art animata */
+.custom-cyber-link {
+  font-family: "Impact", "Arial Black", sans-serif;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #111 !important;
+  padding: 6px 12px !important;
+  position: relative;
+  transition: color 0.2s ease;
+  text-align: center;
 }
 
+.custom-cyber-link::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 12px;
+  right: 12px;
+  height: 5px;
+  background-color: #E63946;
+  transform: scaleX(0);
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+  z-index: -1;
+}
+
+.custom-cyber-link:hover::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.custom-cyber-link:hover {
+  color: #000 !important;
+}
+
+/* Bottone cerca minimal reattivo */
+.cyber-icon-btn {
+  background: none;
+  border: none;
+  padding: 6px 12px;
+  width: 100%;
+  transition: transform 0.2s ease;
+}
+
+.cyber-icon-btn:hover {
+  transform: scale(1.15);
+}
+
+/* Tasto Carrello a blocco solido nero con ombra rossa/gialla */
+.cyber-cart-btn {
+  font-family: "Impact", "Arial Black", sans-serif;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: #111 !important;
+  border: 3px solid #111;
+  padding: 6px 16px !important;
+  border-radius: 0px; /* Angoli netti stile fumetto */
+  box-shadow: 4px 4px 0px #E63946;
+  transition: all 0.15s ease;
+}
+
+.cyber-cart-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px #FFC107; /* L'ombra diventa gialla all'hover */
+  background: #111 !important;
+}
+
+/* Badges rettangolari ad alto contrasto per i contatori */
+.small-badge {
+  font-size: 0.75rem;
+  padding: 3px 6px;
+  border-radius: 0px !important;
+}
+
+.extra-small { 
+  font-size: 0.7rem; 
+}
+
+/* Animazione soft sul logo per dare reattività */
+.navbar-brand img {
+  transition: transform 0.2s ease;
+}
+
+.navbar-brand:hover img {
+  transform: scale(1.03);
+}
+
+/* =========================
+   ICON BUTTON & LINKS
+========================= */
 .navbar-brand {
   padding: 0;
 }
-
-/* =========================
-   NAV LINKS
-========================= */
-
-.custom-link {
-  color: #111111;
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: 0.9rem;
-  letter-spacing: 0.5px;
-  transition: 0.2s;
-  position: relative;
-}
-
-.custom-link:hover {
-  color: #e63946;
-}
-
-/* =========================
-   ICON BUTTON
-========================= */
 
 .icon-btn {
   border: none;
@@ -64,11 +125,11 @@ body {
 /* =========================
    SEARCHBAR
 ========================= */
-
 .searchbar-wrapper {
-  background-color: white;
-  border-bottom: 1px solid #eee;
-  padding: 20px 0;
+  background-color: #ffffff;
+  border-top: 1px solid #f1f1f1;
+  border-bottom: 1px solid #ececec;
+  padding: 18px 0;
   display: none;
   animation: searchFade 0.2s ease;
 }
@@ -77,7 +138,20 @@ body {
   display: block;
 }
 
-/* SEARCH INPUT WRAPPER */
+.searchbar-wrapper .btn,
+.searchbar-wrapper button {
+  background-color: #111 !important;
+  color: white !important;
+  border: none !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 0px !important;
+}
+
+.searchbar-wrapper .btn:hover,
+.searchbar-wrapper button:hover {
+  background-color: #e63946 !important;
+}
 
 .search-input-wrapper {
   display: flex;
@@ -87,14 +161,10 @@ body {
   padding-bottom: 10px;
 }
 
-/* SEARCH ICON */
-
 .searchbar-icon {
   font-size: 1.2rem;
   color: #777;
 }
-
-/* SEARCH INPUT */
 
 .searchbar-input {
   flex: 1;
@@ -105,13 +175,9 @@ body {
   background-color: transparent;
 }
 
-/* PLACEHOLDER */
-
 .searchbar-input::placeholder {
   color: #999;
 }
-
-/* SELECT */
 
 .searchbar-select {
   border-radius: 0;
@@ -126,145 +192,59 @@ body {
 }
 
 /* =========================
-   CART BUTTON
-========================= */
-
-.cart-btn {
-  background-color: #e63946;
-  color: white;
-  border-radius: 0;
-  padding: 10px 18px;
-  font-weight: 700;
-  text-transform: uppercase;
-  border: 2px solid #e63946;
-  transition: 0.2s;
-}
-
-.cart-btn:hover {
-  background-color: transparent;
-  color: #e63946;
-}
-
-/* =========================
-   LOGOS
-========================= */
-
-.desktop-logo {
-  height: 80px;
-  width: auto;
-  display: block;
-}
-
-.mobile-logo {
-  height: 58px;
-  width: auto;
-  display: none;
-}
-
-.desktop-logo,
-.mobile-logo {
-  transition: 0.2s;
-}
-
-/* =========================
    PAGE 4O4 NOT FOUND
 ========================= */
 .header-404 {
   width: 100%;
-  padding: 20px 50px;
-  border-bottom: 1px solid #e0e0e0;
-  display: flex;
-  justify-content: flex-start;
+  border-bottom: 4px solid #111111;
 }
-
 
 .error-404 {
-  text-align: center;
-  padding: 40px 20px;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-
+/* Ridotto da 120px a un valore più equilibrato e fluido */
 .error-badge {
-  font-size: 120px;
+  font-family: "Impact", "Arial Black", sans-serif;
+  font-size: 85px; 
   font-weight: 900;
-  color: #de3e4b;
+  color: #E63946;
   text-transform: uppercase;
   line-height: 1;
-  margin-bottom: 10px;
-  text-shadow: 4px 4px 0px #2b2b2b;
-  letter-spacing: -2px;
-}
-
-.error-title {
-  font-size: 28px;
-  font-weight: 700;
-  text-transform: uppercase;
-  margin-bottom: 15px;
-  color: #111111;
+  text-shadow: 4px 4px 0px #111111;
+  letter-spacing: 2px;
 }
 
 .error-message {
-  font-size: 16px;
-  color: #666666;
   line-height: 1.6;
-  margin-bottom: 35px;
 }
-
-
 
 /* =========================
    SEARCHBAR ANIMATION
 ========================= */
-
 @keyframes searchFade {
-
   from {
     opacity: 0;
     transform: translateY(-10px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
   }
-
 }
-
-/* =========================
-   CATALOG HEADER
-========================= */
-
-/* .catalog-header {
-  background-color: #f8f9fa;
-}
-
-.catalog-title {
-  font-size: 3rem;
-  font-weight: 800;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-
-.catalog-subtitle {
-  color: #666;
-  font-size: 1.05rem;
-} */
 
 /* =========================
    RESULTS
 ========================= */
-
 .results-text {
   font-weight: 600;
   color: #666;
 }
 
-
 /* =========================
    RESULTS === 0
 ========================= */
-
-
 .search-empty-state {
     display: flex;
     flex-direction: column;
@@ -278,18 +258,17 @@ body {
 }
 
 .empty-badge {
-    background-color: #de3e4b; /* Il tuo rosso */
+    background-color: #de3e4b;
     color: #ffffff;
     font-size: 32px;
     font-weight: 900;
     padding: 10px 30px;
     border-radius: 4px;
-    transform: rotate(-3deg); /* Leggera inclinazione stile fumetto */
-    box-shadow: 4px 4px 0px #111111; /* Ombra netta stile pop-art */
+    transform: rotate(-3deg);
+    box-shadow: 4px 4px 0px #111111;
     margin-bottom: 30px;
     letter-spacing: 1px;
 }
-
 
 .empty-title {
     font-size: 26px;
@@ -299,7 +278,6 @@ body {
     margin-bottom: 15px;
 }
 
-
 .empty-message {
     font-size: 15px;
     color: #555555;
@@ -307,21 +285,14 @@ body {
     margin-bottom: 30px;
 }
 
-
 .empty-message .highlight {
     color: #de3e4b;
     font-weight: 700;
 }
 
-
-
-
-
-
 /* =========================
    SORT SELECT
 ========================= */
-
 .catalog-select {
   border-radius: 0;
   border: 2px solid #111;
@@ -337,7 +308,6 @@ body {
 /* =========================
    PRODUCT CARD
 ========================= */
-
 .product-card {
   border: none;
   border-radius: 0;
@@ -352,7 +322,6 @@ body {
 /* =========================
    PRODUCT IMAGE
 ========================= */
-
 .product-image-wrapper {
   overflow: hidden;
 }
@@ -370,7 +339,6 @@ body {
 /* =========================
    PRODUCT TITLE
 ========================= */
-
 .product-title {
   font-weight: 700;
   font-size: 1rem;
@@ -380,7 +348,6 @@ body {
 /* =========================
    PRODUCT PRICE
 ========================= */
-
 .product-price {
   font-size: 1.2rem;
   font-weight: 800;
@@ -390,7 +357,6 @@ body {
 /* =========================
    BUY BUTTON
 ========================= */
-
 .buy-btn {
   background-color: #e63946;
   color: white;
@@ -408,30 +374,16 @@ body {
 }
 
 /* =========================
-   MOBILE
+   RESPONSIVE OVERRIDES
 ========================= */
-
 @media screen and (max-width: 576px) {
-
-  .desktop-logo {
-    display: none;
-  }
-
-  .mobile-logo {
-    display: block;
-  }
-
   .navbar-collapse {
     padding-top: 20px;
   }
 
   .navbar-nav {
     gap: 10px;
-    align-items: flex-start !important;
-  }
-
-  .cart-btn {
-    width: 100%;
+    align-items: center !important;
   }
 
   .searchbar-select {
@@ -441,5 +393,4 @@ body {
   .catalog-title {
     font-size: 2rem;
   }
-
 }
