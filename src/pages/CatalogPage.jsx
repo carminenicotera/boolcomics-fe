@@ -10,6 +10,7 @@ export default function CatalogPage() {
   
   const [searchParams, setSearchParams] = useSearchParams()
   const [filteredComics, setFilteredComics] = useState([])
+  const [sortBy, setSortBy] = useState("")
   // QUERY PARAMS
   const searchQuery = searchParams.get("search") || ""
 
