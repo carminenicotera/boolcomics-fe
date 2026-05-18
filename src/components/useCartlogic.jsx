@@ -19,6 +19,7 @@ export function useCartLogic() {
   };
 
   // 1. Funzione per aggiungere o sommare
+    // Sostituisci solo la funzione addToCart dentro useCartLogic.js con questa versione pulita
   const addToCart = (product, amount = 1) => {
     setCart((prev) => {
       const exists = prev.find(i => i.slug === product.slug);
@@ -34,6 +35,7 @@ export function useCartLogic() {
       return [...prev, { ...product, quantity: amount }];
     });
   };
+
 
   // 2. Funzione per rimuovere
   const removeFromCart = (slug) => {

@@ -44,19 +44,19 @@ export default function Homepage() {
   }, [API_URL]);
 
   const handlePurchaseClick = (comic) => {
-    if (comic.stock_quantity <= 0) {
-      alert("Spiacenti, il prodotto è esaurito!");
-      return;
-    }
+    // Rimosso il blocco approssimativo locale.
+    // Invochiamo handleAddToCart: sarà il CartProvider a gestire in modo atomico
+    // lo stock residuo confrontando la quantità richiesta con quella già a carrello.
     handleAddToCart(comic, 1);
   };
 
   return (
     <>
+      {/* SEZIONE CAROSELLO */}
       <div className="container mb-5 mt-5">
         <div id="carouselExampleCaptions" className="carousel slide shadow" data-bs-ride="carousel">
 
-          {/* Indicatori in basso */ }
+          {/* Indicatori in basso */}
           <div className="carousel-indicators">
             { PROMO_BANNERS.map((_, index) => (
               <button
@@ -71,13 +71,12 @@ export default function Homepage() {
             )) }
           </div>
 
-          {/* Sliders */ }
+          {/* Sliders */}
           <div className="carousel-inner rounded">
             { PROMO_BANNERS.map((banner, index) => (
               <div key={ banner.id } className={ `carousel-item ${index === 0 ? "active" : ""}` }>
 
                 { banner.link ? (
-                  /* Se c'è il link (Solo il Secondo Banner) */
                   <Link to={ banner.link }>
                     <img
                       src={ banner.image }
@@ -93,7 +92,6 @@ export default function Homepage() {
                     />
                   </Link>
                 ) : (
-                  /* Se NON c'è il link (Primo e Terzo Banner) */
                   <img
                     src={ banner.image }
                     className="d-block w-100"
@@ -112,8 +110,7 @@ export default function Homepage() {
             )) }
           </div>
 
-
-          {/* Freccia Sinistra */ }
+          {/* Freccia Sinistra */}
           <button
             className="carousel-control-prev"
             type="button"
@@ -139,7 +136,7 @@ export default function Homepage() {
             <span className="visually-hidden">Precedente</span>
           </button>
 
-          {/* Freccia Destra */ }
+          {/* Freccia Destra */}
           <button
             className="carousel-control-next"
             type="button"
@@ -165,16 +162,13 @@ export default function Homepage() {
             <span className="visually-hidden">Successivo</span>
           </button>
 
-
         </div>
       </div>
 
-
+      {/* SEZIONE ULTIME USCITE */}
       <div className="container">
         <div className="d-flex align-items-center justify-content-center my-5 position-relative">
-          {/* Linea di sfondo sinistra */ }
           <div className="flex-grow-1 bg-dark" style={ { height: '4px', opacity: 0.8 } }></div>
-
           <div className="mx-3" style={ { transform: 'rotate(-2deg)' } }>
             <h2
               className="bg-dark text-white px-4 py-2 m-0 text-uppercase fs-3 fw-bold"
@@ -187,15 +181,12 @@ export default function Homepage() {
               💥 ULTIME USCITE 💥
             </h2>
           </div>
-
-          {/* Linea di sfondo destra */ }
           <div className="flex-grow-1 bg-dark" style={ { height: '4px', opacity: 0.8 } }></div>
         </div>
 
         <div className="row">
           { lastestProducts.map(comic => {
             const isOutOfStock = comic.stock_quantity <= 0;
-            // Controllo sicuro basato sull'array del context globale
             const isInWhishlist = whishlist ? whishlist.some(item => item.slug === comic.slug) : false;
 
             return (
@@ -229,7 +220,7 @@ export default function Homepage() {
                       style={ {
                         background: '#1e1e1e',
                         color: 'white',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
                       } }
                     >
                       { isInWhishlist ? 'Rimuovi dalla Whishlist' : 'Aggiungi alla Whishlist' }
@@ -242,32 +233,28 @@ export default function Homepage() {
         </div>
       </div>
 
+      {/* SEZIONE I PIÙ VENDUTI */}
       <div className="container">
         <div className="d-flex align-items-center justify-content-center my-5 position-relative">
-          {/* Linea di sfondo sinistra */ }
           <div className="flex-grow-1 bg-dark" style={ { height: '4px', opacity: 0.8 } }></div>
-
           <div className="mx-3" style={ { transform: 'rotate(1.5deg)' } }>
             <h2
               className="bg-dark text-white px-4 py-2 m-0 text-uppercase fs-3 fw-bold"
               style={ {
                 fontFamily: '"Impact", "Arial Black", sans-serif',
-                border: '3px solid #E63946',
+                border: '3px solid #FFC107',
                 letterSpacing: '2px'
               } }
             >
               🔥 I PIÙ VENDUTI 🔥
             </h2>
           </div>
-
-          {/* Linea di sfondo destra */ }
           <div className="flex-grow-1 bg-dark" style={ { height: '4px', opacity: 0.8 } }></div>
         </div>
 
         <div className="row">
           { mostPurchased.map(comic => {
             const isOutOfStock = comic.stock_quantity <= 0;
-            // Controllo sicuro basato sull'array del context globale
             const isInWhishlist = whishlist ? whishlist.some(item => item.slug === comic.slug) : false;
 
             return (
@@ -300,7 +287,7 @@ export default function Homepage() {
                       style={ {
                         background: '#1e1e1e',
                         color: 'white',
-                        cursor: 'pointer'
+                        cursor: 'pointer',
                       } }
                     >
                       { isInWhishlist ? 'Rimuovi dalla Whishlist' : 'Aggiungi alla Whishlist' }
@@ -313,7 +300,7 @@ export default function Homepage() {
         </div>
       </div>
 
-      {/* SEZIONE VALORI */ }
+      {/* SEZIONE I NOSTRI VALORI */}
       <ValuesSection />
     </>
   );

@@ -6,30 +6,54 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const { 
     cart, 
-    addToCart, // Questa è la funzione pura di useCartLogic (NON mostra il popup)
+    addToCart, 
     removeFromCart, 
     cartCount, 
-    clearCart
+    clearCart,
+    whishlist,        
+    handleWhishlist   
   } = useCartLogic();
   
-  const [whishlist, setWhishlist] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [lastAdded, setLastAdded] = useState("");
 
-  const handleWhishlist = (comic) => {
-    setWhishlist((prev) => {
-      const exists = prev.some((item) => item.slug === comic.slug);
-      if (exists) {
-        return prev.filter((item) => item.slug !== comic.slug);
-      } else {
-        return [...prev, comic];
-      }
-    });
-  };
-
-  // Questa gestisce l'acquisto da Catalogo/Home e ATTIVA il popup + Offcanvas
+  // Questa gestisce l'acquisto da tutto il sito e BLOCCO dello stock atomico in tempo reale
   const handleAddToCartWithPopup = (product, quantity = 1) => {
-    addToCart(product, quantity); // Esegue l'aggiunta reale
+    // 1. Cerchiamo se il fumetto è già presente nel carrello attuale
+    const existingItem = cart.find(item => item.slug === product.slug);
+    const currentQuantityInCart = existingItem ? existingItem.quantity : 0;
+    
+    // Calcoliamo quanti pezzi avremmo in totale accettando questa richiesta
+    const targetQuantity = currentQuantityInCart + quantity;
+
+    // 2. CONTROLLO DI SICUREZZA ATOMICO: Se superiamo lo stock, blocchiamo IMMEDIATAMENTE tutto
+    if (targetQuantity > product.stock_quantity) {
+      const availableSpace = product.stock_quantity - currentQuantityInCart;
+      
+      if (availableSpace > 0) {
+        alert(`Puoi aggiungere solo altri ${availableSpace} pezzi di questo articolo (scorte esaurite)!`);
+        
+        // Riempiamo il carrello fino al limite massimo consentito
+        addToCart(product, availableSpace);
+        
+        // Forziamo l'apertura grafica perché abbiamo comunque aggiunto i pezzi rimasti
+        const displayLabel = availableSpace > 1 ? `${product.name} x ${availableSpace}` : product.name;
+        setLastAdded(displayLabel);
+        setShowPopup(true);
+        const cartElem = document.getElementById('miniCart');
+        if (cartElem && window.bootstrap && window.bootstrap.Offcanvas) {
+          const instance = window.bootstrap.Offcanvas.getOrCreateInstance(cartElem);
+          instance.show();
+        }
+        setTimeout(() => setShowPopup(false), 3000);
+      } else {
+        alert("Hai già aggiunto tutti i pezzi disponibili per questo prodotto nel tuo carrello!");
+      }
+      return; // Interrompe l'esecuzione: non apre popup errati e non duplica
+    }
+
+    // 3. Se lo stock è sufficiente, esegue l'inserimento standard e mostra la grafica
+    addToCart(product, quantity); 
     const displayLabel = quantity > 1 ? `${product.name} x ${quantity}` : product.name;
     setLastAdded(displayLabel);
     setShowPopup(true);
