@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useCart } from "../components/CartProvider"; // CORETTO: IMPORTA IL CONTEXT
 
 export default function ProductMainCard({ comic }) {
-
+    const { handleAddToCart, whishlist, handleWhishlist } = useCart();
     const [quantity, setQuantity] = useState(1);
     
-    const { handleAddToCart } = useCart();
+    
+    
 
     if (!comic) {
         return null;
@@ -13,7 +14,9 @@ export default function ProductMainCard({ comic }) {
 
     const isDiscounted = comic.price < comic.original_price;
     const isOutOfStock = comic.stock_quantity <= 0;
-
+    const isInWhishlist = whishlist ? whishlist.some(item => item.slug === comic.slug) : false;
+    console.log(handleAddToCart)
+    
     const handleQuantityChange = (e) => {
         const val = parseInt(e.target.value, 10) || 1;
         if (val > comic.stock_quantity) {
@@ -98,8 +101,8 @@ export default function ProductMainCard({ comic }) {
                                         {isOutOfStock ? 'ESAURITO' : 'ACQUISTA'}
                                     </button>
 
-                                    <button className="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center gap-2">
-                                        <i className="bi bi-heart"></i>
+                                    <button className="btn btn-outline-danger btn-lg d-flex align-items-center justify-content-center gap-2" onClick={() => handleWhishlist(comic)}>
+                                        <i className={`bi ${isInWhishlist ? 'bi-heart-fill' : 'bi-heart'}`}></i>
                                         Preferiti
                                     </button>
                                 </div>
