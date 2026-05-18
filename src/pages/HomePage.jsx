@@ -57,56 +57,56 @@ export default function Homepage() {
 
           {/* Indicatori in basso */}
           <div className="carousel-indicators">
-            { PROMO_BANNERS.map((_, index) => (
+            {PROMO_BANNERS.map((_, index) => (
               <button
-                key={ index }
+                key={index}
                 type="button"
                 data-bs-target="#carouselExampleCaptions"
-                data-bs-slide-to={ index }
-                className={ index === 0 ? "active" : "" }
-                aria-current={ index === 0 ? "true" : "false" }
-                aria-label={ `Slide ${index + 1}` }
+                data-bs-slide-to={index}
+                className={index === 0 ? "active" : ""}
+                aria-current={index === 0 ? "true" : "false"}
+                aria-label={`Slide ${index + 1}`}
               ></button>
-            )) }
+            ))}
           </div>
 
           {/* Sliders */}
           <div className="carousel-inner rounded">
-            { PROMO_BANNERS.map((banner, index) => (
-              <div key={ banner.id } className={ `carousel-item ${index === 0 ? "active" : ""}` }>
+            {PROMO_BANNERS.map((banner, index) => (
+              <div key={banner.id} className={`carousel-item ${index === 0 ? "active" : ""}`}>
 
-                { banner.link ? (
-                  <Link to={ banner.link }>
+                {banner.link ? (
+                  <Link to={banner.link}>
                     <img
-                      src={ banner.image }
+                      src={banner.image}
                       className="d-block w-100"
-                      alt={ banner.title }
-                      style={ {
+                      alt={banner.title}
+                      style={{
                         height: 'auto',
                         maxHeight: '450px',
                         objectFit: 'contain',
                         backgroundColor: '#1a1a1a',
                         cursor: 'pointer'
-                      } }
+                      }}
                     />
                   </Link>
                 ) : (
                   <img
-                    src={ banner.image }
-                    className="d-block w-100"
-                    alt={ banner.title }
-                    style={ {
+                    src={banner.image}
+                    className="d-block w-100-"
+                    alt={banner.title}
+                    style={{
                       height: 'auto',
                       maxHeight: '450px',
                       objectFit: 'contain',
                       backgroundColor: '#1a1a1a',
                       cursor: 'default'
-                    } }
+                    }}
                   />
-                ) }
+                )}
 
               </div>
-            )) }
+            ))}
           </div>
 
           {/* Freccia Sinistra */}
@@ -115,11 +115,11 @@ export default function Homepage() {
             type="button"
             data-bs-target="#carouselExampleCaptions"
             data-bs-slide="prev"
-            style={ { width: '10%' } }
+            style={{ width: '10%' }}
           >
             <span
               className="d-flex align-items-center justify-content-center text-white"
-              style={ {
+              style={{
                 width: '50px',
                 height: '50px',
                 backgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -128,7 +128,7 @@ export default function Homepage() {
                 fontWeight: 'bold',
                 border: '2px solid #fff',
                 boxShadow: '0 4px 10px rgba(0,0,0,0.3)'
-              } }
+              }}
             >
               ◀
             </span>
@@ -141,11 +141,11 @@ export default function Homepage() {
             type="button"
             data-bs-target="#carouselExampleCaptions"
             data-bs-slide="next"
-            style={ { width: '10%' } }
+            style={{ width: '10%' }}
           >
             <span
               className="d-flex align-items-center justify-content-center text-white"
-              style={ {
+              style={{
                 width: '50px',
                 height: '50px',
                 backgroundColor: 'rgba(0, 0, 0, 0.6)',
@@ -154,7 +154,7 @@ export default function Homepage() {
                 fontWeight: 'bold',
                 border: '2px solid #fff',
                 boxShadow: '0 4px 10px rgba(0,0,0,0.3)'
-              } }
+              }}
             >
               ▶
             </span>
@@ -167,135 +167,135 @@ export default function Homepage() {
       {/* SEZIONE ULTIME USCITE */}
       <div className="container">
         <div className="d-flex align-items-center justify-content-center my-5 position-relative">
-          <div className="flex-grow-1 bg-dark" style={ { height: '4px', opacity: 0.8 } }></div>
-          <div className="mx-3" style={ { transform: 'rotate(-2deg)' } }>
+          <div className="flex-grow-1 bg-dark" style={{ height: '4px', opacity: 0.8 }}></div>
+          <div className="mx-3" style={{ transform: 'rotate(-2deg)' }}>
             <h2
               className="bg-dark text-white px-4 py-2 m-0 text-uppercase fs-3 fw-bold"
-              style={ {
+              style={{
                 fontFamily: '"Impact", "Arial Black", sans-serif',
                 border: '3px solid #E63946',
                 letterSpacing: '2px'
-              } }
+              }}
             >
                ULTIME USCITE 
             </h2>
           </div>
-          <div className="flex-grow-1 bg-dark" style={ { height: '4px', opacity: 0.8 } }></div>
+          <div className="flex-grow-1 bg-dark" style={{ height: '4px', opacity: 0.8 }}></div>
         </div>
 
         <div className="row">
-          { lastestProducts.map(comic => {
+          {lastestProducts.map(comic => {
             const isOutOfStock = comic.stock_quantity <= 0;
             const isInWhishlist = whishlist ? whishlist.some(item => item.slug === comic.slug) : false;
 
             return (
-              <div className="col-12 col-sm-6 col-lg-3 mb-4" key={ comic.id }>
+              <div className="col-12 col-sm-6 col-lg-3 mb-4" key={comic.id}>
                 <div className="card product-card h-100 shadow-sm bg-light">
-                  <Link to={ `/products/${comic.slug}` }>
-                    <img src={ `${import.meta.env.VITE_API_URL}${comic.image_url}` } className="card-img-top object-fit-cover product-image" alt={ comic.name } />
+                  <Link to={`/products/${comic.slug}`}>
+                    <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top object-fit-cover product-image" alt={comic.name} />
                   </Link>
                   <div className="card-body text-center d-flex flex-column">
-                    <h5 className="fw-bold">{ comic.name }</h5>
-                    <span className="mb-2"><strong>Uscita:</strong> { comic.release_date ? comic.release_date.split('T')[0] : 'N/A' }</span>
-                    <p className="fw-bold mt-auto">€{ comic.price }</p>
+                    <h5 className="fw-bold">{comic.name}</h5>
+                    <span className="mb-2"><strong>Uscita:</strong> {comic.release_date ? comic.release_date.split('T')[0] : 'N/A'}</span>
+                    <p className="fw-bold mt-auto">€{comic.price}</p>
 
                     <button
                       className="btn fw-bold w-100"
-                      onClick={ () => handlePurchaseClick(comic) }
-                      disabled={ isOutOfStock }
-                      style={ {
+                      onClick={() => handlePurchaseClick(comic)}
+                      disabled={isOutOfStock}
+                      style={{
                         background: isOutOfStock ? '#6c757d' : '#E63946',
                         color: 'white',
                         cursor: isOutOfStock ? 'not-allowed' : 'pointer',
                         marginBottom: '1rem'
-                      } }
+                      }}
                     >
-                      { isOutOfStock ? 'ESAURITO' : 'ACQUISTA' }
+                      {isOutOfStock ? 'ESAURITO' : 'ACQUISTA'}
                     </button>
 
                     <button
                       className="btn fw-bold w-100"
-                      onClick={ () => handleWhishlist(comic) }
-                      style={ {
+                      onClick={() => handleWhishlist(comic)}
+                      style={{
                         background: '#1e1e1e',
                         color: 'white',
                         cursor: 'pointer',
-                      } }
+                      }}
                     >
-                      { isInWhishlist ? 'Rimuovi dalla Whishlist' : 'Aggiungi alla Whishlist' }
+                      {isInWhishlist ? 'Rimuovi dalla Whishlist' : 'Aggiungi alla Whishlist'}
                     </button>
                   </div>
                 </div>
               </div>
             );
-          }) }
+          })}
         </div>
       </div>
 
       {/* SEZIONE I PIÙ VENDUTI */}
       <div className="container">
         <div className="d-flex align-items-center justify-content-center my-5 position-relative">
-          <div className="flex-grow-1 bg-dark" style={ { height: '4px', opacity: 0.8 } }></div>
-          <div className="mx-3" style={ { transform: 'rotate(1.5deg)' } }>
+          <div className="flex-grow-1 bg-dark" style={{ height: '4px', opacity: 0.8 }}></div>
+          <div className="mx-3" style={{ transform: 'rotate(1.5deg)' }}>
             <h2
               className="bg-dark text-white px-4 py-2 m-0 text-uppercase fs-3 fw-bold"
-              style={ {
+              style={{
                 fontFamily: '"Impact", "Arial Black", sans-serif',
                 border: '3px solid #FFC107',
                 letterSpacing: '2px'
-              } }
+              }}
             >
                I PIÙ VENDUTI 
             </h2>
           </div>
-          <div className="flex-grow-1 bg-dark" style={ { height: '4px', opacity: 0.8 } }></div>
+          <div className="flex-grow-1 bg-dark" style={{ height: '4px', opacity: 0.8 }}></div>
         </div>
 
         <div className="row">
-          { mostPurchased.map(comic => {
+          {mostPurchased.map(comic => {
             const isOutOfStock = comic.stock_quantity <= 0;
             const isInWhishlist = whishlist ? whishlist.some(item => item.slug === comic.slug) : false;
 
             return (
-              <div className="col-12 col-sm-6 col-lg-3 mb-4" key={ comic.id }>
+              <div className="col-12 col-sm-6 col-lg-3 mb-4" key={comic.id}>
                 <div className="card h-100 shadow-sm product-card bg-light">
-                  <Link to={ `/products/${comic.slug}` }>
-                    <img src={ `${import.meta.env.VITE_API_URL}${comic.image_url}` } className="card-img-top object-fit-cover product-image" alt={ comic.name } />
+                  <Link to={`/products/${comic.slug}`}>
+                    <img src={`${import.meta.env.VITE_API_URL}${comic.image_url}`} className="card-img-top object-fit-cover product-image" alt={comic.name} />
                   </Link>
                   <div className="card-body text-center d-flex flex-column">
-                    <h5 className="fw-bold">{ comic.name }</h5>
-                    <p className="fw-bold mt-auto">€{ comic.price }</p>
+                    <h5 className="fw-bold">{comic.name}</h5>
+                    <p className="fw-bold mt-auto">€{comic.price}</p>
 
                     <button
                       className="btn fw-bold w-100"
-                      onClick={ () => handlePurchaseClick(comic) }
-                      disabled={ isOutOfStock }
-                      style={ {
+                      onClick={() => handlePurchaseClick(comic)}
+                      disabled={isOutOfStock}
+                      style={{
                         background: isOutOfStock ? '#6c757d' : '#E63946',
                         color: 'white',
                         cursor: isOutOfStock ? 'not-allowed' : 'pointer',
                         marginBottom: '1rem'
-                      } }
+                      }}
                     >
-                      { isOutOfStock ? 'ESAURITO' : 'ACQUISTA' }
+                      {isOutOfStock ? 'ESAURITO' : 'ACQUISTA'}
                     </button>
 
                     <button
                       className="btn fw-bold w-100"
-                      onClick={ () => handleWhishlist(comic) }
-                      style={ {
+                      onClick={() => handleWhishlist(comic)}
+                      style={{
                         background: '#1e1e1e',
                         color: 'white',
                         cursor: 'pointer',
-                      } }
+                      }}
                     >
-                      { isInWhishlist ? 'Rimuovi dalla Whishlist' : 'Aggiungi alla Whishlist' }
+                      {isInWhishlist ? 'Rimuovi dalla Whishlist' : 'Aggiungi alla Whishlist'}
                     </button>
                   </div>
                 </div>
               </div>
             );
-          }) }
+          })}
         </div>
       </div>
 
