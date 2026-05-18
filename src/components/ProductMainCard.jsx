@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { useCart } from "../components/CartProvider"; // <--- 1. IMPORTA IL CONTEXT
+import { useCart } from "../components/CartProvider"; // CORETTO: IMPORTA IL CONTEXT
 
-// 2. RIMOSSO addToCart dalle props (non serve più passarle a mano)
 export default function ProductMainCard({ comic }) {
 
     const [quantity, setQuantity] = useState(1);
     
-    // 3. RECUPERA LA FUNZIONE DAL CONTEXT
-    const { addToCart } = useCart();
+    const { handleAddToCart } = useCart();
 
     if (!comic) {
         return null;
@@ -28,19 +26,17 @@ export default function ProductMainCard({ comic }) {
     };
 
     const handleAddToCartClick = (e) => {
-    
-    e.preventDefault();
-    e.stopPropagation(); 
+        e.preventDefault();
+        e.stopPropagation(); 
 
-    if (isOutOfStock) return;
-    
-    const finalQuantity = Number(quantity);
-    
-    
-    console.log("Eseguo addToCart per:", comic.name); 
+        if (isOutOfStock) return;
+        
+        const finalQuantity = Number(quantity);
+        
+        console.log("Eseguo handleAddToCart dal Context per:", comic.name); 
 
-    addToCart(comic, finalQuantity);
-};
+        handleAddToCart(comic, finalQuantity);
+    };
 
     return (
         <>

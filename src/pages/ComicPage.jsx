@@ -5,7 +5,7 @@ import ProductMainCard from '../components/ProductMainCard';
 import ProductDescriptionCard from '../components/ProductDescriptionCard';
 import RelatedProducts from '../components/RelatedProducts';
 
-// 1. Importa l'hook del carrello
+// Importa l'hook del carrello
 import { useCart } from "../components/CartProvider"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -13,8 +13,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 export default function ComicPage() { 
     const { slug } = useParams();
     
-    // 3. Recupera la funzione addToCart globale
-    const { addToCart } = useCart(); 
+    const { handleAddToCart } = useCart(); 
     
     const [comic, setComic] = useState(null);
     const [related, setRelated] = useState([]);
@@ -70,10 +69,11 @@ export default function ComicPage() {
     return (
         <>
             <div className='container py-4'>
-                {/* 4. Passiamo la funzione addToCart del Context ai figli */}
-                <ProductMainCard comic={comic} addToCart={addToCart} />
+                {/* Passiamo la funzione handleAddToCart del Context che gestisce i controlli e la grafica */}
+                <ProductMainCard comic={comic} addToCart={handleAddToCart} />
                 <ProductDescriptionCard comic={comic} />
-                <RelatedProducts products={related} addToCart={addToCart} />
+                
+                <RelatedProducts products={related} />
             </div>
         </>
     );

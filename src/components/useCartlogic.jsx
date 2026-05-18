@@ -35,6 +35,7 @@ export function useCartLogic() {
     });
   };
 
+
   // 2. Funzione per rimuovere
   const removeFromCart = (slug) => {
     setCart((prevCart) => {
