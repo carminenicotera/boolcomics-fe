@@ -3,17 +3,17 @@ import { useCart } from "../components/CartProvider";
 
 export default function Whishlist() {
     // Recuperiamo i dati e le funzioni direttamente dal Context globale
-    const { whishlist, handleWhishlist, addToCart } = useCart();
+    const { whishlist, handleWhishlist, handleAddToCart } = useCart();
 
     const handlePurchaseClick = (comic) => {
-        const isOutOfStock = comic.stock_quantity <= 0;
+        const isOutOfStock = comic.stock_quantity <= 0
         if (isOutOfStock) {
-            alert("Spiacenti, il prodotto è esaurito!");
-            return;
+            alert("Spiacenti, il prodotto è esaurito!")
+            return
         }
-        addToCart(comic, 1);
-        alert(`${comic.name} aggiunto al carrello!`);
+        handleAddToCart(comic, 1);
     };
+
 
     // --- AGGIUNTO BLOCCO DI PROTEZIONE ANTI-CRASH ---
     // Se la wishlist non esiste ancora o è vuota, mostra una bella interfaccia di cortesia
@@ -51,10 +51,10 @@ export default function Whishlist() {
 
                                     {/* IMAGE (Sostituita con l'url dinamico dell'API come nelle altre pagine) */}
                                     <Link to={`/products/${comic.slug}`} className="product-image-wrapper">
-                                        <img 
-                                            src={comic.image_url ? `${import.meta.env.VITE_API_URL}${comic.image_url}` : "/img/placeholdercomic.png"} 
-                                            alt={comic.name} 
-                                            className="card-img-top product-image" 
+                                        <img
+                                            src={comic.image_url ? `${import.meta.env.VITE_API_URL}${comic.image_url}` : "/img/placeholdercomic.png"}
+                                            alt={comic.name}
+                                            className="card-img-top product-image"
                                         />
                                     </Link>
 
