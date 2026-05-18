@@ -146,7 +146,7 @@ export default function CatalogPage() {
 
               return (
                 <div key={ comic.id } className="col-12 col-sm-6 col-lg-3">
-                  <div className="card product-card h-100">
+                  <div className="card h-100 shadow-sm product-card bg-light">
 
                     {/* IMAGE */ }
                     <Link to={ `/products/${comic.slug}` } className="product-image-wrapper">

@@ -190,7 +190,7 @@ export default function Homepage() {
 
             return (
               <div className="col-12 col-sm-6 col-lg-3 mb-4" key={ comic.id }>
-                <div className="card product-card h-100 shadow-sm">
+                <div className="card product-card h-100 shadow-sm bg-light">
                   <Link to={ `/products/${comic.slug}` }>
                     <img src={ `${import.meta.env.VITE_API_URL}${comic.image_url}` } className="card-img-top object-fit-cover product-image" alt={ comic.name } />
                   </Link>
@@ -258,7 +258,7 @@ export default function Homepage() {
 
             return (
               <div className="col-12 col-sm-6 col-lg-3 mb-4" key={ comic.id }>
-                <div className="card h-100 shadow-sm product-card">
+                <div className="card h-100 shadow-sm product-card bg-light">
                   <Link to={ `/products/${comic.slug}` }>
                     <img src={ `${import.meta.env.VITE_API_URL}${comic.image_url}` } className="card-img-top object-fit-cover product-image" alt={ comic.name } />
                   </Link>
