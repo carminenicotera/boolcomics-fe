@@ -75,7 +75,7 @@ export default function CatalogPage() {
                       letterSpacing: '1px'
                     } }
                   >
-                    📚 Catalogo Prodotti
+                     Catalogo Prodotti
                   </h2>
                 </div>
               ) : (

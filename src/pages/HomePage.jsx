@@ -177,7 +177,7 @@ export default function Homepage() {
                 letterSpacing: '2px'
               } }
             >
-              💥 ULTIME USCITE 💥
+               ULTIME USCITE 
             </h2>
           </div>
           <div className="flex-grow-1 bg-dark" style={ { height: '4px', opacity: 0.8 } }></div>
@@ -245,7 +245,7 @@ export default function Homepage() {
                 letterSpacing: '2px'
               } }
             >
-              🔥 I PIÙ VENDUTI 🔥
+               I PIÙ VENDUTI 
             </h2>
           </div>
           <div className="flex-grow-1 bg-dark" style={ { height: '4px', opacity: 0.8 } }></div>
