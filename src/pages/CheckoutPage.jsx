@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useCart } from '../components/CartProvider'; 
+import { useCart } from '../components/CartProvider';
 
 import StepPersonalData from '../components/StepPersonalData';
 import StepShippingAddress from '../components/StepShippingAddress';
@@ -8,10 +8,9 @@ import StepPayment from '../components/StepPayment';
 import StepOrderSummary from '../components/StepOrderSummary';
 
 
-export default function CheckoutPage({ discount = 0, couponCode = "" }) {
+export default function CheckoutPage() {
 
-   
-    const { cart, clearCart } = useCart();
+    const { cart, clearCart, discount, couponCode } = useCart();
 
     // Stato per gestire il passo attivo
     const [currentStep, setCurrentStep] = useState(1);
@@ -108,8 +107,8 @@ export default function CheckoutPage({ discount = 0, couponCode = "" }) {
                     <StepOrderSummary
                         formData={formData}
                         handleBack={handleBack}
-                        cart={cart} 
-                        clearCart={clearCart} 
+                        cart={cart}
+                        clearCart={clearCart}
                         discount={discount}
                         couponCode={couponCode}
                     />

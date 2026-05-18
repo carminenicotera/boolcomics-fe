@@ -1,18 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import { useCart } from "../components/CartProvider"; 
+import { useCart } from "../components/CartProvider";
 
 export default function CartPage() {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Recupero dati globali dal Context
-  const { cart, removeFromCart, addToCart } = useCart();
+  // Dati del carrello e funzioni per gestirlo
+  const { cart, removeFromCart, addToCart, discount, couponCode, setDiscount, setCouponCode } = useCart();
 
-  // --- STATI PER IL COUPON (AGGIUNTI discount E couponCode) ---
-  const [couponCode, setCouponCode] = useState("");
-  const [discount, setDiscount] = useState(0);
   const [couponError, setCouponError] = useState("");
   const [isApplied, setIsApplied] = useState(false);
   const [isLoadingCoupon, setIsLoadingCoupon] = useState(false);
@@ -128,10 +125,10 @@ export default function CartPage() {
                   <div className="col-6 col-md-6 ps-3">
                     <h5 className="mb-1 fw-bold">{item.name}</h5>
                     <div className="d-flex align-items-center mt-2">
-                      <button className="btn btn-sm btn-outline-secondary py-0 px-2" onClick={ () => removeFromCart(item.slug) }>-</button>
-                      <span className="mx-3 fw-bold">{ item.quantity || 1 }</span>
-                      <button className="btn btn-sm btn-outline-secondary py-0 px-2" onClick={ () => addToCart(item, 1) }>+</button>
-                      <span className="text-muted small ms-3">(€{ item.price } cad.)</span>
+                      <button className="btn btn-sm btn-outline-secondary py-0 px-2" onClick={() => removeFromCart(item.slug)}>-</button>
+                      <span className="mx-3 fw-bold">{item.quantity || 1}</span>
+                      <button className="btn btn-sm btn-outline-secondary py-0 px-2" onClick={() => addToCart(item, 1)}>+</button>
+                      <span className="text-muted small ms-3">(€{item.price} cad.)</span>
                     </div>
                   </div>
                   <div className="col-3 col-md-4 text-end pe-4">
