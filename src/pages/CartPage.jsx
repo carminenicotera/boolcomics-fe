@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import { useCart } from "../components/CartProvider";
@@ -47,6 +47,13 @@ export default function CartPage() {
       setIsLoadingCoupon(false);
     }
   };
+
+  useEffect(() => {
+    setDiscount(0);
+    setIsApplied(false);
+    setCouponCode("");
+    setCouponError("");
+  }, []);
 
   // Calcolo Sconto e Spedizione
   const discountAmount = (subtotal * discount) / 100;
