@@ -164,7 +164,7 @@ export default function Homepage() {
         </div>
       </div>
 
-      {/* SEZIONE ULTIME USCITE */}
+      {/* SEZIONE ULTIMI ARRIVI */}
       <div className="container">
         <div className="d-flex align-items-center justify-content-center my-5 position-relative">
           <div className="flex-grow-1 bg-dark" style={{ height: '4px', opacity: 0.8 }}></div>
@@ -177,7 +177,7 @@ export default function Homepage() {
                 letterSpacing: '2px'
               }}
             >
-               ULTIME USCITE 
+               ULTIMI ARRIVI
             </h2>
           </div>
           <div className="flex-grow-1 bg-dark" style={{ height: '4px', opacity: 0.8 }}></div>
