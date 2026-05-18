@@ -15,7 +15,7 @@ export default function ProductMainCard({ comic }) {
     const isDiscounted = comic.price < comic.original_price;
     const isOutOfStock = comic.stock_quantity <= 0;
     const isInWhishlist = whishlist ? whishlist.some(item => item.slug === comic.slug) : false;
-    console.log(handleAddToCart)
+    
     
     const handleQuantityChange = (e) => {
         const val = parseInt(e.target.value, 10) || 1;
@@ -36,7 +36,7 @@ export default function ProductMainCard({ comic }) {
         
         const finalQuantity = Number(quantity);
         
-        console.log("Eseguo handleAddToCart dal Context per:", comic.name); 
+        
 
         handleAddToCart(comic, finalQuantity);
     };
