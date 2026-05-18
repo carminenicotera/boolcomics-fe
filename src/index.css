@@ -72,14 +72,16 @@ body {
   background: #111 !important;
   border: 3px solid #111;
   padding: 6px 16px !important;
-  border-radius: 0px; /* Angoli netti stile fumetto */
+  border-radius: 0px;
+  /* Angoli netti stile fumetto */
   box-shadow: 4px 4px 0px #E63946;
   transition: all 0.15s ease;
 }
 
 .cyber-cart-btn:hover {
   transform: translate(-2px, -2px);
-  box-shadow: 5px 5px 0px #FFC107; /* L'ombra diventa gialla all'hover */
+  box-shadow: 5px 5px 0px #FFC107;
+  /* L'ombra diventa gialla all'hover */
   background: #111 !important;
 }
 
@@ -90,8 +92,8 @@ body {
   border-radius: 0px !important;
 }
 
-.extra-small { 
-  font-size: 0.7rem; 
+.extra-small {
+  font-size: 0.7rem;
 }
 
 /* Animazione soft sul logo per dare reattività */
@@ -207,7 +209,7 @@ body {
 /* Ridotto da 120px a un valore più equilibrato e fluido */
 .error-badge {
   font-family: "Impact", "Arial Black", sans-serif;
-  font-size: 85px; 
+  font-size: 85px;
   font-weight: 900;
   color: #E63946;
   text-transform: uppercase;
@@ -228,6 +230,7 @@ body {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -246,48 +249,48 @@ body {
    RESULTS === 0
 ========================= */
 .search-empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 80px 20px;
-    width: 100%;
-    max-width: 550px;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 20px;
+  width: 100%;
+  max-width: 550px;
+  margin: 0 auto;
 }
 
 .empty-badge {
-    background-color: #de3e4b;
-    color: #ffffff;
-    font-size: 32px;
-    font-weight: 900;
-    padding: 10px 30px;
-    border-radius: 4px;
-    transform: rotate(-3deg);
-    box-shadow: 4px 4px 0px #111111;
-    margin-bottom: 30px;
-    letter-spacing: 1px;
+  background-color: #de3e4b;
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 900;
+  padding: 10px 30px;
+  border-radius: 4px;
+  transform: rotate(-3deg);
+  box-shadow: 4px 4px 0px #111111;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
 }
 
 .empty-title {
-    font-size: 26px;
-    font-weight: 700;
-    color: #111111;
-    text-transform: uppercase;
-    margin-bottom: 15px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #111111;
+  text-transform: uppercase;
+  margin-bottom: 15px;
 }
 
 .empty-message {
-    font-size: 15px;
-    color: #555555;
-    line-height: 1.6;
-    margin-bottom: 30px;
+  font-size: 15px;
+  color: #555555;
+  line-height: 1.6;
+  margin-bottom: 30px;
 }
 
 .empty-message .highlight {
-    color: #de3e4b;
-    font-weight: 700;
+  color: #de3e4b;
+  font-weight: 700;
 }
 
 /* =========================
@@ -393,4 +396,22 @@ body {
   .catalog-title {
     font-size: 2rem;
   }
+}
+
+/* Share btn */
+.share-btn {
+  border-radius: 0;
+  border: 2px solid #111;
+  padding: 12px;
+  font-weight: 600;
+
+  background-color: #111;
+  color: #fff;
+
+  transition: .35s;
+}
+
+.share-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px #E63946;
 }
