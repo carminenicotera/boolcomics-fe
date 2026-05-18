@@ -44,7 +44,6 @@ export default function Homepage() {
   }, [API_URL]);
 
   const handlePurchaseClick = (comic) => {
-    // Rimosso il blocco approssimativo locale.
     // Invochiamo handleAddToCart: sarà il CartProvider a gestire in modo atomico
     // lo stock residuo confrontando la quantità richiesta con quella già a carrello.
     handleAddToCart(comic, 1);

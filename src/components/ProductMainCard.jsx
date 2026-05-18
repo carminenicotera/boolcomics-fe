@@ -5,7 +5,6 @@ export default function ProductMainCard({ comic }) {
 
     const [quantity, setQuantity] = useState(1);
     
-    // CORREZIONE: Recuperiamo handleAddToCart (quella globale con popup, offcanvas e blocco stock)
     const { handleAddToCart } = useCart();
 
     if (!comic) {
@@ -36,7 +35,6 @@ export default function ProductMainCard({ comic }) {
         
         console.log("Eseguo handleAddToCart dal Context per:", comic.name); 
 
-        // Invochiamo la funzione corretta passando il fumetto e la quantità selezionata
         handleAddToCart(comic, finalQuantity);
     };
 

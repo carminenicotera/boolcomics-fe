@@ -13,7 +13,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 export default function ComicPage() { 
     const { slug } = useParams();
     
-    // CORREZIONE: Recuperiamo handleAddToCart (quella con il popup e il controllo atomico)
     const { handleAddToCart } = useCart(); 
     
     const [comic, setComic] = useState(null);
@@ -74,7 +73,6 @@ export default function ComicPage() {
                 <ProductMainCard comic={comic} addToCart={handleAddToCart} />
                 <ProductDescriptionCard comic={comic} />
                 
-                {/* RelatedProducts internamente usa già useCart(), quindi non ha bisogno che gli passi la prop */}
                 <RelatedProducts products={related} />
             </div>
         </>
