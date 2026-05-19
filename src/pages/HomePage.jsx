@@ -93,7 +93,7 @@ export default function Homepage() {
                 ) : (
                   <img
                     src={banner.image}
-                    className="d-block w-100-"
+                    className="d-block w-100"
                     alt={banner.title}
                     style={{
                       height: 'auto',
